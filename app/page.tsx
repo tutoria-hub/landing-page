@@ -151,15 +151,68 @@ export default function Home() {
         )}
       </section>
 
-      {/* Placeholder for next sections */}
-      <section className="min-h-screen bg-[#F7F5ED] flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="font-serif font-bold text-4xl text-[#1A1A1A] mb-4">
-            Next Section Coming Soon
-          </h2>
-          <p className="font-sans text-lg text-[#595959]">
-            Video demo, features, CTA, science, and founder sections will be added here
-          </p>
+      {/* Testimonials Section - Editorial Asymmetric Grid */}
+      <section className="bg-[#F7F5ED] px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
+          {/* FEATURED TESTIMONIAL - LEFT */}
+          <div className="border-2 border-[#30A46C] bg-white p-12 rounded-lg">
+            <blockquote className="font-serif text-[28px] leading-[1.4] text-[#1A1A1A] mb-12">
+              &ldquo;My son kept saying he couldn&rsquo;t read. After two months, he&rsquo;s <span className="text-[#30A46C]">asking to practice reading</span> on his own. It&rsquo;s like a switch flipped.&rdquo;
+            </blockquote>
+
+            <div>
+              <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
+                Sarah Martinez
+              </p>
+              <p className="font-sans text-[16px] text-[#595959] mb-3">
+                Parent, 3rd grade student
+              </p>
+              <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
+                Improved 2 grade levels in 4 months
+              </p>
+            </div>
+          </div>
+
+          {/* SUPPORTING TESTIMONIALS - RIGHT STACK */}
+          <div className="flex flex-col gap-8 lg:gap-12">
+            {/* SUPPORTING TESTIMONIAL 1 */}
+            <div className="border-2 border-[#DCDCDC] bg-white p-8 rounded-lg">
+              <blockquote className="font-serif text-[20px] leading-[1.4] text-[#1A1A1A] mb-8">
+                &ldquo;We tried three tutors. This system finally cracked the code for our daughter.&rdquo;
+              </blockquote>
+
+              <div>
+                <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
+                  James Chen
+                </p>
+                <p className="font-sans text-[16px] text-[#595959] mb-3">
+                  Parent, 2nd grade student
+                </p>
+                <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
+                  Improved 2 grade levels in 4 months
+                </p>
+              </div>
+            </div>
+
+            {/* SUPPORTING TESTIMONIAL 2 */}
+            <div className="border-2 border-[#DCDCDC] bg-white p-8 rounded-lg">
+              <blockquote className="font-serif text-[20px] leading-[1.4] text-[#1A1A1A] mb-8">
+                &ldquo;The teacher noticed the difference immediately. He&rsquo;s more confident now.&rdquo;
+              </blockquote>
+
+              <div>
+                <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
+                  Lisa Anderson
+                </p>
+                <p className="font-sans text-[16px] text-[#595959] mb-3">
+                  School Reading Specialist
+                </p>
+                <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
+                  Improved 2 grade levels in 4 months
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
