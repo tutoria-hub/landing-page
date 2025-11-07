@@ -74,30 +74,26 @@ export default function Home() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Harvard Stat (No Card) */}
-        <div className="max-w-full lg:max-w-[480px] lg:justify-self-end space-y-8">
-          {/* Stat Number with Green Underline */}
-          <div className="inline-block relative pb-3">
-            <p className="font-serif font-bold text-[80px] leading-none text-[#1A1A1A]">
+        {/* RIGHT COLUMN: Harvard Stat Card */}
+        <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
+          <div className="border-2 border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg">
+            {/* Stat Number */}
+            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#1A1A1A] mb-6">
               50-90%
             </p>
-            {/* Underline positioned below text with gap */}
-            <div className="absolute bottom-0 left-[-8px] right-[-8px] h-[5px] bg-[#30A46C] rounded-full"></div>
-          </div>
 
-          {/* Stat Text */}
-          <p className="font-sans text-[20px] leading-[1.6] text-[#1A1A1A]">
-            of at-risk readers can reach grade level with targeted instruction
-          </p>
+            {/* Stat Text */}
+            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-6">
+              of at-risk readers can reach grade level with targeted instruction
+            </p>
 
-          {/* Harvard Logo - Prominent */}
-          <div className="flex">
+            {/* Harvard Logo */}
             <Image
               src="/assets/harvard-logo-grey.png"
               alt="Harvard Medical School"
               width={240}
               height={80}
-              className="h-20 md:h-28 w-auto grayscale opacity-80"
+              className="h-16 lg:h-20 w-auto grayscale opacity-80"
               priority
             />
           </div>
