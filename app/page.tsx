@@ -65,33 +65,32 @@ export default function Home() {
             <p className="font-sans text-[16px] text-[#595959]">
               Help your child learn to read
             </p>
-            <div className="relative">
-              {/* Organic curved arrow from top-right to button */}
-              <svg
-                className="absolute -left-4 -top-16 w-64 h-40 pointer-events-none hidden lg:block"
-                viewBox="0 0 260 160"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M 240 20 Q 200 40, 160 70 T 80 130 Q 50 145, 20 150"
-                  stroke="#1A1A1A"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  fill="none"
-                  opacity="0.7"
-                />
-                <path
-                  d="M 20 150 L 15 143 M 20 150 L 28 146"
-                  stroke="#1A1A1A"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-
+            <div className="relative inline-block">
               <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
                 Join the Waitlist
               </button>
+
+              {/* Simple hand-drawn arrow */}
+              <svg
+                className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-16 h-12 pointer-events-none hidden lg:block"
+                viewBox="0 0 64 48"
+                fill="none"
+              >
+                <path
+                  d="M 32 4 L 32 36"
+                  stroke="#1A1A1A"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M 24 28 L 32 36 L 40 28"
+                  stroke="#1A1A1A"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -115,9 +114,9 @@ export default function Home() {
               </svg>
             </div>
 
-            {/* Stat Text - Italic WITHOUT quotes, smaller size */}
-            <p className="font-serif italic text-[22px] lg:text-[24px] leading-[1.4] text-[#1A1A1A] mb-5 max-w-[420px]">
-              of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction
+            {/* Stat Text - Italic with quotes, larger size */}
+            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.4] text-[#1A1A1A] mb-5 max-w-[420px]">
+              &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
 
             {/* Harvard Logo - Centered */}
