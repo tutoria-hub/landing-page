@@ -101,6 +101,11 @@ export default function Home() {
               priority
             />
           </div>
+
+          {/* Citation Text */}
+          <p className="font-sans text-[16px] italic text-[#595959]">
+            Harvard Medical School, 2023
+          </p>
         </div>
 
         {/* Decorative Green Curves - Bottom Left */}
@@ -124,6 +129,13 @@ export default function Home() {
             strokeLinecap="round"
           />
         </svg>
+
+        {/* Unified Credibility Anchor */}
+        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 w-full max-w-2xl text-center px-6">
+          <p className="font-sans text-[14px] font-semibold tracking-[0.1em] uppercase text-[#595959]">
+            Backed by 40+ years of reading science
+          </p>
+        </div>
 
         {/* Scroll Indicator - Absolutely Centered */}
         {showScrollIndicator && (
