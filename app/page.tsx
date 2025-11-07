@@ -120,15 +120,17 @@ export default function Home() {
               &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
 
-            {/* Harvard Logo - Better scaled */}
-            <Image
-              src="/assets/harvard-logo-grey.png"
-              alt="Harvard Medical School"
-              width={200}
-              height={70}
-              className="h-14 lg:h-16 w-auto grayscale opacity-75"
-              priority
-            />
+            {/* Harvard Logo - Larger and Centered */}
+            <div className="flex justify-center">
+              <Image
+                src="/assets/harvard-logo-grey.png"
+                alt="Harvard Medical School"
+                width={280}
+                height={100}
+                className="h-20 lg:h-24 w-auto grayscale opacity-75"
+                priority
+              />
+            </div>
           </div>
         </div>
 
