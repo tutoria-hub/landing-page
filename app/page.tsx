@@ -5,6 +5,74 @@ import Image from "next/image";
 
 export default function Home() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [typedText, setTypedText] = useState("actually works!");
+  const [statMin, setStatMin] = useState(0);
+  const [statMax, setStatMax] = useState(0);
+
+  const variations = [
+    "actually works!",
+    "really works!",
+    "truly works!",
+    "just works!",
+  ];
+
+  useEffect(() => {
+    let currentIndex = 0;
+
+    const typeText = () => {
+      const text = variations[currentIndex];
+      let charIndex = 0;
+
+      // Clear current text
+      setTypedText("");
+
+      // Type out character by character
+      const typeInterval = setInterval(() => {
+        if (charIndex <= text.length) {
+          setTypedText(text.substring(0, charIndex));
+          charIndex++;
+        } else {
+          clearInterval(typeInterval);
+
+          // Wait 2 seconds before starting next variation
+          setTimeout(() => {
+            currentIndex = (currentIndex + 1) % variations.length;
+            typeText();
+          }, 2000);
+        }
+      }, 100);
+    };
+
+    // Start typing animation
+    typeText();
+  }, []);
+
+  useEffect(() => {
+    // Animate stat numbers on load
+    const duration = 2000; // 2 seconds
+    const targetMin = 50;
+    const targetMax = 90;
+    const steps = 60;
+    const stepDuration = duration / steps;
+
+    let currentStep = 0;
+
+    const animateNumbers = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+
+      setStatMin(Math.round(targetMin * progress));
+      setStatMax(Math.round(targetMax * progress));
+
+      if (currentStep >= steps) {
+        clearInterval(animateNumbers);
+        setStatMin(targetMin);
+        setStatMax(targetMax);
+      }
+    }, stepDuration);
+
+    return () => clearInterval(animateNumbers);
+  }, []);
 
   useEffect(() => {
     // Trigger scroll indicator animation on load
@@ -47,17 +115,20 @@ export default function Home() {
           <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
             <span className="relative inline-block">
               <span className="relative z-[2]">Structured phonics</span>
-              <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '-6px'}}>
+              <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '20px', marginTop: '-8px'}}>
                 <path
                   d="M 5 12 Q 100 5, 200 12 T 395 12"
                   stroke="#30A46C"
-                  strokeWidth="4"
+                  strokeWidth="6"
                   fill="none"
                   strokeLinecap="round"
                 />
               </svg>
             </span>{" "}
-            <em className="italic font-bold text-[#1A1A1A]">actually works!</em>
+            <em className="italic font-bold text-[#1A1A1A]">
+              {typedText}
+              <span className="animate-pulse">|</span>
+            </em>
           </h1>
 
           {/* CTA Section */}
@@ -101,13 +172,13 @@ export default function Home() {
             {/* Stat Number - Sans-serif with curvy GREEN underline */}
             <div className="mb-5 relative">
               <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-3">
-                50-90%
+                {statMin}-{statMax}%
               </p>
-              <svg className="absolute left-0 bottom-0 w-[200px] lg:w-[280px] pointer-events-none" viewBox="0 0 280 16" style={{height: '16px'}}>
+              <svg className="absolute left-0 bottom-0 w-[200px] lg:w-[280px] pointer-events-none" viewBox="0 0 280 20" style={{height: '20px'}}>
                 <path
-                  d="M 5 10 Q 70 4, 140 10 T 275 10"
+                  d="M 5 12 Q 70 6, 140 12 T 275 12"
                   stroke="#30A46C"
-                  strokeWidth="4"
+                  strokeWidth="6"
                   fill="none"
                   strokeLinecap="round"
                 />
