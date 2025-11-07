@@ -103,6 +103,17 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Bottom Divider Lines - Two vertical lines with arrows pointing down */}
+        <svg className="absolute bottom-0 left-0 right-0 w-full h-[120px] pointer-events-none" viewBox="0 0 1440 120" preserveAspectRatio="none">
+          {/* Left Line */}
+          <line x1="360" y1="0" x2="360" y2="80" stroke="#EF4444" strokeWidth="4" />
+          <polygon points="360,100 350,80 370,80" fill="#EF4444" />
+
+          {/* Right Line */}
+          <line x1="1080" y1="0" x2="1080" y2="80" stroke="#EF4444" strokeWidth="4" />
+          <polygon points="1080,100 1070,80 1090,80" fill="#EF4444" />
+        </svg>
+
         {/* Scroll Indicator - Absolutely Centered */}
         {showScrollIndicator && (
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator" aria-label="Scroll to continue">
