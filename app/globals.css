@@ -5,8 +5,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-lexend);
+  --font-serif: var(--font-eb-garamond);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -30,25 +30,25 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --radius: 1rem;
+  --background: oklch(1 0 0); /* #FFFFFF */
+  --foreground: oklch(0.24 0 0); /* #1A1A1A */
+  --card: oklch(0.98 0.01 90); /* #F7F5ED cream */
+  --card-foreground: oklch(0.24 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.24 0 0);
+  --primary: oklch(0.62 0.12 156); /* #30A46C green */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.98 0.01 90); /* Cream */
+  --secondary-foreground: oklch(0.24 0 0);
+  --muted: oklch(0.98 0.01 90);
+  --muted-foreground: oklch(0.48 0 0); /* #595959 */
+  --accent: oklch(0.98 0.01 90);
+  --accent-foreground: oklch(0.24 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.9 0 0); /* #DCDCDC */
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.62 0.12 156); /* Green */
 }
 
 .dark {
@@ -79,4 +79,27 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Scroll Indicator Animation */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.scroll-indicator {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.scroll-indicator.animate {
+  opacity: 1;
+  animation: bounce 1s ease-in-out;
 }

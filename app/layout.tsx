@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { EB_Garamond, Lexend } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const ebGaramond = EB_Garamond({
+  variable: "--font-eb-garamond",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
+  weight: ["400", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Landing Page - Next.js + shadcn/ui",
-  description: "A beautifully designed landing page built with Next.js 15, shadcn/ui components, and deployed on Cloudflare Workers.",
+  title: "Tutoria - Structured Phonics That Just Works",
+  description: "Evidence-based phonics instruction backed by Harvard research. Help your child reach grade level with Orton-Gillingham methodology.",
 };
 
 export default function RootLayout({
@@ -25,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${ebGaramond.variable} ${lexend.variable} antialiased`}
       >
         {children}
       </body>
