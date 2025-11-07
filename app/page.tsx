@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function Home() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [typedText, setTypedText] = useState("actually works!");
+  const [isTypingVisible, setIsTypingVisible] = useState(true);
   const [statMin, setStatMin] = useState(0);
   const [statMax, setStatMax] = useState(0);
 
@@ -23,24 +24,30 @@ export default function Home() {
       const text = variations[currentIndex];
       let charIndex = 0;
 
-      // Clear current text
-      setTypedText("");
+      // Fade out current text
+      setIsTypingVisible(false);
 
-      // Type out character by character
-      const typeInterval = setInterval(() => {
-        if (charIndex <= text.length) {
-          setTypedText(text.substring(0, charIndex));
-          charIndex++;
-        } else {
-          clearInterval(typeInterval);
+      setTimeout(() => {
+        // Clear and start typing new text
+        setTypedText("");
+        setIsTypingVisible(true);
 
-          // Wait 10 seconds before starting next variation
-          setTimeout(() => {
-            currentIndex = (currentIndex + 1) % variations.length;
-            typeText();
-          }, 10000);
-        }
-      }, 100);
+        // Type out character by character
+        const typeInterval = setInterval(() => {
+          if (charIndex <= text.length) {
+            setTypedText(text.substring(0, charIndex));
+            charIndex++;
+          } else {
+            clearInterval(typeInterval);
+
+            // Wait 10 seconds before starting next variation
+            setTimeout(() => {
+              currentIndex = (currentIndex + 1) % variations.length;
+              typeText();
+            }, 10000);
+          }
+        }, 100);
+      }, 300); // Wait for fade out to complete
     };
 
     // Start typing animation
@@ -126,7 +133,7 @@ export default function Home() {
               </svg>
             </span>
             <br />
-            <em className="italic font-bold text-[#1A1A1A]">
+            <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
               {typedText}
             </em>
           </h1>
