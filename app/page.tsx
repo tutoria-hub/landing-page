@@ -74,25 +74,25 @@ export default function Home() {
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
           <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Harvard Logo - Authority First */}
+            {/* Stat Number - Green */}
+            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#30A46C] mb-6">
+              50-90%
+            </p>
+
+            {/* Stat Text */}
+            <p className="font-sans text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] mb-6 max-w-[400px]">
+              of at-risk readers can reach grade level with targeted instruction
+            </p>
+
+            {/* Harvard Logo */}
             <Image
               src="/assets/harvard-logo-grey.png"
               alt="Harvard Medical School"
               width={240}
-              height={48}
-              className="h-10 lg:h-12 w-auto grayscale opacity-60 mb-4"
+              height={80}
+              className="h-16 lg:h-20 w-auto grayscale opacity-80"
               priority
             />
-
-            {/* Stat Number - Dominant Green */}
-            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#30A46C] mb-4">
-              50-90%
-            </p>
-
-            {/* Stat Text - Tightened Copy */}
-            <p className="font-sans text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] max-w-[400px]">
-              of at-risk readers reach grade level
-            </p>
           </div>
         </div>
 
