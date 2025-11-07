@@ -124,7 +124,8 @@ export default function Home() {
                   strokeLinecap="round"
                 />
               </svg>
-            </span>{" "}
+            </span>
+            <br />
             <em className="italic font-bold text-[#1A1A1A]">
               {typedText}
             </em>
