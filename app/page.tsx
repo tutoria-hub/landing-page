@@ -103,6 +103,28 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Decorative Green Curves - Bottom Left */}
+        <svg className="absolute bottom-0 left-0 w-[45%] h-[200px] pointer-events-none opacity-50" viewBox="0 0 400 200" preserveAspectRatio="none">
+          <path
+            d="M 0 100 Q 100 20, 200 80 T 400 60"
+            stroke="#30A46C"
+            strokeWidth="6"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+
+        {/* Decorative Green Curves - Bottom Right */}
+        <svg className="absolute bottom-0 right-0 w-[45%] h-[200px] pointer-events-none opacity-50" viewBox="0 0 400 200" preserveAspectRatio="none">
+          <path
+            d="M 0 60 Q 200 100, 300 40 T 400 80"
+            stroke="#30A46C"
+            strokeWidth="6"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+
         {/* Scroll Indicator - Absolutely Centered */}
         {showScrollIndicator && (
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator" aria-label="Scroll to continue">
