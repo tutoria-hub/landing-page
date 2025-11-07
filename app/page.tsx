@@ -39,24 +39,33 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Hero Section - Two Column Editorial Layout */}
-      <section className="relative min-h-screen grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-24 items-center px-6 lg:px-24 py-12 max-w-[1440px] mx-auto">
+      {/* Hero Section - Editorial Two-Column Layout */}
+      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-24 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
 
-        {/* LEFT COLUMN: Headline */}
+        {/* LEFT COLUMN: Mixed-Weight Headline */}
         <div className="max-w-[600px]">
-          <h1 className="font-serif font-bold text-[40px] md:text-[48px] lg:text-[72px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
-            Structured phonics that just works!
+          <h1 className="font-serif leading-[1.1] tracking-[-0.01em]">
+            <span className="block text-[40px] md:text-[48px] lg:text-[72px] font-normal text-[#666666]">
+              Structured phonics
+            </span>
+            <span className="block text-[36px] md:text-[42px] lg:text-[56px] italic font-normal text-[#1A1A1A]">
+              that just
+            </span>
+            <span className="block text-[40px] md:text-[48px] lg:text-[72px] font-bold text-[#1A1A1A]">
+              works!
+            </span>
           </h1>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat (No Card) */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end space-y-8">
           {/* Stat Number with Green Underline */}
-          <div className="inline-block">
-            <p className="font-serif font-bold text-[64px] md:text-[72px] leading-none text-[#1A1A1A] mb-2">
+          <div className="inline-block relative pb-3">
+            <p className="font-serif font-bold text-[64px] leading-none text-[#1A1A1A]">
               50-90%
             </p>
-            <div className="h-1 bg-[#30A46C] w-full"></div>
+            {/* Underline positioned below text with gap */}
+            <div className="absolute bottom-0 left-[-8px] right-[-8px] h-[5px] bg-[#30A46C] rounded-full"></div>
           </div>
 
           {/* Stat Text */}
@@ -95,6 +104,19 @@ export default function Home() {
           </div>
         )}
       </section>
+
+      {/* Green Curve Divider */}
+      <div className="flex justify-center py-16 bg-white">
+        <svg width="60%" height="120" viewBox="0 0 800 120" className="max-w-[600px]">
+          <path
+            d="M 0 60 Q 200 20, 400 60 T 800 60"
+            stroke="#30A46C"
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
 
       {/* Placeholder for next sections */}
       <section className="min-h-screen bg-[#F7F5ED] flex items-center justify-center">
