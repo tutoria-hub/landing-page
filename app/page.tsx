@@ -47,7 +47,7 @@ export default function Home() {
           <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
             <span className="relative inline-block">
               Structured phonics
-              <svg className="absolute left-0 top-full w-full pointer-events-none" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '2px'}}>
+              <svg className="absolute left-0 top-full w-full pointer-events-none" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '-4px'}}>
                 <path
                   d="M 5 12 Q 100 5, 200 12 T 395 12"
                   stroke="#30A46C"
