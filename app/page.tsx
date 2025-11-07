@@ -41,8 +41,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
       <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-
-{/* LEFT COLUMN: Label + Headline + Body Copy */}
+        {/* LEFT COLUMN: Label + Headline + CTA */}
         <div className="max-w-[600px] space-y-8">
           {/* Product Label */}
           <p className="text-[14px] font-sans font-semibold tracking-[0.1em] uppercase text-[#595959]">
@@ -51,7 +50,7 @@ export default function Home() {
 
           {/* Headline - Single Weight + Italic Emphasis */}
           <h1 className="font-serif text-[40px] md:text-[56px] lg:text-[72px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
-            <div className="relative inline-block">
+            <span className="relative inline-block">
               Structured Phonics
               <svg className="absolute left-0 top-full w-full h-6 pointer-events-none" viewBox="0 0 200 12" style={{height: '12px', marginTop: '4px'}}>
                 <path
@@ -62,8 +61,9 @@ export default function Home() {
                   strokeLinecap="round"
                 />
               </svg>
-            </div>
-            <div><em className="italic">that </em><strong className="font-bold italic">just works!</strong></div>
+            </span>
+            <br />
+            <em className="italic">that </em><strong className="font-bold italic">just works!</strong>
           </h1>
 
           {/* CTA Button */}
@@ -103,35 +103,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Decorative Green Curves - Bottom Left */}
-        <svg className="absolute bottom-0 left-0 w-[45%] h-[200px] pointer-events-none opacity-50" viewBox="0 0 400 200" preserveAspectRatio="none">
-          <path
-            d="M 0 100 Q 100 20, 200 80 T 400 60"
-            stroke="#30A46C"
-            strokeWidth="6"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
-
-        {/* Decorative Green Curves - Bottom Right */}
-        <svg className="absolute bottom-0 right-0 w-[45%] h-[200px] pointer-events-none opacity-50" viewBox="0 0 400 200" preserveAspectRatio="none">
-          <path
-            d="M 0 60 Q 200 100, 300 40 T 400 80"
-            stroke="#30A46C"
-            strokeWidth="6"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
-
-        {/* Unified Credibility Anchor */}
-        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 w-full max-w-2xl text-center px-6">
-          <p className="font-sans text-[14px] font-semibold tracking-[0.1em] uppercase text-[#595959]">
-            Backed by 40+ years of reading science
-          </p>
-        </div>
-
         {/* Scroll Indicator - Absolutely Centered */}
         {showScrollIndicator && (
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator" aria-label="Scroll to continue">
@@ -153,6 +124,11 @@ export default function Home() {
 
       {/* Testimonials Section - Editorial Asymmetric Grid */}
       <section className="bg-[#F7F5ED] px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        {/* Section Header */}
+        <h2 className="font-serif font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
+          What Parents Are Saying
+        </h2>
+
         <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
           {/* FEATURED TESTIMONIAL - LEFT */}
           <div className="border-2 border-[#30A46C] bg-white p-12 rounded-lg">
@@ -174,7 +150,7 @@ export default function Home() {
           </div>
 
           {/* SUPPORTING TESTIMONIALS - RIGHT STACK */}
-          <div className="flex flex-col gap-8 lg:gap-12">
+          <div className="flex flex-col gap-6 lg:gap-8">
             {/* SUPPORTING TESTIMONIAL 1 */}
             <div className="border-2 border-[#DCDCDC] bg-white p-8 rounded-lg">
               <blockquote className="font-serif text-[20px] leading-[1.4] text-[#1A1A1A] mb-8">
@@ -189,7 +165,7 @@ export default function Home() {
                   Parent, 2nd grade student
                 </p>
                 <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
-                  Improved 2 grade levels in 4 months
+                  Reading fluency increased 3x in 6 weeks
                 </p>
               </div>
             </div>
@@ -208,7 +184,7 @@ export default function Home() {
                   School Reading Specialist
                 </p>
                 <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
-                  Improved 2 grade levels in 4 months
+                  From below grade level to proficient
                 </p>
               </div>
             </div>
