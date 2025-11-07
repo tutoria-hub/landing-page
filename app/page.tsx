@@ -16,8 +16,8 @@ export default function Home() {
       }
     };
 
-    // Initial animation
-    setTimeout(animateIndicator, 500);
+    // Initial animation - delay to let user read content first
+    setTimeout(animateIndicator, 2000);
 
     // Repeat every 15 seconds
     const interval = setInterval(animateIndicator, 15000);
@@ -40,28 +40,45 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-24 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
 
-        {/* LEFT COLUMN: Mixed-Weight Headline */}
-        <div className="max-w-[600px]">
-          <h1 className="font-serif leading-[1.1] tracking-[-0.01em]">
-            <span className="block text-[40px] md:text-[48px] lg:text-[72px] font-normal text-[#666666]">
-              Structured phonics
-            </span>
-            <span className="block text-[36px] md:text-[42px] lg:text-[56px] italic font-normal text-[#1A1A1A]">
-              that just
-            </span>
-            <span className="block text-[40px] md:text-[48px] lg:text-[72px] font-bold text-[#1A1A1A]">
-              works!
-            </span>
+{/* LEFT COLUMN: Label + Headline + Body Copy */}
+        <div className="max-w-[600px] space-y-8">
+          {/* Product Label */}
+          <p className="text-[14px] font-sans font-semibold tracking-[0.1em] uppercase text-[#595959]">
+            Built For Struggling Readers
+          </p>
+
+          {/* Headline - Single Weight + Italic Emphasis */}
+          <h1 className="font-serif text-[40px] md:text-[56px] lg:text-[72px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
+            <div className="relative inline-block">
+              Structured Phonics
+              <svg className="absolute left-0 top-full w-full h-6 pointer-events-none" viewBox="0 0 200 12" style={{height: '12px', marginTop: '4px'}}>
+                <path
+                  d="M 0 8 Q 50 2, 100 8 T 200 8"
+                  stroke="#2563EB"
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            <div><em className="italic">that </em><strong className="font-bold italic">just works!</strong></div>
           </h1>
+
+          {/* CTA Button */}
+          <div className="mt-8">
+            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-200 hover:scale-105 shadow-[0_8px_0_#2A9461] hover:shadow-[0_12px_0_#2A9461]">
+              Join the Waitlist
+            </button>
+          </div>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat (No Card) */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end space-y-8">
           {/* Stat Number with Green Underline */}
           <div className="inline-block relative pb-3">
-            <p className="font-serif font-bold text-[64px] leading-none text-[#1A1A1A]">
+            <p className="font-serif font-bold text-[80px] leading-none text-[#1A1A1A]">
               50-90%
             </p>
             {/* Underline positioned below text with gap */}
@@ -73,14 +90,14 @@ export default function Home() {
             of at-risk readers can reach grade level with targeted instruction
           </p>
 
-          {/* Harvard Logo - Larger */}
+          {/* Harvard Logo - Prominent */}
           <div className="flex">
             <Image
               src="/assets/harvard-logo-grey.png"
               alt="Harvard Medical School"
-              width={200}
-              height={64}
-              className="h-12 md:h-16 w-auto grayscale opacity-70"
+              width={240}
+              height={80}
+              className="h-20 md:h-28 w-auto grayscale opacity-80"
               priority
             />
           </div>
@@ -104,19 +121,6 @@ export default function Home() {
           </div>
         )}
       </section>
-
-      {/* Green Curve Divider */}
-      <div className="flex justify-center py-16 bg-white">
-        <svg width="60%" height="120" viewBox="0 0 800 120" className="max-w-[600px]">
-          <path
-            d="M 0 60 Q 200 20, 400 60 T 800 60"
-            stroke="#30A46C"
-            strokeWidth="5"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
-      </div>
 
       {/* Placeholder for next sections */}
       <section className="min-h-screen bg-[#F7F5ED] flex items-center justify-center">

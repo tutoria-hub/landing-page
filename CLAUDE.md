@@ -43,10 +43,16 @@ Enables natural language interaction with shadcn/ui component registries:
 - Turbopack requires explicit root when multiple lockfiles in workspace
 - Must use `nodejs_compat` flag in wrangler.jsonc
 
-## Deploy
+## Development Workflow
+
+**CRITICAL: DO NOT run `npm run dev` or start local dev servers.**
+
+Always deploy to Cloudflare to test changes:
 
 ```bash
 npm run deploy    # Build with OpenNext + deploy to Cloudflare
 ```
 
 Live at: https://landing-page.fupsonline.workers.dev/
+
+**Why**: Local dev with Turbopack has compatibility issues with Tailwind CSS v4. Production builds via OpenNext work correctly.
