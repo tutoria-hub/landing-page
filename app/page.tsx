@@ -57,13 +57,13 @@ export default function Home() {
                 />
               </svg>
             </span>{" "}
-            <em className="italic font-bold">actually works!</em>
+            <em className="italic font-bold text-[#30A46C]">actually works!</em>
           </h1>
 
           {/* CTA Section */}
           <div className="space-y-4">
             <p className="font-sans text-[16px] text-[#595959]">
-              Join 1,200+ parents helping their child read
+              Join <span className="font-semibold text-[#30A46C]">1,200+ parents</span> helping their child read
             </p>
             <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
               Join the Waitlist
@@ -75,7 +75,7 @@ export default function Home() {
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
           <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
             {/* Stat Number */}
-            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#1A1A1A] mb-6">
+            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#30A46C] mb-6">
               50-90%
             </p>
 
