@@ -61,30 +61,63 @@ export default function Home() {
           </h1>
 
           {/* CTA Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 relative">
             <p className="font-sans text-[16px] text-[#595959]">
               Help your child learn to read
             </p>
-            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
-              Join the Waitlist
-            </button>
+            <div className="relative inline-block">
+              <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
+                Join the Waitlist
+              </button>
+
+              {/* Hand-drawn curved arrow pointing from right */}
+              <svg
+                className="absolute -right-32 top-0 w-28 h-24 pointer-events-none hidden lg:block"
+                viewBox="0 0 120 100"
+                fill="none"
+              >
+                {/* Curved arrow path */}
+                <path
+                  d="M 110 15 Q 90 20, 75 30 T 45 50 Q 30 60, 20 75"
+                  stroke="#1A1A1A"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+                {/* Arrowhead */}
+                <path
+                  d="M 20 75 L 15 68 M 20 75 L 28 73"
+                  stroke="#1A1A1A"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
           </div>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
           <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Stat Number - Sans-serif with underline */}
-            <div className="mb-6">
-              <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-2">
+            {/* Stat Number - Sans-serif with curvy blue underline */}
+            <div className="mb-6 relative">
+              <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-3">
                 50-90%
-                <span className="absolute bottom-0 left-0 right-0 h-[4px] bg-[#30A46C] rounded-full"></span>
               </p>
+              <svg className="absolute left-0 bottom-0 w-[200px] lg:w-[280px] pointer-events-none" viewBox="0 0 280 16" style={{height: '16px'}}>
+                <path
+                  d="M 5 10 Q 70 4, 140 10 T 275 10"
+                  stroke="#2563EB"
+                  strokeWidth="4"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
             </div>
 
-            {/* Stat Text - Serif + Green Emphasis */}
-            <p className="font-serif text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] mb-6 max-w-[420px]">
-              of at-risk readers <span className="font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction
+            {/* Stat Text - Larger, Italic with quotes */}
+            <p className="font-serif italic text-[24px] lg:text-[28px] leading-[1.4] text-[#1A1A1A] mb-6 max-w-[420px]">
+              &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
 
             {/* Harvard Logo - Better scaled */}
