@@ -34,11 +34,11 @@ export default function Home() {
         } else {
           clearInterval(typeInterval);
 
-          // Wait 2 seconds before starting next variation
+          // Wait 10 seconds before starting next variation
           setTimeout(() => {
             currentIndex = (currentIndex + 1) % variations.length;
             typeText();
-          }, 2000);
+          }, 10000);
         }
       }, 100);
     };
@@ -49,10 +49,10 @@ export default function Home() {
 
   useEffect(() => {
     // Animate stat numbers on load
-    const duration = 2000; // 2 seconds
+    const duration = 800; // 0.8 seconds - much faster
     const targetMin = 50;
     const targetMax = 90;
-    const steps = 60;
+    const steps = 40;
     const stepDuration = duration / steps;
 
     let currentStep = 0;
@@ -136,33 +136,9 @@ export default function Home() {
             <p className="font-sans text-[16px] text-[#595959]">
               Help your child learn to read
             </p>
-            <div className="relative inline-block">
-              <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
-                Join the Waitlist
-              </button>
-
-              {/* Simple hand-drawn arrow */}
-              <svg
-                className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-16 h-12 pointer-events-none hidden lg:block"
-                viewBox="0 0 64 48"
-                fill="none"
-              >
-                <path
-                  d="M 32 4 L 32 36"
-                  stroke="#1A1A1A"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 24 28 L 32 36 L 40 28"
-                  stroke="#1A1A1A"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
+            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
+              Join the Waitlist
+            </button>
           </div>
         </div>
 
