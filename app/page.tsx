@@ -57,7 +57,7 @@ export default function Home() {
                 />
               </svg>
             </span>{" "}
-<em className="italic font-bold text-[#30A46C]">actually</em> <span className="font-bold text-[#30A46C]">works!</span>
+            <em className="italic font-bold text-[#1A1A1A]">actually works!</em>
           </h1>
 
           {/* CTA Section */}
@@ -65,49 +65,49 @@ export default function Home() {
             <p className="font-sans text-[16px] text-[#595959]">
               Help your child learn to read
             </p>
-            <div className="relative inline-block">
-              <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
-                Join the Waitlist
-              </button>
-
-              {/* Hand-drawn curved arrow pointing from right */}
+            <div className="relative">
+              {/* Organic curved arrow from top-right to button */}
               <svg
-                className="absolute -right-32 top-0 w-28 h-24 pointer-events-none hidden lg:block"
-                viewBox="0 0 120 100"
+                className="absolute -left-4 -top-16 w-64 h-40 pointer-events-none hidden lg:block"
+                viewBox="0 0 260 160"
                 fill="none"
+                aria-hidden="true"
               >
-                {/* Curved arrow path */}
                 <path
-                  d="M 110 15 Q 90 20, 75 30 T 45 50 Q 30 60, 20 75"
+                  d="M 240 20 Q 200 40, 160 70 T 80 130 Q 50 145, 20 150"
                   stroke="#1A1A1A"
-                  strokeWidth="3"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                   fill="none"
+                  opacity="0.7"
                 />
-                {/* Arrowhead */}
                 <path
-                  d="M 20 75 L 15 68 M 20 75 L 28 73"
+                  d="M 20 150 L 15 143 M 20 150 L 28 146"
                   stroke="#1A1A1A"
-                  strokeWidth="3"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                 />
               </svg>
+
+              <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
+                Join the Waitlist
+              </button>
             </div>
           </div>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
-          <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Stat Number - Sans-serif with curvy blue underline */}
-            <div className="mb-6 relative">
+          <div className="border-[3px] border-[#30A46C] bg-white p-6 lg:p-8 rounded-lg shadow-[0_4px_0_#DCDCDC]">
+            {/* Stat Number - Sans-serif with curvy GREEN underline */}
+            <div className="mb-5 relative">
               <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-3">
                 50-90%
               </p>
               <svg className="absolute left-0 bottom-0 w-[200px] lg:w-[280px] pointer-events-none" viewBox="0 0 280 16" style={{height: '16px'}}>
                 <path
                   d="M 5 10 Q 70 4, 140 10 T 275 10"
-                  stroke="#2563EB"
+                  stroke="#30A46C"
                   strokeWidth="4"
                   fill="none"
                   strokeLinecap="round"
@@ -115,12 +115,12 @@ export default function Home() {
               </svg>
             </div>
 
-            {/* Stat Text - Larger, Italic with quotes */}
-            <p className="font-serif italic text-[24px] lg:text-[28px] leading-[1.4] text-[#1A1A1A] mb-6 max-w-[420px]">
-              &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
+            {/* Stat Text - Italic WITHOUT quotes, smaller size */}
+            <p className="font-serif italic text-[22px] lg:text-[24px] leading-[1.4] text-[#1A1A1A] mb-5 max-w-[420px]">
+              of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction
             </p>
 
-            {/* Harvard Logo - Larger and Centered */}
+            {/* Harvard Logo - Centered */}
             <div className="flex justify-center">
               <Image
                 src="/assets/harvard-logo-grey.png"
