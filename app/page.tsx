@@ -57,7 +57,7 @@ export default function Home() {
                 />
               </svg>
             </span>{" "}
-            <em className="italic font-bold text-[#30A46C]">actually works!</em>
+<em className="italic font-bold text-[#30A46C]">actually</em> <span className="font-bold text-[#30A46C]">works!</span>
           </h1>
 
           {/* CTA Section */}
