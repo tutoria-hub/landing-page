@@ -101,11 +101,6 @@ export default function Home() {
               priority
             />
           </div>
-
-          {/* Citation Text */}
-          <p className="font-sans text-[16px] italic text-[#595959]">
-            Harvard Medical School, 2023
-          </p>
         </div>
 
         {/* Decorative Green Curves - Bottom Left */}
