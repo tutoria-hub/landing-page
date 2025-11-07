@@ -45,8 +45,8 @@ export default function Home() {
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
           <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
-            Structured phonics that{" "}
-            <em className="italic font-bold">actually works</em>
+            Structured phonics{" "}
+            <em className="italic font-bold">actually works!</em>
           </h1>
 
           {/* CTA Section */}
