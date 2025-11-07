@@ -74,23 +74,26 @@ export default function Home() {
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
           <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Stat Number - Larger Green */}
-            <p className="font-serif font-bold text-[72px] lg:text-[96px] leading-none text-[#30A46C] mb-6">
-              50-90%
+            {/* Stat Number - Sans-serif with underline */}
+            <div className="mb-6">
+              <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-2">
+                50-90%
+                <span className="absolute bottom-0 left-0 right-0 h-[4px] bg-[#30A46C] rounded-full"></span>
+              </p>
+            </div>
+
+            {/* Stat Text - Serif + Green Emphasis */}
+            <p className="font-serif text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] mb-6 max-w-[420px]">
+              of at-risk readers <span className="font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction
             </p>
 
-            {/* Stat Text - Semibold + Green Emphasis */}
-            <p className="font-sans font-semibold text-[22px] lg:text-[24px] leading-[1.4] text-[#1A1A1A] mb-8 max-w-[420px]">
-              of at-risk readers <span className="text-[#30A46C]">reach grade level</span> with targeted instruction
-            </p>
-
-            {/* Harvard Logo - Larger + More Prominent */}
+            {/* Harvard Logo - Better scaled */}
             <Image
               src="/assets/harvard-logo-grey.png"
               alt="Harvard Medical School"
-              width={280}
-              height={100}
-              className="h-20 lg:h-24 w-auto grayscale opacity-90"
+              width={200}
+              height={70}
+              className="h-14 lg:h-16 w-auto grayscale opacity-75"
               priority
             />
           </div>
