@@ -62,14 +62,14 @@ export default function Home() {
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
-          <div className="border-2 border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg">
+          <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
             {/* Stat Number */}
             <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#1A1A1A] mb-6">
               50-90%
             </p>
 
             {/* Stat Text */}
-            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-6">
+            <p className="font-sans text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] mb-6 max-w-[400px]">
               of at-risk readers can reach grade level with targeted instruction
             </p>
 
