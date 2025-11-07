@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
@@ -49,13 +50,13 @@ export default function Home() {
           </p>
 
           {/* Headline - Single Weight + Italic Emphasis */}
-          <h1 className="font-serif text-[40px] md:text-[56px] lg:text-[72px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
+          <h1 className="font-serif text-[40px] md:text-[56px] lg:text-[96px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
             <span className="relative inline-block">
               Structured Phonics
               <svg className="absolute left-0 top-full w-full h-6 pointer-events-none" viewBox="0 0 200 12" style={{height: '12px', marginTop: '4px'}}>
                 <path
                   d="M 0 8 Q 50 2, 100 8 T 200 8"
-                  stroke="#2563EB"
+                  stroke="#30A46C"
                   strokeWidth="3"
                   fill="none"
                   strokeLinecap="round"
@@ -68,9 +69,12 @@ export default function Home() {
 
           {/* CTA Button */}
           <div className="mt-8">
-            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-200 hover:scale-105 shadow-[0_8px_0_#2A9461] hover:shadow-[0_12px_0_#2A9461]">
+            <Button
+              size="lg"
+              className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-200 hover:scale-105 shadow-[0_8px_0_#2A9461] hover:shadow-[0_12px_0_#2A9461] min-w-[280px]"
+            >
               Join the Waitlist
-            </button>
+            </Button>
           </div>
         </div>
 
