@@ -46,7 +46,8 @@ export default function Home() {
           {/* Headline - Clean, Flowing */}
           <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
             <span className="relative inline-block">
-              <svg className="absolute left-0 top-full w-full pointer-events-none -z-10" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '-6px'}}>
+              <span className="relative z-[2]">Structured phonics</span>
+              <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '-6px'}}>
                 <path
                   d="M 5 12 Q 100 5, 200 12 T 395 12"
                   stroke="#30A46C"
@@ -55,7 +56,6 @@ export default function Home() {
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="relative z-10">Structured phonics</span>
             </span>{" "}
             <em className="italic font-bold text-[#30A46C]">actually works!</em>
           </h1>
