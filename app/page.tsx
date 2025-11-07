@@ -45,7 +45,18 @@ export default function Home() {
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
           <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
-            Structured phonics{" "}
+            <span className="relative inline-block">
+              Structured phonics
+              <svg className="absolute left-0 top-full w-full pointer-events-none" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '16px', marginTop: '8px'}}>
+                <path
+                  d="M 5 12 Q 100 5, 200 12 T 395 12"
+                  stroke="#30A46C"
+                  strokeWidth="4"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>{" "}
             <em className="italic font-bold">actually works!</em>
           </h1>
 
