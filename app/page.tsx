@@ -41,40 +41,23 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        {/* LEFT COLUMN: Label + Headline + CTA */}
-        <div className="max-w-[600px] space-y-8">
-          {/* Product Label */}
-          <p className="text-[14px] font-sans font-semibold tracking-[0.1em] uppercase text-[#595959]">
-            Built For Struggling Readers
-          </p>
-
-          {/* Headline - Single Weight + Italic Emphasis */}
-          <h1 className="font-serif text-[40px] md:text-[56px] lg:text-[96px] leading-[1.1] tracking-[-0.01em] text-[#1A1A1A]">
-            <span className="relative inline-block">
-              Structured Phonics
-              <svg className="absolute left-0 top-full w-full h-6 pointer-events-none" viewBox="0 0 200 12" style={{height: '12px', marginTop: '4px'}}>
-                <path
-                  d="M 0 8 Q 50 2, 100 8 T 200 8"
-                  stroke="#30A46C"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
-            <br />
-            <em className="italic">that </em><strong className="font-bold italic">just works!</strong>
+      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        {/* LEFT COLUMN: Headline + CTA */}
+        <div className="max-w-[640px] space-y-12">
+          {/* Headline - Clean, Flowing */}
+          <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
+            Structured phonics that{" "}
+            <em className="italic font-bold">actually works</em>
           </h1>
 
-          {/* CTA Button */}
-          <div className="mt-8">
-            <Button
-              size="lg"
-              className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-5 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461] min-w-[320px] lg:min-w-[360px]"
-            >
+          {/* CTA Section */}
+          <div className="space-y-4">
+            <p className="font-sans text-[16px] text-[#595959]">
+              Join 1,200+ parents helping their child read
+            </p>
+            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
               Join the Waitlist
-            </Button>
+            </button>
           </div>
         </div>
 
