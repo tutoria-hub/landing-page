@@ -127,7 +127,6 @@ export default function Home() {
             </span>{" "}
             <em className="italic font-bold text-[#1A1A1A]">
               {typedText}
-              <span className="animate-pulse">|</span>
             </em>
           </h1>
 
