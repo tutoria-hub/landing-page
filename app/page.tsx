@@ -63,7 +63,7 @@ export default function Home() {
           {/* CTA Section */}
           <div className="space-y-4">
             <p className="font-sans text-[16px] text-[#595959]">
-              Join <span className="font-semibold text-[#30A46C]">1,200+ parents</span> helping their child read
+              Help your child learn to read
             </p>
             <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
               Join the Waitlist
@@ -74,23 +74,23 @@ export default function Home() {
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
           <div className="border-[3px] border-[#30A46C] bg-white p-8 lg:p-10 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Stat Number - Green */}
-            <p className="font-serif font-bold text-[64px] lg:text-[80px] leading-none text-[#30A46C] mb-6">
+            {/* Stat Number - Larger Green */}
+            <p className="font-serif font-bold text-[72px] lg:text-[96px] leading-none text-[#30A46C] mb-6">
               50-90%
             </p>
 
-            {/* Stat Text */}
-            <p className="font-sans text-[20px] lg:text-[22px] leading-[1.5] text-[#1A1A1A] mb-6 max-w-[400px]">
-              of at-risk readers can reach grade level with targeted instruction
+            {/* Stat Text - Semibold + Green Emphasis */}
+            <p className="font-sans font-semibold text-[22px] lg:text-[24px] leading-[1.4] text-[#1A1A1A] mb-8 max-w-[420px]">
+              of at-risk readers <span className="text-[#30A46C]">reach grade level</span> with targeted instruction
             </p>
 
-            {/* Harvard Logo */}
+            {/* Harvard Logo - Larger + More Prominent */}
             <Image
               src="/assets/harvard-logo-grey.png"
               alt="Harvard Medical School"
-              width={240}
-              height={80}
-              className="h-16 lg:h-20 w-auto grayscale opacity-80"
+              width={280}
+              height={100}
+              className="h-20 lg:h-24 w-auto grayscale opacity-90"
               priority
             />
           </div>
