@@ -103,3 +103,14 @@
   opacity: 1;
   animation: bounce 1s ease-in-out;
 }
+
+/* Text Selection Highlight - Brand Green */
+::selection {
+  background: #30A46C;
+  color: #FFFFFF;
+}
+
+::-moz-selection {
+  background: #30A46C;
+  color: #FFFFFF;
+}

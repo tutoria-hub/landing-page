@@ -81,6 +81,7 @@ export default function Home() {
 
   useEffect(() => {
     // Animate stat numbers on load
+    console.log('🎯 Stat animation starting...');
     const duration = 800; // 0.8 seconds - much faster
     const targetMin = 50;
     const targetMax = 90;
@@ -94,9 +95,12 @@ export default function Home() {
       const progress = currentStep / steps;
 
       // Only animate statMax from 50→90 (statMin stays at 50)
-      setStatMax(Math.round(50 + (40 * progress)));
+      const newMax = Math.round(50 + (40 * progress));
+      console.log(`📊 Step ${currentStep}/${steps}: ${newMax}%`);
+      setStatMax(newMax);
 
       if (currentStep >= steps) {
+        console.log('✅ Animation complete: 50-90%');
         clearInterval(animateNumbers);
         setStatMin(50);
         setStatMax(90);
@@ -104,6 +108,7 @@ export default function Home() {
     }, stepDuration);
 
     return () => {
+      console.log('🧹 Cleaning up animation');
       clearInterval(animateNumbers);
     };
   }, []);

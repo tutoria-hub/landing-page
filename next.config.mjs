@@ -1,6 +1,7 @@
 const nextConfig = {
   // Note: Turbopack has compatibility issues with Tailwind CSS v4
   // Use webpack (default) for development until Turbopack support improves
+  reactStrictMode: false, // Temporarily disabled to test animation issue
 };
 
 // Optional: Enable Cloudflare dev integration for local bindings (R2, D1, KV, etc.)
