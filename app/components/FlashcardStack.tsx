@@ -59,11 +59,11 @@ function AudioButton({ state }: AudioButtonProps) {
   const isIncorrect = state === 'incorrect';
   const showSuccess = state === 'correct';
 
-  // Button pulse on click (idle → recording transition)
+  // Button press on click (idle → recording transition)
   useEffect(() => {
     if (state === 'recording' && prevState === 'idle') {
       setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 300);
+      setTimeout(() => setIsPulsing(false), 200);
     }
     setPrevState(state);
   }, [state, prevState]);
@@ -119,19 +119,50 @@ function AudioButton({ state }: AudioButtonProps) {
   const [animationFrame, setAnimationFrame] = useState(0);
   const [waveformStartTime] = useState(Date.now());
 
-  // Phoneme sequences for each bar (independent timing)
+  // Speech-realistic phoneme sequences (5 types for natural variation)
   const phonemeSequences = useMemo(() => [
-    ['silence', 'consonant', 'vowel', 'consonant', 'silence', 'vowel', 'consonant'],
-    ['vowel', 'consonant', 'silence', 'vowel', 'consonant', 'vowel', 'silence'],
-    ['consonant', 'vowel', 'vowel', 'silence', 'consonant', 'vowel', 'consonant'],
-    ['vowel', 'silence', 'consonant', 'vowel', 'consonant', 'silence', 'vowel'],
+    ['silence', 'plosive', 'vowel_open', 'fricative', 'silence', 'vowel_close'],
+    ['vowel_open', 'fricative', 'silence', 'vowel_close', 'plosive'],
+    ['plosive', 'vowel_close', 'vowel_open', 'silence', 'fricative'],
+    ['vowel_close', 'silence', 'fricative', 'vowel_open', 'plosive'],
   ], []);
 
-  // Phoneme characteristics
+  // Speech-realistic phoneme characteristics with formant ratios (F1-F4)
   const phonemeData = useMemo(() => ({
-    consonant: { duration: 120, minAmp: 0.7, maxAmp: 0.9 },
-    vowel: { duration: 400, minAmp: 0.4, maxAmp: 0.6 },
-    silence: { duration: 250, minAmp: 0.05, maxAmp: 0.15 },
+    // Plosive consonants (p, t, k) - sharp burst
+    plosive: {
+      duration: 60,
+      minAmp: 0.75,
+      maxAmp: 0.95,
+      formantRatios: [0.9, 1.0, 0.7, 0.5] // F2 strongest for burst
+    },
+    // Fricative consonants (s, sh, f) - sustained noise
+    fricative: {
+      duration: 120,
+      minAmp: 0.6,
+      maxAmp: 0.8,
+      formantRatios: [0.5, 0.7, 1.0, 0.9] // High frequencies (F3-F4) strongest
+    },
+    // Open vowels (a, o) - low F1, strong formants
+    vowel_open: {
+      duration: 180,
+      minAmp: 0.6,
+      maxAmp: 0.85,
+      formantRatios: [1.0, 0.8, 0.5, 0.3] // F1 dominant
+    },
+    // Close vowels (i, u) - F2 dominant
+    vowel_close: {
+      duration: 200,
+      minAmp: 0.5,
+      maxAmp: 0.75,
+      formantRatios: [0.7, 1.0, 0.6, 0.4] // F2 strongest
+    },
+    silence: {
+      duration: 100,
+      minAmp: 0.05,
+      maxAmp: 0.15,
+      formantRatios: [1.0, 1.0, 1.0, 1.0] // All equal (noise floor)
+    },
   }), []);
 
   // Continuous animation for active waveform (60fps with requestAnimationFrame)
@@ -197,32 +228,54 @@ function AudioButton({ state }: AudioButtonProps) {
         accumulatedTime += duration;
       }
 
-      // Blend amplitudes for smooth transitions
+      // Blend amplitudes for smooth transitions with formant correlation
       const currentPhonemeInfo = phonemeData[currentPhoneme as keyof typeof phonemeData];
       const nextPhonemeInfo = phonemeData[nextPhoneme as keyof typeof phonemeData];
 
-      const minAmp = currentPhonemeInfo.minAmp * (1 - crossfadeAmount) +
-                     nextPhonemeInfo.minAmp * crossfadeAmount;
-      const maxAmp = currentPhonemeInfo.maxAmp * (1 - crossfadeAmount) +
-                     nextPhonemeInfo.maxAmp * crossfadeAmount;
+      // Get formant ratio for this bar (F1-F4 spatial correlation)
+      const formantRatio = currentPhonemeInfo.formantRatios?.[barIndex] ?? 1.0;
+      const nextFormantRatio = nextPhonemeInfo.formantRatios?.[barIndex] ?? 1.0;
+      const blendedFormantRatio = formantRatio * (1 - crossfadeAmount) + nextFormantRatio * crossfadeAmount;
 
-      // Add natural variation with sine wave (per-bar phase offset for organic asynchrony)
-      const phaseOffset = barIndex * 1.8; // Stagger bars so they don't peak in sync
-      const variation = Math.sin(currentTime * 0.01 + phaseOffset) * 0.12; // Faster oscillation = more alive
+      // Base amplitude with formant structure
+      const baseMinAmp = currentPhonemeInfo.minAmp * (1 - crossfadeAmount) +
+                         nextPhonemeInfo.minAmp * crossfadeAmount;
+      const baseMaxAmp = currentPhonemeInfo.maxAmp * (1 - crossfadeAmount) +
+                         nextPhonemeInfo.maxAmp * crossfadeAmount;
+
+      // Apply formant ratio (bars correlate like real speech formants)
+      const minAmp = baseMinAmp * blendedFormantRatio;
+      const maxAmp = baseMaxAmp * blendedFormantRatio;
+
+      // Add natural variation with sine wave (per-bar phase offset)
+      const phaseOffset = barIndex * 1.8;
+      const variation = Math.sin(currentTime * 0.01 + phaseOffset) * 0.08; // Reduced for more natural feel
       let amplitude = (minAmp + maxAmp) / 2 + variation;
 
-      // Add attack/decay for consonants (sharper edges like real speech)
-      if (currentPhoneme === 'consonant') {
-        if (phonemeProgress < 0.2) {
-          // Attack - quick rise
-          amplitude *= (phonemeProgress / 0.2);
-        } else if (phonemeProgress > 0.7) {
-          // Decay - quick fall
-          amplitude *= (1 - (phonemeProgress - 0.7) / 0.3);
+      // Add vocal tremor (4-6 Hz physiological oscillation)
+      const tremorFreq = 5; // Hz
+      const tremor = Math.sin(currentTime * 0.001 * tremorFreq * 2 * Math.PI) * 0.04;
+
+      // Add breathiness (organic micro-variations using deterministic noise)
+      const noisePhase = currentTime * 0.03 + barIndex * 100;
+      const breathiness = (Math.sin(noisePhase * 7) * Math.sin(noisePhase * 11)) * 0.05;
+
+      // Apply organic variations
+      amplitude = amplitude * (1 + tremor + breathiness);
+
+      // Add attack/decay envelopes for consonants (realistic edges)
+      if (currentPhoneme === 'plosive' || currentPhoneme === 'fricative') {
+        if (phonemeProgress < 0.15) {
+          // Exponential attack (fast rise like real consonants)
+          amplitude *= Math.pow(phonemeProgress / 0.15, 0.5);
+        } else if (phonemeProgress > 0.75) {
+          // Exponential decay (gradual fall)
+          const decayProgress = (phonemeProgress - 0.75) / 0.25;
+          amplitude *= Math.pow(1 - decayProgress, 2);
         }
       }
 
-      // Clamp amplitude
+      // Clamp amplitude after all variations
       amplitude = Math.max(minAmp, Math.min(maxAmp, amplitude));
 
       const barHeight = minHeight + (amplitude * maxHeight);
@@ -242,20 +295,15 @@ function AudioButton({ state }: AudioButtonProps) {
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
             "transition-all ease-out",
-            isPulsing ? "duration-300" : "duration-400",
+            isPulsing ? "duration-200" : "duration-400",
             "border-4",
             // Instant border feedback (Apple standard: <16ms response)
             isRecording ? "border-[#30A46C] !transition-none" : "border-[#D4D4D4]",
             "hover:scale-[1.02] active:scale-[0.98]",
-            // Layered click animations
-            isPulsing && "animate-button-pulse animate-shadow-press"
+            // Simplified 2-layer click feedback (200ms, no overshoot)
+            isPulsing && "animate-button-press animate-shadow-press"
           )}
         >
-          {/* Ripple ring effect (shows action propagation) */}
-          {isPulsing && (
-            <div className="absolute inset-0 rounded-xl border-4 border-[#30A46C] animate-ripple pointer-events-none" />
-          )}
-
           <div className="relative w-10 h-5">
             {/* Loading dots */}
             <div
@@ -281,9 +329,7 @@ function AudioButton({ state }: AudioButtonProps) {
             <div
               className={cn(
                 "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
-                (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100",
-                // Icon micro-bounce (layered secondary motion)
-                isPulsing && "animate-icon-bounce"
+                (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
               <Mic className="h-5 w-5 text-[#30A46C]" />
@@ -448,21 +494,19 @@ export default function FlashcardStack() {
         currentStep++;
         timeoutId = setTimeout(advance, duration);
       } else {
-        // Trigger smooth left slide exit animation
+        // Trigger upward celebration exit animation
         setIsExiting(true);
 
-        // Drop z-index early so card goes under (240ms = 40% of 600ms)
-        setTimeout(() => {
-          setExitingCardZIndex(0);
-        }, 240);
+        // Keep card on top during exit (no z-index drop - looks better for upward motion)
+        // The next card rise animation handles the transition naturally
 
-        // Complete cycle after full animation (600ms)
+        // Complete cycle after full animation (500ms)
         setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
           setExitingCardZIndex(3); // Reset for next card
           setActiveCardState('idle');
-        }, 600);
+        }, 500);
       }
     };
 
@@ -476,7 +520,7 @@ export default function FlashcardStack() {
       {/* Card Stack Container - 4:5 aspect ratio */}
       <div className="relative w-full aspect-[4/5]">
 
-        {/* Card 3 (back) - Position 2 */}
+        {/* Card 3 (back) - Position 2 with gentle breathing */}
         <motion.div
           key={`card-3-${cards[2]?.letter}`}
           className="absolute inset-0"
@@ -485,23 +529,31 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { opacity: 0.5, zIndex: 1 }
               : {
-                  scale: 0.96,
-                  y: 24,
+                  // Gentle breathing animation (3.6s loop, 240° phase offset)
+                  scale: [0.96, 0.965, 0.96],
+                  y: [24, 23.5, 24],
+                  opacity: [1.0, 0.94, 1.0],
                   rotate: 0,
-                  opacity: 1,
                   zIndex: 1
                 }
           }
-          transition={{
-            duration: 0.2,
-            ease: [0, 0, 0.2, 1] // cubic-bezier(0, 0, 0.2, 1)
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.2, ease: [0, 0, 0.2, 1] }
+              : {
+                  duration: 3.6,
+                  ease: [0.37, 0, 0.63, 1], // Sine-wave ease (meditative rhythm)
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  delay: 2.4, // 240° phase offset (staggered from front card)
+                }
+          }
           style={{ pointerEvents: 'none' }}
         >
           <Card letter={cards[2]?.letter || 'cat'} state="idle" isActive={false} />
         </motion.div>
 
-        {/* Card 2 (middle) - Position 1 → Position 0 when exiting */}
+        {/* Card 2 (middle) - Position 1 → Position 0 when exiting, with breathing */}
         <motion.div
           key={`card-2-${cards[1]?.letter}`}
           className="absolute inset-0"
@@ -509,19 +561,41 @@ export default function FlashcardStack() {
           animate={
             prefersReducedMotion
               ? { opacity: 0.7, zIndex: 2 }
-              : {
-                  scale: isExiting ? 1.0 : 0.95,
-                  y: isExiting ? 0 : 16,
-                  rotate: isExiting ? 0 : 1,
+              : isExiting
+              ? {
+                  // Rising to front during exit
+                  scale: 1.0,
+                  y: 0,
+                  rotate: 0,
                   opacity: 1,
-                  zIndex: isExiting ? 3 : 2,
+                  zIndex: 3,
+                }
+              : {
+                  // Gentle breathing at middle position (120° phase offset)
+                  scale: [0.95, 0.955, 0.95],
+                  y: [16, 15, 16],
+                  opacity: [1.0, 0.96, 1.0],
+                  rotate: 1,
+                  zIndex: 2,
                 }
           }
-          transition={{
-            duration: 0.4,
-            delay: isExiting ? 0.15 : 0, // Slight delay for smooth handoff
-            ease: [0.4, 0, 0.2, 1], // iOS standard easing (smooth deceleration)
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+              : isExiting
+              ? {
+                  duration: 0.4,
+                  delay: 0.15, // Slight delay for smooth handoff
+                  ease: [0.4, 0, 0.2, 1],
+                }
+              : {
+                  duration: 3.6,
+                  ease: [0.37, 0, 0.63, 1], // Sine-wave ease
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  delay: 1.2, // 120° phase offset
+                }
+          }
           style={{
             pointerEvents: 'none',
             transformOrigin: 'bottom center',
@@ -543,6 +617,7 @@ export default function FlashcardStack() {
               animate={
                 activeCardState === 'recording'
                   ? {
+                      // Recording state: breathing animation
                       scale: [1.0, 1.02, 1.0],
                       y: 0,
                       opacity: 1,
@@ -558,7 +633,25 @@ export default function FlashcardStack() {
                         default: { duration: 0.4 }
                       }
                     }
+                  : activeCardState === 'idle' && !prefersReducedMotion
+                  ? {
+                      // Idle state: gentle breathing with shadow pulse (attracts attention)
+                      scale: [1.0, 1.015, 1.0],
+                      y: [0, -2, 0],
+                      opacity: 1,
+                      x: 0,
+                      rotate: 0,
+                      zIndex: 3,
+                      transition: {
+                        duration: 3.6,
+                        ease: [0.37, 0, 0.63, 1], // Sine-wave ease (meditative)
+                        repeat: Infinity,
+                        repeatType: "loop",
+                        delay: 0, // 0° phase offset (baseline for stack)
+                      }
+                    }
                   : {
+                      // All other states: static position
                       scale: 1,
                       y: 0,
                       opacity: 1,
@@ -574,16 +667,19 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Smooth left slide: slide left → go under → fade out
-                      x: [0, -60, -120],      // Gentle slide left
-                      y: [0, 8, 16],          // Subtle downward (not too much)
-                      rotate: [0, -2, -4],    // Slight rotation
-                      scale: [1, 0.96, 0.92], // Scale down as it goes under
-                      opacity: [1, 0.7, 0],   // Fade out smoothly
+                      // Upward celebration: gentle lift and fade (aligns with tutoria-webapp pattern)
+                      y: [0, -12, -40],       // Accelerating upward lift (victory motion)
+                      scale: [1, 0.98, 0.94], // Gentle shrink (receding into distance)
+                      rotate: [0, 1, 2],      // Forward tilt (natural physics)
+                      opacity: [1, 0.92, 0],  // Hold visibility → fade
                       transition: {
-                        duration: 0.6,         // Smooth 600ms
-                        times: [0, 0.4, 1],    // [0ms, 240ms, 600ms]
-                        ease: [0.4, 0, 0.2, 1] // iOS standard easing (smooth deceleration)
+                        duration: 0.5,         // Snappier 500ms (was 600ms)
+                        times: [0, 0.3, 1],    // [0ms, 150ms, 500ms] - accelerating rhythm
+                        // Per-property easing for Apple-level polish
+                        y: { ease: [0.32, 0.72, 0, 1] },      // EaseOutExpo (celebratory snap)
+                        scale: { ease: [0.4, 0, 0.2, 1] },    // iOS standard
+                        rotate: { ease: [0.17, 0.89, 0.32, 1.28] }, // Snappy with tiny overshoot
+                        opacity: { ease: [0.4, 0, 1, 1] }     // Hold then linear fade
                       }
                     }
               }
