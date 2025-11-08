@@ -49,6 +49,18 @@
   --border: oklch(0.9 0 0); /* #DCDCDC */
   --input: oklch(0.9 0 0);
   --ring: oklch(0.62 0.12 156); /* Green */
+
+  /* Animation Timing System (Apple Commercial Quality) */
+  --timing-instant: 150ms;       /* Hover states, tooltips */
+  --timing-fast: 300ms;          /* Micro-interactions, button feedback */
+  --timing-base: 500ms;          /* Primary transitions (state crossfades) */
+  --timing-slow: 700ms;          /* Card breathing, preparation */
+  --timing-luxe: 900ms;          /* Celebrations, card exits */
+
+  /* Easing Curves (iOS Standard - 3 curves maximum) */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);  /* Accelerate-decelerate (90% of animations) */
+  --ease-enter: cubic-bezier(0, 0, 0.2, 1);       /* Decelerate (elements appearing) */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);        /* Accelerate (elements disappearing) */
 }
 
 .dark {
@@ -144,7 +156,7 @@
   background: #30A46C;
   width: 6px;
   height: var(--bar-height);
-  transition: height 80ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: height 60ms cubic-bezier(0.34, 1.56, 0.64, 1); /* Spring physics for organic motion */
 }
 
 @keyframes burst {
@@ -153,20 +165,65 @@
   100% { transform: scale(1); }
 }
 
-/* Button pulse animation (click feedback) */
+/* Button pulse animation (click feedback) - Apple-quality with anticipation */
 @keyframes button-pulse {
   0% { transform: scale(1.0); }
-  50% { transform: scale(1.05); }
+  20% { transform: scale(0.96); }      /* Anticipation: compress */
+  50% { transform: scale(1.08); }      /* Overshoot: stronger bounce */
   100% { transform: scale(1.0); }
 }
 
 .animate-button-pulse {
-  animation: button-pulse 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: button-pulse 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* 400ms transition duration for blended state changes */
+/* Shadow press animation (depth cue) */
+@keyframes shadow-press {
+  0% { box-shadow: 0 4px 0 #DCDCDC; }
+  20% { box-shadow: 0 2px 0 #DCDCDC; }   /* Shadow shrinks = pressed down */
+  50% { box-shadow: 0 5px 0 #DCDCDC; }   /* Shadow grows = released */
+  100% { box-shadow: 0 4px 0 #DCDCDC; }
+}
+
+.animate-shadow-press {
+  animation: shadow-press 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Ripple ring expansion (action propagation) */
+@keyframes ripple-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.animate-ripple {
+  animation: ripple-ring 500ms ease-out;
+}
+
+/* Icon micro-bounce (layered secondary motion) */
+@keyframes icon-bounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }   /* Subtle upward bounce */
+  60% { transform: translateY(1px); }    /* Settle with tiny overshoot */
+  100% { transform: translateY(0); }
+}
+
+.animate-icon-bounce {
+  animation: icon-bounce 350ms cubic-bezier(0.34, 1.56, 0.64, 1) 50ms;
+}
+
+/* State transition duration using global timing system */
 .duration-400 {
-  transition-duration: 400ms;
+  transition-duration: var(--timing-base); /* 500ms for generous, premium feel */
+}
+
+.duration-500 {
+  transition-duration: var(--timing-base);
 }
 
 /* Fade in animation for success check */

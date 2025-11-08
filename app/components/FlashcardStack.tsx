@@ -134,14 +134,18 @@ function AudioButton({ state }: AudioButtonProps) {
     silence: { duration: 250, minAmp: 0.05, maxAmp: 0.15 },
   }), []);
 
-  // Continuous animation for active waveform
+  // Continuous animation for active waveform (60fps with requestAnimationFrame)
   useEffect(() => {
-    if (preparationPhase === 'active') {
-      const interval = setInterval(() => {
-        setAnimationFrame(prev => prev + 1);
-      }, 50);
-      return () => clearInterval(interval);
-    }
+    if (preparationPhase !== 'active') return;
+
+    let rafId: number;
+    const animate = () => {
+      setAnimationFrame(Date.now());
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
   }, [preparationPhase]);
 
   const bars = useMemo(() => {
@@ -165,26 +169,42 @@ function AudioButton({ state }: AudioButtonProps) {
       // Loop elapsed time within sequence duration
       const elapsedMs = (currentTime - waveformStartTime) % totalDuration;
 
-      // Find current phoneme in sequence
+      // Find current phoneme with smooth crossfading
+      const CROSSFADE_MS = 40; // 40ms blend window
       let accumulatedTime = 0;
       let currentPhoneme = sequence[0];
+      let nextPhoneme = sequence[1] || sequence[0];
       let phonemeProgress = 0;
+      let crossfadeAmount = 0;
 
-      for (const phoneme of sequence) {
+      for (let i = 0; i < sequence.length; i++) {
+        const phoneme = sequence[i];
         const duration = phonemeData[phoneme as keyof typeof phonemeData].duration;
 
         if (elapsedMs < accumulatedTime + duration) {
           currentPhoneme = phoneme;
+          nextPhoneme = sequence[i + 1] || sequence[0]; // Loop back
           phonemeProgress = (elapsedMs - accumulatedTime) / duration;
+
+          // Calculate crossfade near end of current phoneme
+          const timeUntilEnd = accumulatedTime + duration - elapsedMs;
+          if (timeUntilEnd < CROSSFADE_MS) {
+            crossfadeAmount = 1 - (timeUntilEnd / CROSSFADE_MS);
+          }
           break;
         }
 
         accumulatedTime += duration;
       }
 
-      // Get amplitude for current phoneme
-      const phonemeInfo = phonemeData[currentPhoneme as keyof typeof phonemeData];
-      const { minAmp, maxAmp } = phonemeInfo;
+      // Blend amplitudes for smooth transitions
+      const currentPhonemeInfo = phonemeData[currentPhoneme as keyof typeof phonemeData];
+      const nextPhonemeInfo = phonemeData[nextPhoneme as keyof typeof phonemeData];
+
+      const minAmp = currentPhonemeInfo.minAmp * (1 - crossfadeAmount) +
+                     nextPhonemeInfo.minAmp * crossfadeAmount;
+      const maxAmp = currentPhonemeInfo.maxAmp * (1 - crossfadeAmount) +
+                     nextPhonemeInfo.maxAmp * crossfadeAmount;
 
       // Add natural variation with sine wave
       const variation = Math.sin(currentTime * 0.008 + barIndex * 1.2) * 0.1;
@@ -223,11 +243,18 @@ function AudioButton({ state }: AudioButtonProps) {
             "transition-all ease-out",
             isPulsing ? "duration-300" : "duration-400",
             "border-4",
-            isRecording ? "border-[#30A46C]" : "border-[#D4D4D4]",
+            // Instant border feedback (Apple standard: <16ms response)
+            isRecording ? "border-[#30A46C] !transition-none" : "border-[#D4D4D4]",
             "hover:scale-[1.02] active:scale-[0.98]",
-            isPulsing && "animate-button-pulse"
+            // Layered click animations
+            isPulsing && "animate-button-pulse animate-shadow-press"
           )}
         >
+          {/* Ripple ring effect (shows action propagation) */}
+          {isPulsing && (
+            <div className="absolute inset-0 rounded-xl border-4 border-[#30A46C] animate-ripple pointer-events-none" />
+          )}
+
           <div className="relative w-10 h-5">
             {/* Loading dots */}
             <div
@@ -253,7 +280,9 @@ function AudioButton({ state }: AudioButtonProps) {
             <div
               className={cn(
                 "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
-                (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100"
+                (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100",
+                // Icon micro-bounce (layered secondary motion)
+                isPulsing && "animate-icon-bounce"
               )}
             >
               <Mic className="h-5 w-5 text-[#30A46C]" />
@@ -383,6 +412,7 @@ export default function FlashcardStack() {
   const [cards, setCards] = useState<CardContent[]>([...CARD_SEQUENCE]);
   const [activeCardState, setActiveCardState] = useState<PracticeState>('idle');
   const [isExiting, setIsExiting] = useState(false);
+  const [exitingCardZIndex, setExitingCardZIndex] = useState(3); // Dynamic z-index for card shuffle
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   // Detect reduced motion preference
@@ -417,14 +447,21 @@ export default function FlashcardStack() {
         currentStep++;
         timeoutId = setTimeout(advance, duration);
       } else {
-        // Trigger exit animation
+        // Trigger Apple card shuffle exit animation
         setIsExiting(true);
+
+        // Drop z-index after dismissal signal phase (200ms)
         setTimeout(() => {
-          // Cycle cards: move first to end
+          setExitingCardZIndex(0);
+        }, 200);
+
+        // Complete cycle after full animation (800ms)
+        setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
+          setExitingCardZIndex(3); // Reset for next card
           setActiveCardState('idle');
-        }, 700); // Match exit animation duration
+        }, 800);
       }
     };
 
@@ -463,7 +500,7 @@ export default function FlashcardStack() {
           <Card letter={cards[2]?.letter || 'cat'} state="idle" isActive={false} />
         </motion.div>
 
-        {/* Card 2 (middle) - Position 1 */}
+        {/* Card 2 (middle) - Position 1 → Position 0 when exiting */}
         <motion.div
           key={`card-2-${cards[1]?.letter}`}
           className="absolute inset-0"
@@ -472,18 +509,25 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { opacity: 0.7, zIndex: 2 }
               : {
-                  scale: 0.95,
-                  y: 16,
-                  rotate: 1,
+                  scale: isExiting ? 1.0 : 0.95,
+                  y: isExiting ? 0 : 16,
+                  rotate: isExiting ? 0 : 1,
                   opacity: 1,
-                  zIndex: 2
+                  zIndex: isExiting ? 3 : 2,
                 }
           }
           transition={{
-            duration: 0.2,
-            ease: [0, 0, 0.2, 1]
+            duration: 0.4,
+            delay: isExiting ? 0.2 : 0, // Delay rise until dive starts
+            ease: [0.4, 0, 0.2, 1], // iOS standard easing
           }}
-          style={{ pointerEvents: 'none' }}
+          style={{
+            pointerEvents: 'none',
+            transformOrigin: 'bottom center',
+            boxShadow: isExiting
+              ? '0 4px 12px rgba(31, 31, 31, 0.08)'
+              : 'none'
+          }}
         >
           <Card letter={cards[1]?.letter || 'sh'} state="idle" isActive={false} />
         </motion.div>
@@ -529,13 +573,16 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Hybrid: shuffle right then cycle to back
-                      x: 320,
-                      rotate: 15,
-                      opacity: 0.3,
+                      // Apple Card Shuffle: Slide right → Dive under → Complete exit
+                      x: [0, 40, 40, 320],
+                      y: [0, 0, 40, 80],
+                      rotate: [0, 3, 8, 15],
+                      scale: [1, 0.98, 0.88, 0.8],
+                      opacity: [1, 0.95, 0.6, 0],
                       transition: {
-                        duration: 0.7,
-                        ease: [0, 0, 0.2, 1]
+                        duration: 0.8,
+                        times: [0, 0.25, 0.625, 1], // [0ms, 200ms, 500ms, 800ms]
+                        ease: [0.4, 0, 0.2, 1], // iOS standard easing
                       }
                     }
               }
@@ -544,7 +591,9 @@ export default function FlashcardStack() {
                 ease: [0, 0, 0.2, 1]
               }}
               style={{
-                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)' // Webapp shadow on active card only
+                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only
+                transformOrigin: 'bottom center',
+                zIndex: exitingCardZIndex, // Dynamic z-index for card shuffle
               }}
             >
               <Card
