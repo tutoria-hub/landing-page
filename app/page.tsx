@@ -114,7 +114,7 @@ export default function Home() {
       <main className="min-h-screen bg-white">
         {/* Hero Section - Editorial Two-Column Layout */}
         <section className="bg-[#F7F5ED]">
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-32 pb-16 lg:pt-40 lg:pb-24 max-w-[1440px] mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-44 pb-16 lg:pt-52 lg:pb-24 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing with Color Contrast */}
