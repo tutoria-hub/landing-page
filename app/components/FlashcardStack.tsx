@@ -247,35 +247,12 @@ function AudioButton({ state }: AudioButtonProps) {
       const minAmp = baseMinAmp * blendedFormantRatio;
       const maxAmp = baseMaxAmp * blendedFormantRatio;
 
-      // Add natural variation with sine wave (per-bar phase offset)
+      // Simple sine variation for smooth, organic motion (maximum performance)
       const phaseOffset = barIndex * 1.8;
-      const variation = Math.sin(currentTime * 0.01 + phaseOffset) * 0.08; // Reduced for more natural feel
+      const variation = Math.sin(currentTime * 0.01 + phaseOffset) * 0.12;
       let amplitude = (minAmp + maxAmp) / 2 + variation;
 
-      // Add vocal tremor (4-6 Hz physiological oscillation)
-      const tremorFreq = 5; // Hz
-      const tremor = Math.sin(currentTime * 0.001 * tremorFreq * 2 * Math.PI) * 0.04;
-
-      // Add breathiness (organic micro-variations using deterministic noise)
-      const noisePhase = currentTime * 0.03 + barIndex * 100;
-      const breathiness = (Math.sin(noisePhase * 7) * Math.sin(noisePhase * 11)) * 0.05;
-
-      // Apply organic variations
-      amplitude = amplitude * (1 + tremor + breathiness);
-
-      // Add attack/decay envelopes for consonants (realistic edges)
-      if (currentPhoneme === 'plosive' || currentPhoneme === 'fricative') {
-        if (phonemeProgress < 0.15) {
-          // Exponential attack (fast rise like real consonants)
-          amplitude *= Math.pow(phonemeProgress / 0.15, 0.5);
-        } else if (phonemeProgress > 0.75) {
-          // Exponential decay (gradual fall)
-          const decayProgress = (phonemeProgress - 0.75) / 0.25;
-          amplitude *= Math.pow(1 - decayProgress, 2);
-        }
-      }
-
-      // Clamp amplitude after all variations
+      // Clamp amplitude
       amplitude = Math.max(minAmp, Math.min(maxAmp, amplitude));
 
       const barHeight = minHeight + (amplitude * maxHeight);
@@ -529,10 +506,10 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { opacity: 0.5, zIndex: 1 }
               : {
-                  // Back card breathing (gentle depth motion)
-                  scale: [0.96, 0.97, 0.96],      // 1% breathing (2x original)
-                  y: [24, 22.5, 24],              // 1.5px motion (3x original - subtle)
-                  opacity: [1.0, 0.92, 1.0],      // 8% fade (stronger atmospheric depth)
+                  // Back card breathing (minimal depth)
+                  scale: [0.96, 0.965, 0.96],     // 0.5% breathing
+                  y: [24, 23.5, 24],              // 0.5px motion (very subtle)
+                  opacity: [1.0, 0.94, 1.0],      // 6% fade
                   rotate: 0,
                   zIndex: 1
                 }
@@ -541,11 +518,11 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { duration: 0.2, ease: [0, 0, 0.2, 1] }
               : {
-                  duration: 3.2,                  // Match front card tempo (was 3.6s)
+                  duration: 3.6,                  // Match front card tempo
                   ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
                   repeat: Infinity,
                   repeatType: "loop",
-                  delay: 2.13,                    // 240° phase offset (adjusted for 3.2s)
+                  delay: 2.4,                     // 240° phase offset (3.6s timing)
                 }
           }
           style={{ pointerEvents: 'none' }}
@@ -571,11 +548,11 @@ export default function FlashcardStack() {
                   zIndex: 3,
                 }
               : {
-                  // Middle card breathing (1.5x amplification, subtle counter-motion)
-                  scale: [0.95, 0.96, 0.95],      // 1% breathing (2x original)
-                  y: [16, 14, 16],                // 2px counter-motion (2x original - gentle parallax)
-                  opacity: [1.0, 0.94, 1.0],      // 6% fade (keeps depth perception)
-                  rotate: [1, 0.5, 1],            // Subtle counter-rotation
+                  // Middle card breathing (minimal, keeps depth)
+                  scale: [0.95, 0.955, 0.95],     // 0.5% breathing (subtle)
+                  y: [16, 15, 16],                // 1px counter-motion (minimal parallax)
+                  opacity: [1.0, 0.96, 1.0],      // 4% fade
+                  rotate: 1,                       // Static rotate
                   zIndex: 2,
                 }
           }
@@ -589,11 +566,11 @@ export default function FlashcardStack() {
                   ease: [0.4, 0, 0.2, 1],
                 }
               : {
-                  duration: 3.2,                  // Match front card tempo (was 3.6s)
+                  duration: 3.6,                  // Match front card tempo
                   ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
                   repeat: Infinity,
                   repeatType: "loop",
-                  delay: 1.07,                    // 120° phase offset (adjusted for 3.2s)
+                  delay: 1.2,                     // 120° phase offset (3.6s timing)
                 }
           }
           style={{
@@ -635,15 +612,15 @@ export default function FlashcardStack() {
                     }
                   : activeCardState === 'idle' && !prefersReducedMotion
                   ? {
-                      // Idle state: Balanced breathing (2x amplification - sweet spot)
-                      scale: [1.0, 1.03, 1.0],        // 3% breathing (2x original - noticeable but premium)
-                      y: [0, -5, 0],                  // 5px float (2.5x original - visible)
-                      rotate: [0, -1, 0],             // -1° subtle tilt (adds dimension without excess)
-                      x: [0, 2, 0],                   // 2px horizontal drift (organic feel)
+                      // Idle state: Minimal breathing (very subtle, premium feel)
+                      scale: [1.0, 1.02, 1.0],        // 2% breathing (minimal but visible)
+                      y: [0, -3, 0],                  // 3px float (subtle)
+                      rotate: 0,                       // No rotation (too distracting)
+                      x: 0,                            // No drift (keep it simple)
                       opacity: 1,
                       zIndex: 3,
                       transition: {
-                        duration: 3.2,                // 3.2s (slightly faster than 3.6s, not too energetic)
+                        duration: 3.6,                // 3.6s (calm, meditative)
                         ease: [0.37, 0, 0.63, 1],     // Sine-wave (smooth)
                         repeat: Infinity,
                         repeatType: "loop",

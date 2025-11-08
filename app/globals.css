@@ -156,9 +156,7 @@
   background: #30A46C;
   width: 6px;
   height: var(--bar-height);
-  /* No transition: 60fps RAF updates provide butter-smooth motion */
-  /* Subtle motion blur adds perceptual weight (Apple Voice Memos technique) */
-  filter: blur(0.3px);
+  /* No transition or filter: pure 60fps RAF updates for maximum smoothness */
 }
 
 /* No per-bar stagger needed - 60fps RAF updates provide organic motion */
