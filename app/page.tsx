@@ -28,8 +28,8 @@ export default function Home() {
       setIsTypingVisible(false);
 
       setTimeout(() => {
-        // Clear and start typing new text
-        setTypedText("");
+        // Start typing new text (don't clear - swap directly)
+        charIndex = 0;
         setIsTypingVisible(true);
 
         // Type out character by character
@@ -133,9 +133,11 @@ export default function Home() {
               </svg>
             </span>
             <br />
-            <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 inline-block min-h-[1.2em] ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
-              {typedText || '\u00A0'}
-            </em>
+            <span className="inline-block min-h-[1.2em] relative" style={{minWidth: '280px'}}>
+              <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 absolute left-0 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
+                {typedText}
+              </em>
+            </span>
           </h1>
 
           {/* CTA Section */}
