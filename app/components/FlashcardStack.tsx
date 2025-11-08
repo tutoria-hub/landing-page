@@ -169,8 +169,8 @@ function AudioButton({ state }: AudioButtonProps) {
       // Loop elapsed time within sequence duration
       const elapsedMs = (currentTime - waveformStartTime) % totalDuration;
 
-      // Find current phoneme with smooth crossfading
-      const CROSSFADE_MS = 40; // 40ms blend window
+      // Find current phoneme with smooth crossfading (Apple Voice Memos: crisp 30ms transitions)
+      const CROSSFADE_MS = 30; // Shorter = crisper phoneme changes, less perceived lag
       let accumulatedTime = 0;
       let currentPhoneme = sequence[0];
       let nextPhoneme = sequence[1] || sequence[0];
@@ -206,17 +206,18 @@ function AudioButton({ state }: AudioButtonProps) {
       const maxAmp = currentPhonemeInfo.maxAmp * (1 - crossfadeAmount) +
                      nextPhonemeInfo.maxAmp * crossfadeAmount;
 
-      // Add natural variation with sine wave
-      const variation = Math.sin(currentTime * 0.008 + barIndex * 1.2) * 0.1;
+      // Add natural variation with sine wave (per-bar phase offset for organic asynchrony)
+      const phaseOffset = barIndex * 1.8; // Stagger bars so they don't peak in sync
+      const variation = Math.sin(currentTime * 0.01 + phaseOffset) * 0.12; // Faster oscillation = more alive
       let amplitude = (minAmp + maxAmp) / 2 + variation;
 
-      // Add attack/decay for consonants (sharper edges)
+      // Add attack/decay for consonants (sharper edges like real speech)
       if (currentPhoneme === 'consonant') {
         if (phonemeProgress < 0.2) {
-          // Attack
+          // Attack - quick rise
           amplitude *= (phonemeProgress / 0.2);
         } else if (phonemeProgress > 0.7) {
-          // Decay
+          // Decay - quick fall
           amplitude *= (1 - (phonemeProgress - 0.7) / 0.3);
         }
       }
@@ -425,7 +426,7 @@ export default function FlashcardStack() {
     return () => mediaQuery.removeEventListener('change', listener);
   }, []);
 
-  // State machine for active card
+  // Automatic state machine for demo
   useEffect(() => {
     const currentCard = cards[0];
     const targetOutcome = currentCard.outcome === 'correct' ? 'correct' : 'incorrect';
@@ -517,9 +518,9 @@ export default function FlashcardStack() {
                 }
           }
           transition={{
-            duration: 0.4,
-            delay: isExiting ? 0.2 : 0, // Delay rise until dive starts
-            ease: [0.4, 0, 0.2, 1], // iOS standard easing
+            duration: 0.35,
+            delay: isExiting ? 0.08 : 0, // Delay rise until anticipation completes (80ms)
+            ease: [0.34, 1.56, 0.64, 1], // Spring physics with slight overshoot
           }}
           style={{
             pointerEvents: 'none',
@@ -537,10 +538,20 @@ export default function FlashcardStack() {
           {!isExiting && (
             <motion.div
               key={`card-1-${cards[0]?.letter}`}
-              className="absolute inset-0"
+              className="absolute inset-0 cursor-pointer"
               initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
               animate={
-                activeCardState === 'recording'
+                isPressed
+                  ? {
+                      // Apple press feedback: instant scale-down with subtle shadow change
+                      scale: 0.98,
+                      y: 2, // Slight downward movement (like pressing into surface)
+                      transition: {
+                        duration: 0.1,
+                        ease: [0, 0, 0.2, 1] // ease-out
+                      }
+                    }
+                  : activeCardState === 'recording'
                   ? {
                       scale: [1.0, 1.02, 1.0],
                       y: 0,
@@ -563,9 +574,19 @@ export default function FlashcardStack() {
                       opacity: 1,
                       x: 0,
                       rotate: 0,
-                      zIndex: 3
+                      zIndex: 3,
+                      transition: {
+                        duration: 0.15,
+                        ease: [0.34, 1.56, 0.64, 1] // spring-back easing
+                      }
                     }
               }
+              onMouseDown={handleCardPress}
+              onMouseUp={handleCardRelease}
+              onMouseLeave={handleCardCancel}
+              onTouchStart={handleCardPress}
+              onTouchEnd={handleCardRelease}
+              onTouchCancel={handleCardCancel}
               exit={
                 prefersReducedMotion
                   ? {
@@ -573,16 +594,42 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Apple Card Shuffle: Slide right → Dive under → Complete exit
-                      x: [0, 40, 40, 320],
-                      y: [0, 0, 40, 80],
-                      rotate: [0, 3, 8, 15],
-                      scale: [1, 0.98, 0.88, 0.8],
-                      opacity: [1, 0.95, 0.6, 0],
+                      // Apple Card Physics: Anticipation → Momentum swipe → Gentle settle
+                      // Each property has independent timing for natural physics
+                      x: [0, -8, 0, 45, 280],        // Anticipation pullback → momentum swipe
+                      y: [0, 0, 0, 12, 72],          // Slight arc trajectory
+                      rotate: [0, -0.5, 0, 2.5, 12], // Counter-rotate → natural tilt
+                      scale: [1, 1.01, 1, 0.96, 0.82], // Subtle lift → compress
+                      opacity: [1, 1, 1, 0.92, 0],   // Hold visibility → quick fade
                       transition: {
-                        duration: 0.8,
-                        times: [0, 0.25, 0.625, 1], // [0ms, 200ms, 500ms, 800ms]
-                        ease: [0.4, 0, 0.2, 1], // iOS standard easing
+                        duration: 0.42,  // Apple Card standard: 420ms
+                        times: [0, 0.14, 0.19, 0.67, 1], // [0ms, 60ms, 80ms, 280ms, 420ms]
+                        // Layered easing curves per property for realistic physics
+                        x: {
+                          duration: 0.42,
+                          times: [0, 0.14, 0.19, 0.67, 1],
+                          ease: [0.34, 1.56, 0.64, 1] // Spring overshoot on exit
+                        },
+                        y: {
+                          duration: 0.42,
+                          times: [0, 0.14, 0.19, 0.67, 1],
+                          ease: [0.22, 0.61, 0.36, 1] // Gentle arc
+                        },
+                        rotate: {
+                          duration: 0.42,
+                          times: [0, 0.14, 0.19, 0.67, 1],
+                          ease: [0.17, 0.89, 0.32, 1.28] // Snappier rotation with overshoot
+                        },
+                        scale: {
+                          duration: 0.42,
+                          times: [0, 0.14, 0.19, 0.67, 1],
+                          ease: [0.4, 0, 0.2, 1] // iOS standard for scale
+                        },
+                        opacity: {
+                          duration: 0.42,
+                          times: [0, 0.14, 0.19, 0.67, 1],
+                          ease: [0.4, 0, 1, 1] // Hold → quick linear fade
+                        }
                       }
                     }
               }
@@ -591,9 +638,13 @@ export default function FlashcardStack() {
                 ease: [0, 0, 0.2, 1]
               }}
               style={{
-                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only
+                // Dynamic shadow: lighter when pressed (closer to surface), elevated when idle
+                boxShadow: isPressed
+                  ? '0 2px 6px rgba(31, 31, 31, 0.06)' // Pressed state: shallower shadow
+                  : '0 4px 12px rgba(31, 31, 31, 0.08)', // Idle state: elevated shadow
                 transformOrigin: 'bottom center',
                 zIndex: exitingCardZIndex, // Dynamic z-index for card shuffle
+                transition: 'box-shadow 0.1s ease-out', // Fast shadow transition
               }}
             >
               <Card
