@@ -6,6 +6,7 @@ const ebGaramond = EB_Garamond({
   variable: "--font-eb-garamond",
   subsets: ["latin"],
   weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
