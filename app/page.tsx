@@ -112,7 +112,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+      <section className="relative min-h-[85vh] lg:min-h-[75vh] bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-24 pb-0 lg:pt-32 lg:pb-0 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
@@ -150,9 +150,21 @@ export default function Home() {
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
-          <div className="border-[3px] border-[#30A46C] bg-white p-6 lg:p-8 rounded-lg shadow-[0_4px_0_#DCDCDC]">
+          <div className="relative border-[3px] border-[#30A46C] bg-white p-5 lg:p-6 rounded-lg shadow-[0_4px_0_#DCDCDC]">
+            {/* Harvard Logo - Top Right Badge */}
+            <div className="absolute top-5 right-5 lg:top-6 lg:right-6">
+              <Image
+                src="/assets/harvard-logo-grey.png"
+                alt="Harvard Medical School"
+                width={120}
+                height={40}
+                className="h-10 lg:h-12 w-auto grayscale opacity-60"
+                priority
+              />
+            </div>
+
             {/* Stat Number - Sans-serif with curvy GREEN underline */}
-            <div className="mb-5 relative">
+            <div className="mb-4 relative pr-28 lg:pr-32">
               <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-3">
                 {statMin}-{statMax}%
               </p>
@@ -168,21 +180,9 @@ export default function Home() {
             </div>
 
             {/* Stat Text - Italic with quotes, larger size */}
-            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.4] text-[#1A1A1A] mb-5 max-w-[420px]">
+            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.4] text-[#1A1A1A] max-w-[420px]">
               &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
-
-            {/* Harvard Logo - Centered */}
-            <div className="flex justify-center">
-              <Image
-                src="/assets/harvard-logo-grey.png"
-                alt="Harvard Medical School"
-                width={280}
-                height={100}
-                className="h-20 lg:h-24 w-auto grayscale opacity-75"
-                priority
-              />
-            </div>
           </div>
         </div>
 
@@ -203,6 +203,37 @@ export default function Home() {
             </svg>
           </div>
         )}
+      </section>
+
+      {/* Transition Quote - Absolutely centered */}
+      <div className="bg-[#F7F5ED] px-6 pt-0 pb-8 lg:pt-0 lg:pb-12 max-w-[1440px] mx-auto">
+        <p className="font-serif italic font-medium text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
+          Reading isn&rsquo;t magic. It&rsquo;s method.
+        </p>
+      </div>
+
+      {/* Video Demo Section - Placeholder State */}
+      <section className="bg-[#F7F5ED] px-6 lg:px-24 pt-6 pb-24 lg:pt-8 lg:pb-32 max-w-[1440px] mx-auto">
+        <div className="max-w-[1120px] mx-auto text-center">
+          {/* Video Container - Placeholder */}
+          <div className="relative w-full max-w-[896px] mx-auto aspect-video rounded-2xl lg:rounded-[16px] overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.12)] bg-white">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-gradient-to-br from-[#F7F5ED] to-white p-8 lg:p-12">
+              {/* Play Icon */}
+              <svg className="w-16 h-16 lg:w-20 lg:h-20 mb-6 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-110" viewBox="0 0 80 80" fill="none">
+                <circle cx="40" cy="40" r="40" fill="#30A46C"/>
+                <path d="M32 26L54 40L32 54V26Z" fill="#FFFFFF"/>
+              </svg>
+
+              {/* Placeholder Text */}
+              <p className="font-serif text-[20px] lg:text-[24px] font-bold text-[#1A1A1A] mb-2">
+                Demo Video Coming Soon
+              </p>
+              <p className="font-sans text-[14px] lg:text-[16px] text-[#595959]">
+                We&rsquo;re creating an amazing product demo
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Testimonials Section - Editorial Asymmetric Grid */}
