@@ -74,3 +74,64 @@ If you need to test Cloudflare bindings (R2, D1, KV) locally:
 1. Uncomment `initOpenNextCloudflareForDev()` in `next.config.mjs`
 2. Uncomment `NEXTJS_ENV=development` in `.dev.vars`
 3. Run `npm run dev` - bindings will be available via miniflare
+
+**IMPORTANT**: DO NOT RUN NEXT DEV or DEPLOY as an agent unless asked to.
+
+## Parallel Agent Workflow
+
+This project uses a **Pieter Levels + IndyDevDan hybrid workflow**: single agent by default, 2-3 parallel agents only when exploring design space.
+
+### Philosophy
+
+**Default mode**: Work on `main` with single agent, leverage Next.js HMR (200ms hot reload).
+
+**Parallel mode**: Only when comparing 3+ approaches visually or measuring performance strategies.
+
+### When to Use Parallel Agents
+
+Use 2-3 parallel agents when:
+- **Visual exploration**: 3+ design directions for same component (e.g., hero headline styling)
+- **Performance optimization**: Multiple strategies need Lighthouse comparison
+- **Layout options**: Uncertain which approach works best (masonry vs grid vs carousel)
+- **Independent features**: Multiple sections with no dependencies
+- **Copy testing**: A/B test messaging
+
+DO NOT parallelize:
+- Bug fixes (one obvious solution)
+- Performance audits (need consistent baseline)
+- Responsive testing (systematic evaluation)
+- Code reviews (one quality gate)
+- Dependency upgrades (interdependent changes)
+
+### Slash Commands
+
+**`/landing-page/parallel [task]`** - Set up 3 parallel agents for exploration
+**`/landing-page/verify-deploy`** - Build + preview before deploying to Cloudflare
+**`/landing-page/compare-perf`** - Run Lighthouse audit, save baseline for comparison
+
+### Quick Start
+
+```bash
+# Terminal 1: Keep dev server running
+npm run dev
+
+# Terminal 2-4: Launch 3 Claude instances
+claude  # Each works on different approach
+
+# Browser auto-refreshes on each save (HMR)
+# Screenshot + compare + commit winner
+```
+
+**Guide**: See `.claude/parallel-workflow-guide.md` for complete workflow documentation.
+
+### Git Workflow
+
+```
+main (always deployable)
+  ↓
+Work directly on main
+  ↓
+Commit frequently, deploy daily
+```
+
+No branch protection. No worktrees. Ship fast, iterate in production.
