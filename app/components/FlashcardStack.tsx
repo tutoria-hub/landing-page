@@ -63,7 +63,7 @@ function AudioButton({ state }: AudioButtonProps) {
   useEffect(() => {
     if (state === 'recording' && prevState === 'idle') {
       setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 200);
+      setTimeout(() => setIsPulsing(false), 150);  // Synchronized with 150ms animation
     }
     setPrevState(state);
   }, [state, prevState]);
@@ -295,7 +295,7 @@ function AudioButton({ state }: AudioButtonProps) {
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
             "transition-all ease-out",
-            isPulsing ? "duration-200" : "duration-400",
+            isPulsing ? "duration-150" : "duration-400",
             "border-4",
             // Instant border feedback (Apple standard: <16ms response)
             isRecording ? "border-[#30A46C] !transition-none" : "border-[#D4D4D4]",
@@ -481,7 +481,7 @@ export default function FlashcardStack() {
       { state: 'idle' as PracticeState, duration: 3000 },
       { state: 'recording' as PracticeState, duration: 2500 },
       { state: 'checking' as PracticeState, duration: 2000 },
-      { state: targetOutcome as PracticeState, duration: 3000 },
+      { state: targetOutcome as PracticeState, duration: 3500 }, // Longer for correct state (user requested)
     ];
 
     let currentStep = 0;
@@ -500,13 +500,13 @@ export default function FlashcardStack() {
         // Keep card on top during exit (no z-index drop - looks better for upward motion)
         // The next card rise animation handles the transition naturally
 
-        // Complete cycle after full animation (500ms)
+        // Complete cycle after full animation (420ms - Apple Card timing)
         setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
           setExitingCardZIndex(3); // Reset for next card
           setActiveCardState('idle');
-        }, 500);
+        }, 420);
       }
     };
 
@@ -529,10 +529,10 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { opacity: 0.5, zIndex: 1 }
               : {
-                  // Gentle breathing animation (3.6s loop, 240° phase offset)
-                  scale: [0.96, 0.965, 0.96],
-                  y: [24, 23.5, 24],
-                  opacity: [1.0, 0.94, 1.0],
+                  // Back card breathing (gentle depth motion)
+                  scale: [0.96, 0.97, 0.96],      // 1% breathing (2x original)
+                  y: [24, 22.5, 24],              // 1.5px motion (3x original - subtle)
+                  opacity: [1.0, 0.92, 1.0],      // 8% fade (stronger atmospheric depth)
                   rotate: 0,
                   zIndex: 1
                 }
@@ -541,11 +541,11 @@ export default function FlashcardStack() {
             prefersReducedMotion
               ? { duration: 0.2, ease: [0, 0, 0.2, 1] }
               : {
-                  duration: 3.6,
-                  ease: [0.37, 0, 0.63, 1], // Sine-wave ease (meditative rhythm)
+                  duration: 3.2,                  // Match front card tempo (was 3.6s)
+                  ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
                   repeat: Infinity,
                   repeatType: "loop",
-                  delay: 2.4, // 240° phase offset (staggered from front card)
+                  delay: 2.13,                    // 240° phase offset (adjusted for 3.2s)
                 }
           }
           style={{ pointerEvents: 'none' }}
@@ -571,11 +571,11 @@ export default function FlashcardStack() {
                   zIndex: 3,
                 }
               : {
-                  // Gentle breathing at middle position (120° phase offset)
-                  scale: [0.95, 0.955, 0.95],
-                  y: [16, 15, 16],
-                  opacity: [1.0, 0.96, 1.0],
-                  rotate: 1,
+                  // Middle card breathing (1.5x amplification, subtle counter-motion)
+                  scale: [0.95, 0.96, 0.95],      // 1% breathing (2x original)
+                  y: [16, 14, 16],                // 2px counter-motion (2x original - gentle parallax)
+                  opacity: [1.0, 0.94, 1.0],      // 6% fade (keeps depth perception)
+                  rotate: [1, 0.5, 1],            // Subtle counter-rotation
                   zIndex: 2,
                 }
           }
@@ -589,11 +589,11 @@ export default function FlashcardStack() {
                   ease: [0.4, 0, 0.2, 1],
                 }
               : {
-                  duration: 3.6,
-                  ease: [0.37, 0, 0.63, 1], // Sine-wave ease
+                  duration: 3.2,                  // Match front card tempo (was 3.6s)
+                  ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
                   repeat: Infinity,
                   repeatType: "loop",
-                  delay: 1.2, // 120° phase offset
+                  delay: 1.07,                    // 120° phase offset (adjusted for 3.2s)
                 }
           }
           style={{
@@ -635,19 +635,19 @@ export default function FlashcardStack() {
                     }
                   : activeCardState === 'idle' && !prefersReducedMotion
                   ? {
-                      // Idle state: gentle breathing with shadow pulse (attracts attention)
-                      scale: [1.0, 1.015, 1.0],
-                      y: [0, -2, 0],
+                      // Idle state: Balanced breathing (2x amplification - sweet spot)
+                      scale: [1.0, 1.03, 1.0],        // 3% breathing (2x original - noticeable but premium)
+                      y: [0, -5, 0],                  // 5px float (2.5x original - visible)
+                      rotate: [0, -1, 0],             // -1° subtle tilt (adds dimension without excess)
+                      x: [0, 2, 0],                   // 2px horizontal drift (organic feel)
                       opacity: 1,
-                      x: 0,
-                      rotate: 0,
                       zIndex: 3,
                       transition: {
-                        duration: 3.6,
-                        ease: [0.37, 0, 0.63, 1], // Sine-wave ease (meditative)
+                        duration: 3.2,                // 3.2s (slightly faster than 3.6s, not too energetic)
+                        ease: [0.37, 0, 0.63, 1],     // Sine-wave (smooth)
                         repeat: Infinity,
                         repeatType: "loop",
-                        delay: 0, // 0° phase offset (baseline for stack)
+                        delay: 0,
                       }
                     }
                   : {
@@ -667,19 +667,15 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Upward celebration: gentle lift and fade (aligns with tutoria-webapp pattern)
-                      y: [0, -12, -40],       // Accelerating upward lift (victory motion)
-                      scale: [1, 0.98, 0.94], // Gentle shrink (receding into distance)
-                      rotate: [0, 1, 2],      // Forward tilt (natural physics)
-                      opacity: [1, 0.92, 0],  // Hold visibility → fade
+                      // Apple Card exit: unified 420ms celebration (100% smooth, no keyframes)
+                      y: -40,              // Single end value (no pause points)
+                      scale: 0.94,         // Single end value
+                      rotate: 2,           // Single end value
+                      opacity: 0,          // Single end value
                       transition: {
-                        duration: 0.5,         // Snappier 500ms (was 600ms)
-                        times: [0, 0.3, 1],    // [0ms, 150ms, 500ms] - accelerating rhythm
-                        // Per-property easing for Apple-level polish
-                        y: { ease: [0.32, 0.72, 0, 1] },      // EaseOutExpo (celebratory snap)
-                        scale: { ease: [0.4, 0, 0.2, 1] },    // iOS standard
-                        rotate: { ease: [0.17, 0.89, 0.32, 1.28] }, // Snappy with tiny overshoot
-                        opacity: { ease: [0.4, 0, 1, 1] }     // Hold then linear fade
+                        duration: 0.42,    // Apple Card standard (420ms, not 500ms)
+                        ease: [0.4, 0, 0.2, 1], // iOS standard for ALL properties (unified, no conflicts)
+                        type: 'tween'      // Ensures consistent frame timing
                       }
                     }
               }
@@ -691,6 +687,10 @@ export default function FlashcardStack() {
                 boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only
                 transformOrigin: 'bottom center',
                 zIndex: exitingCardZIndex, // Dynamic z-index for card shuffle
+                // GPU ACCELERATION (eliminates choppiness)
+                willChange: 'transform, opacity',
+                backfaceVisibility: 'hidden',
+                transform: 'translateZ(0)',
               }}
             >
               <Card

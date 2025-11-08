@@ -169,26 +169,35 @@
   100% { transform: scale(1); }
 }
 
-/* Button press animation - Apple tactile feedback (200ms, no overshoot) */
+/* Button press animation - Apple tactile feedback (150ms, 4% compression) */
 @keyframes button-press {
-  0% { transform: scale(1.0); }
-  40% { transform: scale(0.98); }      /* Compress 2% (realistic press) */
-  100% { transform: scale(1.0); }      /* Direct return, no bounce */
+  0% {
+    transform: scale(1.0);
+    background-color: #FFFFFF;
+  }
+  50% {
+    transform: scale(0.96);              /* 4% compression (perceptible) */
+    background-color: #F5F5F5;           /* Subtle brightness dip (iOS keyboard) */
+  }
+  100% {
+    transform: scale(1.0);
+    background-color: #FFFFFF;
+  }
 }
 
 .animate-button-press {
-  animation: button-press 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: button-press 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Shadow press animation - depth cue (synchronized with button) */
 @keyframes shadow-press {
   0% { box-shadow: 0 4px 0 #DCDCDC; }
-  40% { box-shadow: 0 1px 0 #DCDCDC; }   /* Deep press (75% reduction) */
-  100% { box-shadow: 0 4px 0 #DCDCDC; }  /* Quick return */
+  50% { box-shadow: 0 1px 0 #BFBFBF; }   /* Deeper press + darker shadow (more visible) */
+  100% { box-shadow: 0 4px 0 #DCDCDC; }
 }
 
 .animate-shadow-press {
-  animation: shadow-press 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  animation: shadow-press 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Removed ripple ring and icon bounce animations - simplified to 2-layer click feedback */
