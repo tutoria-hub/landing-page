@@ -3,6 +3,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+const TYPING_VARIATIONS = [
+  "actually works!",
+  "really works!",
+  "truly works!",
+  "just works!",
+] as const;
+
 export default function Home() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [typedText, setTypedText] = useState("actually works!");
@@ -10,18 +17,11 @@ export default function Home() {
   const [statMin, setStatMin] = useState(0);
   const [statMax, setStatMax] = useState(0);
 
-  const variations = [
-    "actually works!",
-    "really works!",
-    "truly works!",
-    "just works!",
-  ];
-
   useEffect(() => {
     let currentIndex = 0;
 
     const typeText = () => {
-      const text = variations[currentIndex];
+      const text = TYPING_VARIATIONS[currentIndex];
       let charIndex = 0;
 
       // Fade out current text
@@ -42,12 +42,12 @@ export default function Home() {
 
             // Wait 10 seconds before starting next variation
             setTimeout(() => {
-              currentIndex = (currentIndex + 1) % variations.length;
+              currentIndex = (currentIndex + 1) % TYPING_VARIATIONS.length;
               typeText();
             }, 10000);
           }
         }, 100);
-      }, 300); // Wait for fade out to complete
+      }, 600); // Wait for fade out to complete
     };
 
     // Start typing animation
@@ -78,10 +78,6 @@ export default function Home() {
       }
     }, stepDuration);
 
-    return () => clearInterval(animateNumbers);
-  }, []);
-
-  useEffect(() => {
     // Trigger scroll indicator animation on load
     const animateIndicator = () => {
       const indicator = document.querySelector('.scroll-indicator');
@@ -95,7 +91,7 @@ export default function Home() {
     setTimeout(animateIndicator, 2000);
 
     // Repeat every 15 seconds
-    const interval = setInterval(animateIndicator, 15000);
+    const scrollInterval = setInterval(animateIndicator, 15000);
 
     // Hide on scroll
     const handleScroll = () => {
@@ -107,7 +103,8 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
 
     return () => {
-      clearInterval(interval);
+      clearInterval(animateNumbers);
+      clearInterval(scrollInterval);
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
@@ -115,7 +112,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+      <section className="relative min-h-screen bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
@@ -134,7 +131,7 @@ export default function Home() {
             </span>
             <br />
             <span className="inline-block min-w-[320px]">
-              <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
+              <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-600 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
                 {typedText || 'actually works!'}
               </em>
             </span>
