@@ -13,8 +13,8 @@ const TYPING_VARIATIONS = [
 export default function Home() {
   const [typedText, setTypedText] = useState("actually works!");
   const [isTypingVisible, setIsTypingVisible] = useState(true);
-  const [statMin, setStatMin] = useState(0);
-  const [statMax, setStatMax] = useState(0);
+  const [statMin, setStatMin] = useState(50);
+  const [statMax, setStatMax] = useState(50);
 
   useEffect(() => {
     let currentIndex = 0;
@@ -67,13 +67,13 @@ export default function Home() {
       currentStep++;
       const progress = currentStep / steps;
 
-      setStatMin(Math.round(targetMin * progress));
-      setStatMax(Math.round(targetMax * progress));
+      // Only animate statMax from 50→90 (statMin stays at 50)
+      setStatMax(Math.round(50 + (40 * progress)));
 
       if (currentStep >= steps) {
         clearInterval(animateNumbers);
-        setStatMin(targetMin);
-        setStatMax(targetMax);
+        setStatMin(50);
+        setStatMax(90);
       }
     }, stepDuration);
 
@@ -86,7 +86,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
       <section className="bg-[#F7F5ED]">
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-32 pb-32 lg:pt-48 lg:pb-40 max-w-[1440px] mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-24 pb-16 lg:pt-32 lg:pb-24 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
@@ -111,7 +111,7 @@ export default function Home() {
 
           {/* CTA Section */}
           <div className="space-y-4 relative">
-            <p className="font-sans text-[18px] leading-[1.5] text-[#595959] max-w-[560px]">
+            <p className="font-sans text-[18px] leading-[1.6] text-[#595959] max-w-[560px]">
               Designed for struggling readers.
             </p>
             <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
@@ -168,25 +168,27 @@ export default function Home() {
       </div>
       </div>
 
-      {/* Video Demo Section - Placeholder State */}
+      {/* Video Demo Section - Duolingo-Inspired Placeholder */}
       <section className="bg-[#F7F5ED]">
-        <div className="px-6 lg:px-24 pt-6 pb-24 lg:pt-8 lg:pb-32 max-w-[1440px] mx-auto">
-        <div className="max-w-[1120px] mx-auto text-center">
-          {/* Video Container - Placeholder */}
-          <div className="relative w-full max-w-[896px] mx-auto aspect-video rounded-2xl lg:rounded-[16px] overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.12)] bg-white">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-gradient-to-br from-[#F7F5ED] to-white p-8 lg:p-12">
+        <div className="px-6 lg:px-24 pt-16 pb-24 lg:pt-24 lg:pb-24 max-w-[1440px] mx-auto">
+        {/* Video Container */}
+        <div className="max-w-[896px] mx-auto">
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden border-[2px] border-[#DCDCDC] bg-white">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-[#F7F5ED] p-8 lg:p-12">
               {/* Play Icon */}
-              <svg className="w-16 h-16 lg:w-20 lg:h-20 mb-6 opacity-90 transition-all duration-200 hover:opacity-100 hover:scale-110" viewBox="0 0 80 80" fill="none">
-                <circle cx="40" cy="40" r="40" fill="#30A46C"/>
-                <path d="M32 26L54 40L32 54V26Z" fill="#FFFFFF"/>
-              </svg>
+              <div className="mb-6 cursor-pointer">
+                <svg className="w-20 h-20 lg:w-24 lg:h-24" viewBox="0 0 80 80" fill="none">
+                  <circle cx="40" cy="40" r="40" fill="#30A46C"/>
+                  <path d="M32 26L54 40L32 54V26Z" fill="#FFFFFF"/>
+                </svg>
+              </div>
 
               {/* Placeholder Text */}
-              <p className="font-serif text-[20px] lg:text-[24px] font-bold text-[#1A1A1A] mb-2">
-                Demo Video Coming Soon
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-2 text-center max-w-[480px]">
+                Demo video coming soon
               </p>
-              <p className="font-sans text-[14px] lg:text-[16px] text-[#595959]">
-                We&rsquo;re creating an amazing product demo
+              <p className="font-sans text-[16px] text-[#595959] text-center">
+                Watch how structured phonics transforms reading
               </p>
             </div>
           </div>
