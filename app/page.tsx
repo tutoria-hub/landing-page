@@ -131,16 +131,14 @@ export default function Home() {
             </span>
             <br />
             <span className="inline-block min-w-[320px]">
-              <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-600 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
-                {typedText || 'actually works!'}
-              </em>
+              <em className="italic font-bold text-[#1A1A1A]">truly works!</em>
             </span>
           </h1>
 
           {/* CTA Section */}
           <div className="space-y-4 relative">
-            <p className="font-sans text-[16px] text-[#595959]">
-              Help your child learn to read
+            <p className="font-sans text-[18px] leading-[1.5] text-[#595959] max-w-[560px]">
+              Designed for struggling readers.
             </p>
             <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
               Join the Waitlist
@@ -150,29 +148,28 @@ export default function Home() {
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
         <div className="max-w-full lg:max-w-[480px] lg:justify-self-end">
-          <div className="relative border-[3px] border-[#30A46C] bg-white p-5 lg:p-6 rounded-lg shadow-[0_4px_0_#DCDCDC]">
-            {/* Harvard Logo - Top Right Badge */}
-            <div className="absolute top-5 right-5 lg:top-6 lg:right-6">
-              <Image
-                src="/assets/harvard-logo-grey.png"
-                alt="Harvard Medical School"
-                width={120}
-                height={40}
-                className="h-10 lg:h-12 w-auto grayscale opacity-60"
-                priority
-              />
-            </div>
-
+          <div className="relative border-[3px] border-[#30A46C] bg-white p-6 lg:p-8 rounded-lg shadow-[0_4px_0_#DCDCDC]">
             {/* Stat Number - Sans-serif with curvy GREEN underline */}
-            <div className="mb-4 relative pr-28 lg:pr-32">
-              <p className="font-sans font-bold text-[56px] lg:text-[72px] leading-none text-[#30A46C] relative inline-block pb-3">
+            <div className="mb-5 relative">
+              {/* Harvard Logo - Aligned right with stat */}
+              <div className="absolute top-[-10px] right-0 lg:top-[-12px]">
+                <Image
+                  src="/assets/harvard-logo-grey.png"
+                  alt="Harvard Medical School"
+                  width={200}
+                  height={80}
+                  className="h-16 lg:h-20 w-auto grayscale opacity-90"
+                  priority
+                />
+              </div>
+              <p className="font-sans font-bold text-[44px] lg:text-[56px] leading-none text-[#30A46C] relative inline-block pb-3">
                 {statMin}-{statMax}%
               </p>
-              <svg className="absolute left-0 bottom-0 w-[200px] lg:w-[280px] pointer-events-none" viewBox="0 0 280 20" style={{height: '20px'}}>
+              <svg className="absolute left-0 bottom-0 w-[160px] lg:w-[220px] pointer-events-none" viewBox="0 0 220 16" style={{height: '16px'}}>
                 <path
-                  d="M 5 12 Q 70 6, 140 12 T 275 12"
+                  d="M 5 10 Q 55 5, 110 10 T 215 10"
                   stroke="#30A46C"
-                  strokeWidth="6"
+                  strokeWidth="5"
                   fill="none"
                   strokeLinecap="round"
                 />
@@ -180,7 +177,7 @@ export default function Home() {
             </div>
 
             {/* Stat Text - Italic with quotes, larger size */}
-            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.4] text-[#1A1A1A] max-w-[420px]">
+            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.5] text-[#1A1A1A] max-w-[420px]">
               &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
           </div>
@@ -208,7 +205,7 @@ export default function Home() {
       {/* Transition Quote - Absolutely centered */}
       <div className="bg-[#F7F5ED] px-6 pt-0 pb-8 lg:pt-0 lg:pb-12 max-w-[1440px] mx-auto">
         <p className="font-serif italic font-medium text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
-          Reading isn&rsquo;t magic. It&rsquo;s method.
+          The gift of making reading feel natural.
         </p>
       </div>
 
