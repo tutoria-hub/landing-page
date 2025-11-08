@@ -538,20 +538,10 @@ export default function FlashcardStack() {
           {!isExiting && (
             <motion.div
               key={`card-1-${cards[0]?.letter}`}
-              className="absolute inset-0 cursor-pointer"
+              className="absolute inset-0"
               initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
               animate={
-                isPressed
-                  ? {
-                      // Apple press feedback: instant scale-down with subtle shadow change
-                      scale: 0.98,
-                      y: 2, // Slight downward movement (like pressing into surface)
-                      transition: {
-                        duration: 0.1,
-                        ease: [0, 0, 0.2, 1] // ease-out
-                      }
-                    }
-                  : activeCardState === 'recording'
+                activeCardState === 'recording'
                   ? {
                       scale: [1.0, 1.02, 1.0],
                       y: 0,
@@ -574,19 +564,9 @@ export default function FlashcardStack() {
                       opacity: 1,
                       x: 0,
                       rotate: 0,
-                      zIndex: 3,
-                      transition: {
-                        duration: 0.15,
-                        ease: [0.34, 1.56, 0.64, 1] // spring-back easing
-                      }
+                      zIndex: 3
                     }
               }
-              onMouseDown={handleCardPress}
-              onMouseUp={handleCardRelease}
-              onMouseLeave={handleCardCancel}
-              onTouchStart={handleCardPress}
-              onTouchEnd={handleCardRelease}
-              onTouchCancel={handleCardCancel}
               exit={
                 prefersReducedMotion
                   ? {
@@ -638,13 +618,9 @@ export default function FlashcardStack() {
                 ease: [0, 0, 0.2, 1]
               }}
               style={{
-                // Dynamic shadow: lighter when pressed (closer to surface), elevated when idle
-                boxShadow: isPressed
-                  ? '0 2px 6px rgba(31, 31, 31, 0.06)' // Pressed state: shallower shadow
-                  : '0 4px 12px rgba(31, 31, 31, 0.08)', // Idle state: elevated shadow
+                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only
                 transformOrigin: 'bottom center',
                 zIndex: exitingCardZIndex, // Dynamic z-index for card shuffle
-                transition: 'box-shadow 0.1s ease-out', // Fast shadow transition
               }}
             >
               <Card
