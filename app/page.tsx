@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "./components/Header";
-import FlashcardDemoCard from "./components/FlashcardDemoCard";
+import FlashcardStack from "./components/FlashcardStack";
 
 const TYPING_VARIATIONS = [
   "actually works!",
@@ -268,7 +268,7 @@ export default function Home() {
 
           {/* RIGHT COLUMN: Flashcard Demo */}
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-            <FlashcardDemoCard />
+            <FlashcardStack />
           </div>
         </div>
         </div>
