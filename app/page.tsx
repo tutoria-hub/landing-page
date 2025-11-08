@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "./components/Header";
+import FlashcardDemoCard from "./components/FlashcardDemoCard";
 
 const TYPING_VARIATIONS = [
   "actually works!",
@@ -267,39 +268,7 @@ export default function Home() {
 
           {/* RIGHT COLUMN: Flashcard Demo */}
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[280px] lg:max-w-[320px]">
-              <div className="border-[3px] border-[#30A46C] bg-white rounded-2xl shadow-[0_4px_0_#DCDCDC] aspect-[4/5] flex flex-col items-center justify-center p-8 lg:p-10">
-                {/* Speaker Icon */}
-                <div className="mb-8">
-                  <svg className="w-10 h-10 lg:w-12 lg:h-12 text-[#595959]" viewBox="0 0 24 24" fill="none">
-                    <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M15.54 8.46C16.4774 9.39764 17.0039 10.6692 17.0039 11.995C17.0039 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-
-                {/* Letter Display */}
-                <div className="mb-8">
-                  <span className="font-sans font-bold text-[96px] lg:text-[120px] leading-none text-[#1A1A1A]">
-                    r
-                  </span>
-                </div>
-
-                {/* Microphone Icon */}
-                <div>
-                  <svg className="w-10 h-10 lg:w-12 lg:h-12 text-[#595959]" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M19 10V12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 19V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M8 23H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-
-              {/* Label */}
-              <p className="font-sans text-[14px] font-semibold text-center text-[#595959] mt-4 uppercase tracking-[0.05em]">
-                Flashcard Demo
-              </p>
-            </div>
+            <FlashcardDemoCard />
           </div>
         </div>
         </div>
