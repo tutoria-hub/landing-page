@@ -50,12 +50,23 @@ function AudioButton({ state }: AudioButtonProps) {
   const [preparationPhase, setPreparationPhase] = useState<'idle' | 'preparing' | 'burst' | 'active'>('idle');
   const [showAutoRetryText, setShowAutoRetryText] = useState(false);
   const [isRetryTextFadingOut, setIsRetryTextFadingOut] = useState(false);
+  const [isPulsing, setIsPulsing] = useState(false);
+  const [prevState, setPrevState] = useState<PracticeState>('idle');
 
   const isRecording = state === 'recording';
   const isLoading = state === 'checking';
   const isIdle = state === 'idle';
   const isIncorrect = state === 'incorrect';
   const showSuccess = state === 'correct';
+
+  // Button pulse on click (idle → recording transition)
+  useEffect(() => {
+    if (state === 'recording' && prevState === 'idle') {
+      setIsPulsing(true);
+      setTimeout(() => setIsPulsing(false), 300);
+    }
+    setPrevState(state);
+  }, [state, prevState]);
 
   // Fixed 700ms recording preparation choreography
   useEffect(() => {
@@ -79,7 +90,7 @@ function AudioButton({ state }: AudioButtonProps) {
     }
   }, [isRecording, isLoading]);
 
-  // Auto-retry flow
+  // Auto-retry flow (adjusted for 400ms transitions)
   useEffect(() => {
     if (isIncorrect && !showAutoRetryText) {
       setShowAutoRetryText(true);
@@ -92,7 +103,7 @@ function AudioButton({ state }: AudioButtonProps) {
       const resetTimer = setTimeout(() => {
         setShowAutoRetryText(false);
         setIsRetryTextFadingOut(false);
-      }, 2000);
+      }, 1900); // 1500 + 400ms for complete fade
 
       return () => {
         clearTimeout(fadeOutTimer);
@@ -104,8 +115,24 @@ function AudioButton({ state }: AudioButtonProps) {
     }
   }, [isIncorrect, showAutoRetryText]);
 
-  // Smooth waveform bars with realistic animation
+  // Realistic speech waveform with phoneme simulation
   const [animationFrame, setAnimationFrame] = useState(0);
+  const [waveformStartTime] = useState(Date.now());
+
+  // Phoneme sequences for each bar (independent timing)
+  const phonemeSequences = useMemo(() => [
+    ['silence', 'consonant', 'vowel', 'consonant', 'silence', 'vowel', 'consonant'],
+    ['vowel', 'consonant', 'silence', 'vowel', 'consonant', 'vowel', 'silence'],
+    ['consonant', 'vowel', 'vowel', 'silence', 'consonant', 'vowel', 'consonant'],
+    ['vowel', 'silence', 'consonant', 'vowel', 'consonant', 'silence', 'vowel'],
+  ], []);
+
+  // Phoneme characteristics
+  const phonemeData = useMemo(() => ({
+    consonant: { duration: 120, minAmp: 0.7, maxAmp: 0.9 },
+    vowel: { duration: 400, minAmp: 0.4, maxAmp: 0.6 },
+    silence: { duration: 250, minAmp: 0.05, maxAmp: 0.15 },
+  }), []);
 
   // Continuous animation for active waveform
   useEffect(() => {
@@ -119,33 +146,72 @@ function AudioButton({ state }: AudioButtonProps) {
 
   const bars = useMemo(() => {
     const speechIsActive = preparationPhase === 'active';
-    const time = Date.now();
+    const currentTime = Date.now();
+    const minHeight = 4;
+    const maxHeight = 24;
 
     return [0, 1, 2, 3].map((barIndex) => {
-      let barLevel;
-      if (speechIsActive) {
-        // Create smooth sine wave variation
-        const variation = [0.7, 1.0, 1.0, 0.8][barIndex];
-        const wave = Math.sin(time * 0.003 + barIndex * 0.5) * 0.3 + 0.7;
-        barLevel = 0.8 * variation * wave;
-      } else {
-        barLevel = 0.02;
+      if (!speechIsActive) {
+        return { height: minHeight, isActive: false };
       }
 
-      const amplifiedLevel = Math.min(1, barLevel * 4);
-      const minHeight = 4;
-      const maxHeight = 24;
+      // Calculate total sequence duration for this bar
+      const sequence = phonemeSequences[barIndex];
+      let totalDuration = 0;
+      for (const phoneme of sequence) {
+        totalDuration += phonemeData[phoneme as keyof typeof phonemeData].duration;
+      }
 
-      const barHeight = speechIsActive
-        ? minHeight + (amplifiedLevel * maxHeight)
-        : minHeight;
+      // Loop elapsed time within sequence duration
+      const elapsedMs = (currentTime - waveformStartTime) % totalDuration;
+
+      // Find current phoneme in sequence
+      let accumulatedTime = 0;
+      let currentPhoneme = sequence[0];
+      let phonemeProgress = 0;
+
+      for (const phoneme of sequence) {
+        const duration = phonemeData[phoneme as keyof typeof phonemeData].duration;
+
+        if (elapsedMs < accumulatedTime + duration) {
+          currentPhoneme = phoneme;
+          phonemeProgress = (elapsedMs - accumulatedTime) / duration;
+          break;
+        }
+
+        accumulatedTime += duration;
+      }
+
+      // Get amplitude for current phoneme
+      const phonemeInfo = phonemeData[currentPhoneme as keyof typeof phonemeData];
+      const { minAmp, maxAmp } = phonemeInfo;
+
+      // Add natural variation with sine wave
+      const variation = Math.sin(currentTime * 0.008 + barIndex * 1.2) * 0.1;
+      let amplitude = (minAmp + maxAmp) / 2 + variation;
+
+      // Add attack/decay for consonants (sharper edges)
+      if (currentPhoneme === 'consonant') {
+        if (phonemeProgress < 0.2) {
+          // Attack
+          amplitude *= (phonemeProgress / 0.2);
+        } else if (phonemeProgress > 0.7) {
+          // Decay
+          amplitude *= (1 - (phonemeProgress - 0.7) / 0.3);
+        }
+      }
+
+      // Clamp amplitude
+      amplitude = Math.max(minAmp, Math.min(maxAmp, amplitude));
+
+      const barHeight = minHeight + (amplitude * maxHeight);
 
       return {
         height: Math.max(minHeight, Math.min(minHeight + maxHeight, barHeight)),
         isActive: speechIsActive
       };
     });
-  }, [preparationPhase, animationFrame]);
+  }, [preparationPhase, animationFrame, waveformStartTime, phonemeSequences, phonemeData]);
 
   return (
     <div className="group flex flex-col items-center relative min-h-[64px]">
@@ -154,31 +220,39 @@ function AudioButton({ state }: AudioButtonProps) {
           disabled={true}
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
-            "transition-all duration-200 ease-out",
+            "transition-all ease-out",
+            isPulsing ? "duration-300" : "duration-400",
             "border-4",
             isRecording ? "border-[#30A46C]" : "border-[#D4D4D4]",
-            "hover:scale-[1.02] active:scale-[0.98]"
+            "hover:scale-[1.02] active:scale-[0.98]",
+            isPulsing && "animate-button-pulse"
           )}
         >
           <div className="relative w-10 h-5">
             {/* Loading dots */}
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center animate-fade-in">
-                <LoadingDots />
-              </div>
-            )}
+            <div
+              className={cn(
+                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                !isLoading && "opacity-0 scale-95"
+              )}
+            >
+              <LoadingDots />
+            </div>
 
             {/* Success checkmark */}
-            {showSuccess && (
-              <div className="absolute inset-0 flex items-center justify-center animate-fade-in">
-                <Check className="h-6 w-6 text-[#30A46C] stroke-[2.5]" />
-              </div>
-            )}
+            <div
+              className={cn(
+                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                !showSuccess && "opacity-0 scale-95"
+              )}
+            >
+              <Check className="h-6 w-6 text-[#30A46C] stroke-[2.5]" />
+            </div>
 
             {/* Microphone icon */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-300 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
                 (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
@@ -186,18 +260,21 @@ function AudioButton({ state }: AudioButtonProps) {
             </div>
 
             {/* Preparing dots */}
-            {preparationPhase === 'preparing' && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <LoadingDots variant="preparing" />
-              </div>
-            )}
+            <div
+              className={cn(
+                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                preparationPhase !== 'preparing' && "opacity-0 scale-95"
+              )}
+            >
+              <LoadingDots variant="preparing" />
+            </div>
 
             {/* Waveform bars - properly spaced */}
             <div
               className={cn(
                 "absolute inset-0 flex items-center justify-between gap-[2px]",
                 (preparationPhase !== 'burst' && preparationPhase !== 'active') && "opacity-0 scale-95",
-                "transition-all duration-200"
+                "transition-all duration-400"
               )}
               data-phase={preparationPhase}
             >
@@ -213,19 +290,19 @@ function AudioButton({ state }: AudioButtonProps) {
             </div>
 
             {/* Auto-retry "try again" text */}
-            {showAutoRetryText && (
-              <div className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-300 ease-out",
-                isRetryTextFadingOut ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            <div
+              className={cn(
+                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-100"
+              )}
+            >
+              <span className={cn(
+                "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-400 ease-out",
+                (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-110"
               )}>
-                <span className={cn(
-                  "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-300 ease-out",
-                  isRetryTextFadingOut ? "opacity-0 scale-95" : "opacity-100 scale-110 animate-pulse-once"
-                )}>
-                  try again
-                </span>
-              </div>
-            )}
+                try again
+              </span>
+            </div>
           </div>
         </button>
       </div>
@@ -271,7 +348,7 @@ function Card({ letter, state, isActive = false }: CardProps) {
         "border-2 bg-white rounded-xl",
         "flex flex-col items-center justify-center",
         "p-6 lg:p-8",
-        "transition-all duration-200",
+        "transition-all duration-400",
         borderColor
       )}
       style={{
@@ -418,14 +495,33 @@ export default function FlashcardStack() {
               key={`card-1-${cards[0]?.letter}`}
               className="absolute inset-0"
               initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
-              animate={{
-                scale: 1,
-                y: 0,
-                opacity: 1,
-                x: 0,
-                rotate: 0,
-                zIndex: 3
-              }}
+              animate={
+                activeCardState === 'recording'
+                  ? {
+                      scale: [1.0, 1.02, 1.0],
+                      y: 0,
+                      opacity: 1,
+                      x: 0,
+                      rotate: 0,
+                      zIndex: 3,
+                      transition: {
+                        scale: {
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        },
+                        default: { duration: 0.4 }
+                      }
+                    }
+                  : {
+                      scale: 1,
+                      y: 0,
+                      opacity: 1,
+                      x: 0,
+                      rotate: 0,
+                      zIndex: 3
+                    }
+              }
               exit={
                 prefersReducedMotion
                   ? {
