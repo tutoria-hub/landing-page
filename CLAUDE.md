@@ -16,7 +16,7 @@ Cloudflare Workers (not Edge runtime - uses Node.js runtime via `cloudflare-node
 
 - `open-next.config.ts` - OpenNext adapter configuration (critical for Cloudflare deployment)
 - `wrangler.jsonc` - Cloudflare Workers configuration
-- `next.config.ts` - Contains Turbopack workspace root fix
+- `next.config.mjs` - Next.js configuration (uses webpack, not Turbopack)
 - `app/page.tsx` - Main landing page with shadcn components
 - `.mcp.json` - MCP server configuration for Claude Code
 
@@ -40,19 +40,37 @@ Enables natural language interaction with shadcn/ui component registries:
 ## Known Issues
 
 - Next.js 16 not compatible with OpenNext 1.11.1 (use 15.5.6)
-- Turbopack requires explicit root when multiple lockfiles in workspace
+- Turbopack has compatibility issues with Tailwind CSS v4 (use webpack for dev)
 - Must use `nodejs_compat` flag in wrangler.jsonc
+- Ensure NODE_ENV=development for local dev (now handled automatically in package.json)
 
 ## Development Workflow
 
-**CRITICAL: DO NOT run `npm run dev` or start local dev servers.**
-
-Always deploy to Cloudflare to test changes:
+### Local Development (Recommended for rapid iteration)
 
 ```bash
-npm run deploy    # Build with OpenNext + deploy to Cloudflare
+npm run dev    # Starts Next.js dev server on http://localhost:3000
+```
+
+The dev server now works properly with Tailwind CSS v4:
+- Uses webpack bundler (not Turbopack) for proper PostCSS processing
+- NODE_ENV automatically set to development
+- Supports Hot Module Replacement for fast iteration
+
+### Production Testing
+
+For testing Cloudflare-specific features (bindings, Workers runtime):
+
+```bash
+npm run preview    # Build + run in local Workers runtime
+npm run deploy     # Deploy to Cloudflare Workers
 ```
 
 Live at: https://landing-page.fupsonline.workers.dev/
 
-**Why**: Local dev with Turbopack has compatibility issues with Tailwind CSS v4. Production builds via OpenNext work correctly.
+### Cloudflare Bindings (Optional)
+
+If you need to test Cloudflare bindings (R2, D1, KV) locally:
+1. Uncomment `initOpenNextCloudflareForDev()` in `next.config.mjs`
+2. Uncomment `NEXTJS_ENV=development` in `.dev.vars`
+3. Run `npm run dev` - bindings will be available via miniflare

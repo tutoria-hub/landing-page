@@ -1,50 +1,52 @@
 # Hero Section - Design Brief
 
 **Last Updated**: 2025-11-07
-**Status**: Finalized - Ready for Development
+**Status**: Implemented - Editorial Two-Column Layout
 
 ---
 
 ## Purpose
 
-Establish immediate credibility and value proposition within 3 seconds of landing. Answers two critical questions:
-1. "What is this?" → Structured phonics learning platform
-2. "Why should I care?" → Proven effectiveness (50-90% success rate from Harvard research)
+Establish immediate credibility and value proposition within 3 seconds of landing. Combines clear messaging with immediate conversion path:
+1. **Left column**: Value proposition + CTA ("What is this?" + "How do I get it?")
+2. **Right column**: Social proof ("Why should I trust this?")
 
 ---
 
-## Layout Specs
+## Layout Architecture
+
+### Two-Column Editorial Grid
+
+**Decision**: Horizontal split instead of vertical stack
+**Rationale**:
+- Reduces scroll depth - CTA visible immediately without scrolling
+- Creates visual balance - message and proof in parallel
+- Differentiates from standard edu-tech single-column patterns
+- Editorial layout conveys sophistication and authority
 
 ### Desktop (≥1024px)
 
 ```css
 .hero-section {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr; /* Left column dominant */
+  gap: 48px;
   align-items: center;
-  text-align: center;
-  background: #FFFFFF;
-  padding: 48px 24px;
-}
-
-.hero-content {
-  max-width: 900px;
+  background: #F7F5ED; /* Cream - warm entry */
+  padding: 96px 96px; /* Desktop: 96px x/y */
+  max-width: 1440px;
   margin: 0 auto;
 }
 
-/* Component spacing */
-.headline {
-  margin-bottom: 48px; /* Increased from 24px - let headline breathe */
+.left-column {
+  max-width: 640px;
+  space-y: 48px; /* Headline to CTA gap */
 }
 
-.stat-card {
-  margin-bottom: 48px; /* Space before scroll indicator */
-}
-
-.scroll-indicator {
-  margin-top: 0; /* Positioned after stat card */
+.right-column {
+  max-width: 480px;
+  justify-self: end;
 }
 ```
 
@@ -53,29 +55,31 @@ Establish immediate credibility and value proposition within 3 seconds of landin
 ```css
 .hero-section {
   min-height: 80vh;
-  padding: 32px 20px;
+  display: block; /* Stack vertically */
+  padding: 96px 24px; /* Mobile: 24px horizontal */
 }
 
-/* Headline and stat-card spacing remain same (48px gap) */
-/* Scroll indicator remains same */
+/* Order: Headline → CTA → Stat Card → Scroll Indicator */
 ```
 
 ---
 
 ## Components
 
-**Note**: Logo lives in site header, not hero section. Hero contains only headline, stat card, and scroll indicator.
+### 1. Headline with Decorative Underline
 
----
-
-### Headline
-
-**Purpose**: Immediate value proposition in plain language
+**Purpose**: Immediate value proposition with visual emphasis on "phonics"
 
 **HTML Structure**:
 ```html
 <h1 class="hero-headline">
-  Structured phonics that just works!
+  <span class="relative inline-block">
+    <svg class="decorative-underline">
+      <path d="M 5 12 Q 100 5, 200 12 T 395 12" stroke="#30A46C" />
+    </svg>
+    <span class="relative z-10">Structured phonics</span>
+  </span>
+  <em class="italic font-bold text-[#30A46C]">actually works!</em>
 </h1>
 ```
 
@@ -84,156 +88,196 @@ Establish immediate credibility and value proposition within 3 seconds of landin
 .hero-headline {
   font-family: 'EB Garamond', serif;
   font-weight: 700;
-  font-size: 96px;
-  line-height: 1.1;
-  letter-spacing: -0.01em; /* Tighter for display serif */
+  font-size: 80px;   /* Desktop */
+  font-size: 64px;   /* Tablet ≥768px */
+  font-size: 48px;   /* Mobile <768px */
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   color: #1A1A1A;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
-@media (max-width: 1024px) {
-  .hero-headline {
-    font-size: 48px;
-  }
+.decorative-underline {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 16px;
+  margin-top: -6px; /* Overlaps text slightly */
+  pointer-events: none;
+  z-index: -10; /* Behind text */
 }
 
-@media (max-width: 640px) {
-  .hero-headline {
-    font-size: 40px; /* Extra adjustment for very small screens */
-  }
+.decorative-underline path {
+  stroke: #30A46C;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  fill: none;
 }
 ```
 
-**States**:
-- **Default**: Static text
-- **Animation (Phase 2)**: Fade in from bottom (200ms delay after logo)
-
 **Content**:
-- Finalized text: "Structured phonics that just works!"
-- Do not modify without approval
+- Primary text: "Structured phonics"
+- Emphasized text: "actually works!" (italic, green)
+- Green curvy underline beneath "Structured phonics"
+
+**Design Decision**:
+- **Why "actually works" instead of "just works"?** More emphatic. Acknowledges parent frustration ("other methods didn't work") and confidently asserts effectiveness.
+- **Why curvy underline?** Adds warmth and personality without being childish. Hand-drawn aesthetic = human touch. Green accent = brand consistency.
+- **Why split emphasis?** "Structured phonics" gets visual weight (underline), "actually works!" gets semantic emphasis (italic + color). Balanced hierarchy.
 
 ---
 
-### Harvard Stat Card
+### 2. CTA Section
 
-**Purpose**: Establish scientific credibility immediately
+**Purpose**: Immediate conversion path with value-focused supporting text
+
+**HTML Structure**:
+```html
+<div class="cta-section">
+  <p class="cta-support-text">
+    Help your child learn to read
+  </p>
+  <button class="btn-primary">
+    Join the Waitlist
+  </button>
+</div>
+```
+
+**Styles**:
+```css
+.cta-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cta-support-text {
+  font-family: 'Lexend', sans-serif;
+  font-size: 16px;
+  color: #595959;
+}
+
+.btn-primary {
+  font-family: 'Lexend', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 16px 48px;
+  border-radius: 9999px; /* Pill */
+  background: #30A46C;
+  color: #FFFFFF;
+  box-shadow: 0 6px 0 #2A9461; /* 3D effect */
+  transition: all 150ms ease;
+}
+
+.btn-primary:hover {
+  background: #2A9461;
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #2A9461; /* Compressed shadow */
+}
+
+.btn-primary:active {
+  transform: translateY(6px);
+  box-shadow: 0 0px 0 #2A9461; /* Fully compressed */
+}
+```
+
+**Content**:
+- Support text: "Help your child learn to read" (value-focused, honest)
+- Button text: "Join the Waitlist"
+
+**Design Decisions**:
+- **Why CTA in hero?** Editorial layout allows it without feeling aggressive. Parallel placement with stat card = balanced ask.
+- **Why "Help your child learn to read" instead of social proof?** Honest messaging. No fake numbers. Focuses on parent goal, not artificial urgency.
+- **Why 3D button shadow?** Matches Duolingo playbook - tactile, inviting, clear affordance. Green = go.
+
+---
+
+### 3. Harvard Stat Card
+
+**Purpose**: Scientific credibility proof - establishes trust immediately
 
 **HTML Structure**:
 ```html
 <div class="stat-card">
+  <!-- Stat number first - dominant visual element -->
   <p class="stat-number">50-90%</p>
+
+  <!-- Explanatory text -->
   <p class="stat-text">
     of at-risk readers can reach grade level with targeted instruction
   </p>
+
+  <!-- Harvard logo - citation at bottom -->
   <img
     src="/assets/harvard-logo-grey.png"
     alt="Harvard Medical School"
     class="harvard-logo"
-  >
+  />
 </div>
 ```
 
 **Styles**:
 ```css
 .stat-card {
-  background: #F7F5ED; /* Cream */
-  border: 2px solid #30A46C; /* Green accent */
-  border-radius: 16px;
-  padding: 32px 48px;
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: center;
-  box-shadow: 0 4px 0 #DCDCDC; /* Subtle 3D effect */
-  transition: all 200ms ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 0 #DCDCDC; /* Enhanced shadow on hover */
+  background: #FFFFFF;
+  border: 3px solid #30A46C;
+  border-radius: 8px; /* Subtle rounding */
+  padding: 40px;
+  box-shadow: 0 4px 0 #DCDCDC; /* 3D effect */
 }
 
 .stat-number {
   font-family: 'EB Garamond', serif;
-  font-size: 64px;
   font-weight: 700;
-  color: #30A46C;
+  font-size: 80px;  /* Desktop */
+  font-size: 64px;  /* Mobile */
   line-height: 1;
-  margin-bottom: 16px;
+  color: #30A46C;
+  margin-bottom: 24px;
 }
 
 .stat-text {
   font-family: 'Lexend', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 22px;  /* Desktop */
+  font-size: 20px;  /* Mobile */
   line-height: 1.5;
   color: #1A1A1A;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  max-width: 400px;
 }
 
 .harvard-logo {
   width: auto;
-  height: 40px;
+  height: 80px;  /* Desktop */
+  height: 64px;  /* Mobile */
   filter: grayscale(100%);
-  opacity: 1;
-  display: block;
-  margin: 0 auto;
-}
-
-@media (max-width: 1024px) {
-  .stat-card {
-    padding: 24px 32px;
-    max-width: 90%;
-  }
-
-  .stat-card:hover {
-    transform: none; /* Disable hover on touch devices */
-    box-shadow: 0 4px 0 #DCDCDC;
-  }
-
-  .stat-number {
-    font-size: 48px;
-  }
-
-  .stat-text {
-    font-size: 18px;
-  }
-
-  .harvard-logo {
-    height: 32px; /* Slightly smaller on mobile */
-  }
+  opacity: 0.8;
 }
 ```
 
-**States**:
-- **Default**: Static display with subtle shadow
-- **Hover (Desktop)**: Card lifts 4px with enhanced shadow
-- **Mobile**: No hover interaction (touch devices)
-- **Animation (Phase 2)**: Fade in from bottom (400ms delay after headline)
-
 **Content**:
-- Stat number: "50-90%"
-- Body: "of at-risk readers can reach grade level with targeted instruction"
-- Visual citation: Harvard Medical School logo (greyscale, 40px height)
-- Do not modify without approval
+- Stat: "50-90%"
+- Explanation: "of at-risk readers can reach grade level with targeted instruction"
+- Citation: Harvard Medical School logo (greyscale, bottom placement)
 
-**Asset Requirements**:
-- Harvard logo in greyscale format
-- Format: Transparent PNG
-- Minimum height: 80px (2x for retina)
-- Location: `/assets/harvard-logo-grey.png`
+**Design Decisions**:
+- **Why white background instead of cream?** Contrast against cream hero section. Makes card "pop" visually.
+- **Why 3px border instead of 2px?** Stronger visual weight to match stat number emphasis. Bolder = more confident.
+- **Why Harvard logo at bottom?** Attribution, not endorsement. Logo-first implies "Harvard says X". Stat-first, logo-last = "Research shows X (Harvard conducted it)". Honest hierarchy.
+- **Why greyscale logo?** Professional, not promotional. Full-color would feel like sponsorship. Grey = academic citation.
+- **Why full stat text with "targeted instruction"?** Critical qualifier. Without it, stat implies any instruction works. "Targeted instruction" = what Tutoria provides.
 
 ---
 
-### Scroll Indicator
+### 4. Scroll Indicator
 
-**Purpose**: Guide users to explore content below the fold without nagging
+**Purpose**: Guide users to explore content below without being intrusive
 
 **HTML Structure**:
 ```html
 <div class="scroll-indicator" aria-label="Scroll to continue">
-  <svg class="chevron" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M6 9L12 15L18 9" stroke="#595959" stroke-width="2" stroke-linecap="round"/>
+  <svg class="chevron" viewBox="0 0 24 24">
+    <path d="M6 9L12 15L18 9" stroke="#595959" />
   </svg>
 </div>
 ```
@@ -241,19 +285,20 @@ Establish immediate credibility and value proposition within 3 seconds of landin
 **Styles**:
 ```css
 .scroll-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 48px;
-  opacity: 0;
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
 }
 
 .chevron {
   width: 24px;
   height: 24px;
+  stroke-width: 2px;
+  stroke-linecap: round;
 }
 
-/* Animation timing: play on load, then every 15 seconds */
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
@@ -267,221 +312,196 @@ Establish immediate credibility and value proposition within 3 seconds of landin
 }
 
 .scroll-indicator.animate {
-  opacity: 1;
   animation: bounce 1s ease-in-out;
 }
 ```
 
 **JavaScript Behavior**:
 ```javascript
-// Show indicator on page load
-window.addEventListener('load', () => {
-  const indicator = document.querySelector('.scroll-indicator');
-  indicator.classList.add('animate');
+// Animate on load (2s delay), repeat every 15s
+setTimeout(animateIndicator, 2000);
+setInterval(animateIndicator, 15000);
 
-  // Remove animation class after completion
-  setTimeout(() => indicator.classList.remove('animate'), 1000);
-
-  // Repeat animation every 15 seconds
-  setInterval(() => {
-    indicator.classList.add('animate');
-    setTimeout(() => indicator.classList.remove('animate'), 1000);
-  }, 15000);
-});
-
-// Hide indicator after user scrolls
-window.addEventListener('scroll', () => {
-  const indicator = document.querySelector('.scroll-indicator');
-  if (window.scrollY > 100) {
-    indicator.style.display = 'none';
-  }
-});
+// Hide after user scrolls 100px
+if (window.scrollY > 100) setShowScrollIndicator(false);
 ```
 
 **States**:
-- **Default**: Invisible (opacity: 0) until triggered
-- **Animated**: Visible with bounce animation (1s duration)
-- **Hidden**: Permanently hidden after user scrolls 100px
+- Initial: Visible but static (2s delay before first animation)
+- Animated: Bounce animation (1s duration)
+- Hidden: Permanently hidden after scroll
 
 **Accessibility**:
-- Includes `aria-label` for screen readers
-- Animation respects `prefers-reduced-motion` (Phase 2)
+- `aria-label="Scroll to continue"` for screen readers
 - Not keyboard-interactive (decorative only)
 
-**Mobile**:
-- Same behavior as desktop
-- Indicator remains 24px size (touch-friendly)
+---
+
+## Background Choice
+
+**Decision**: Cream (#F7F5ED) hero background instead of white
+**Rationale**:
+- Creates warm, inviting first impression
+- Differentiates hero from stark white
+- Pattern becomes: Cream (hero) → Cream (testimonials) → White (future sections)
+- Alternation still exists, just starts with cream
+
+**Trade-off**: Original brief specified white hero with cream starting at section 02. This breaks that pattern but improves first impression warmth.
 
 ---
 
 ## Accessibility
 
 **Completed**:
-- [x] Headline uses semantic h1 tag
-- [x] Harvard logo has descriptive alt text ("Harvard Medical School")
-- [x] Stat card hover only on desktop (no confusing touch interactions)
-- [x] Scroll indicator has aria-label for screen readers
-- [x] Color contrast exceeds 4.5:1 (all text passes WCAG AA)
+- [x] Semantic h1 for headline
+- [x] Button has proper hover/active states
+- [x] Harvard logo has descriptive alt text
+- [x] Color contrast exceeds 4.5:1 (all text)
+- [x] Touch targets exceed 44x44px (button)
+- [x] Keyboard navigation flows logically (headline → button → stat card)
+- [x] Scroll indicator has aria-label
 
 **Phase 2**:
-- [ ] Scroll indicator animation respects `prefers-reduced-motion` media query
-- [ ] Card fade-in animations respect `prefers-reduced-motion`
-- [ ] Add skip-to-content link for keyboard users
-
-**Testing**:
-- Verify with screen reader (NVDA, JAWS, VoiceOver)
-- Test keyboard navigation flow (should skip directly to next section after hero)
-- Verify hover states don't interfere with touch/mobile interactions
+- [ ] Scroll indicator animation respects `prefers-reduced-motion`
+- [ ] Add skip-to-content link
+- [ ] Test with screen readers (NVDA, JAWS, VoiceOver)
 
 ---
 
 ## Edge Cases
 
-### Mobile Landscape (480px-1024px, landscape orientation)
+### Mobile Landscape (480px-1024px, landscape)
 
-**Problem**: 100vh on landscape mobile causes awkward cropping
+**Problem**: 100vh on landscape causes awkward cropping
+
 **Solution**:
 ```css
 @media (max-width: 1024px) and (orientation: landscape) {
   .hero-section {
-    min-height: 60vh; /* Reduce height on landscape */
+    min-height: 60vh;
   }
-}
-```
-
-### Slow Connections
-
-**Problem**: Large logo file delays hero render
-**Solution**:
-- Prioritize logo loading (add `<link rel="preload">` in `<head>`)
-- Use optimized PNG (compress with TinyPNG or ImageOptim)
-- Show placeholder until loaded:
-```css
-.hero-logo[src=""] {
-  background: #F5F5F4;
-  border-radius: 8px;
-}
-```
-
-### Long Headline Translations (Future i18n)
-
-**Problem**: Some languages produce longer headlines
-**Solution**:
-- Allow line wrapping (already enabled)
-- Maintain center alignment
-- Reduce font-size on overflow:
-```css
-.hero-headline[data-lang="de"],
-.hero-headline[data-lang="es"] {
-  font-size: 84px; /* Slightly smaller for longer text */
 }
 ```
 
 ### Very Small Screens (<375px)
 
-**Problem**: 40px headline still too large on tiny screens
+**Problem**: Text too large, button overflows
+
 **Solution**:
 ```css
 @media (max-width: 375px) {
   .hero-headline {
-    font-size: 32px;
-  }
-
-  .stat-card {
-    padding: 20px 24px;
+    font-size: 40px;
   }
 
   .stat-number {
-    font-size: 40px;
+    font-size: 56px;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    font-size: 16px;
   }
 }
 ```
+
+### SVG Underline Distortion
+
+**Problem**: `preserveAspectRatio="none"` can distort curve on extreme aspect ratios
+
+**Solution**: Already handled with relative positioning and z-index. Underline stretches proportionally to text width.
 
 ---
 
 ## Implementation Notes
 
-### Phase 1 (Ship First)
+### Current Status
 
-**Minimum Viable Version**:
-- Headline + stat card (with Harvard logo) + scroll indicator
-- Stat card hover interaction (desktop only)
-- Scroll indicator with timed animation (JS required)
-- Basic responsive (desktop/mobile breakpoints)
-- All text finalized
+**Completed**:
+- ✅ Two-column editorial grid (desktop)
+- ✅ Single-column stack (mobile)
+- ✅ Headline with curvy underline decoration
+- ✅ CTA button with 3D shadow effect
+- ✅ Harvard stat card (stat-first hierarchy)
+- ✅ Scroll indicator with timed animation
+- ✅ All copy finalized
+- ✅ Responsive breakpoints working
 
-**Time Estimate**: 3-4 hours (JS for scroll indicator adds complexity)
-
-**Deliverable**: Functional hero that establishes credibility and guides users to scroll
-
-### Phase 2 (Polish)
-
-**Enhancements**:
-- Fade-in animation sequence:
-  1. Headline fades in from bottom (0ms)
-  2. Stat card fades in from bottom (200ms delay)
-  3. Scroll indicator appears (400ms delay)
-- `prefers-reduced-motion` support for all animations
-- Subtle parallax scroll effect on stat card (optional)
-
-**Time Estimate**: 2-3 hours
-
-**Deliverable**: Polished, smooth entry animation with accessibility enhancements
+**Time Invested**: ~4-5 hours
 
 ### Dependencies
 
 **Assets Required**:
-- harvard-logo-grey.png (greyscale PNG, min 80px height for retina)
-- EB Garamond font loaded (Bold 700 weight required)
-- Lexend font loaded (Regular 400 weight required)
+- harvard-logo-grey.png (greyscale PNG, min 160px height for retina)
+- EB Garamond font (Bold 700)
+- Lexend font (Regular 400, Semibold 600)
 
 **External**:
-- None (fully self-contained section)
+- None (self-contained section)
 
 **Technical**:
-- CSS custom properties for colors (defined in global stylesheet)
-- JavaScript for scroll indicator timing (vanilla JS, no frameworks)
-- Tailwind utility classes (optional, can use vanilla CSS)
+- Next.js Image component for Harvard logo
+- Vanilla JavaScript for scroll indicator timing
+- Tailwind CSS utilities (inline styles)
 
 ---
 
 ## Design Decisions Log
 
-### Why 96px headline on desktop?
+### Why Two-Column Editorial Layout?
 
-**Decision**: Use 96px instead of design system's 72px max
-**Rationale**: Hero headline is unique moment - needs commanding presence. 72px felt timid for such a clear value proposition.
-**Trade-off**: Requires custom Tailwind config or CSS. Worth it for impact.
+**Decision**: Horizontal split (left: message/CTA, right: proof) instead of vertical stack
+**Rationale**:
+- **Reduces scroll requirement**: CTA visible immediately without scrolling past hero
+- **Balanced visual hierarchy**: Message and proof receive equal visual weight
+- **Sophisticated positioning**: Editorial layouts convey authority (think NYT, Medium)
+- **Differentiation**: Most edu-tech uses center-stacked. This stands out.
+**Trade-off**: Requires wider viewports to work well. Mobile must stack carefully.
 
-### Why cream background on stat card instead of white?
+### Why "Actually Works" Instead of "Just Works"?
 
-**Decision**: Cream (#F7F5ED) background with green border
-**Rationale**: Creates visual separation from white page background. Draws eye to credibility proof. Subtle warmth without full notebook aesthetic.
-**Alternative Considered**: White card with green background - rejected as too aggressive.
+**Decision**: "actually works!" with italic emphasis
+**Rationale**:
+- **Acknowledges frustration**: Parents have likely tried other methods that failed
+- **Confident assertion**: "Actually" is more emphatic than "just"
+- **Emotional resonance**: "Just works" feels casual. "Actually works" feels validating.
+**Alternative Considered**: "Just works" (original) - rejected as too passive.
 
-### Why green border on stat card?
+### Why CTA in Hero Section?
 
-**Decision**: 2px solid #30A46C border
-**Rationale**: Green = success/credibility in Tutoria design system. Draws eye without overwhelming. Matches brand identity.
-**Alternative Considered**: No border - rejected as card felt too flat.
+**Decision**: Place "Join the Waitlist" button in hero left column
+**Rationale**:
+- **Editorial layout enables it**: Two-column creates space for parallel CTA + proof
+- **Immediate conversion path**: Users who immediately trust can convert without scrolling
+- **Not aggressive**: Balanced with stat card = invitation, not hard sell
+**Alternative Considered**: Keep CTA in dedicated section 04 - rejected as missed opportunity with editorial layout.
 
-### Why Harvard logo instead of text citation?
+### Why Harvard Logo at Bottom?
 
-**Decision**: Replace "— Harvard Medical Journal" text with greyscale Harvard logo (40px)
-**Rationale**: Visual credibility stronger than text attribution. Logo communicates institutional authority instantly. Greyscale treatment keeps it professional, not promotional.
-**Alternative Considered**: Text + logo side-by-side - rejected as cluttered.
+**Decision**: Stat number → text → logo (not logo-first)
+**Rationale**:
+- **Attribution not endorsement**: Logo-first implies "Harvard says this". Stat-first = "Research shows this (Harvard studied it)"
+- **Visual hierarchy**: Green number dominates, then explanation, then citation
+- **Honesty**: Harvard researched the data, they don't endorse Tutoria specifically
+**Alternative Considered**: Logo at top - rejected as misleading.
 
-### Why 48px gap between headline and stat card?
+### Why Cream Background?
 
-**Decision**: Increase spacing from 24px to 48px
-**Rationale**: Headline deserves isolated impact before introducing proof. 24px felt cramped. 48px lets message land, then reinforces with data.
-**Trade-off**: Uses more vertical space, but hero is full-height viewport so room isn't constrained.
+**Decision**: #F7F5ED cream instead of white
+**Rationale**:
+- **Warm first impression**: Cream feels inviting, white feels clinical
+- **Visual separation**: Creates section boundary without harsh divider
+- **Brand consistency**: Cream used throughout app for warmth
+**Trade-off**: Breaks original pattern (white hero → cream section 02), but improves entry.
 
-### Why timed animation for scroll indicator (15s intervals)?
+### Why 3D Button Shadow?
 
-**Decision**: Animate on load, repeat every 15 seconds
-**Rationale**: Guides without nagging. Single animation might be missed. Continuous animation is annoying. 15s strikes balance - reminds hesitant users without pestering engaged ones.
-**Alternative Considered**: Continuous pulse - rejected as distracting.
+**Decision**: `box-shadow: 0 6px 0 #2A9461` with hover translation
+**Rationale**:
+- **Duolingo-style affordance**: Clear tactile feedback = high engagement
+- **Playful without childish**: 3D effect adds personality appropriate for parents (not kids)
+- **Green = go**: Shadow reinforces action color
+**Alternative Considered**: Flat button with subtle shadow - rejected as less engaging.
 
 ---
 
@@ -495,4 +515,4 @@ See `notes.md` in this folder for:
 
 ---
 
-**This section is ready for development. All specs finalized with improvements. Ship Phase 1 in 3-4 hours.**
+**Section Status**: ✅ Implemented and validated. Editorial two-column layout approved.
