@@ -448,21 +448,21 @@ export default function FlashcardStack() {
         currentStep++;
         timeoutId = setTimeout(advance, duration);
       } else {
-        // Trigger Apple card shuffle exit animation
+        // Trigger smooth left slide exit animation
         setIsExiting(true);
 
-        // Drop z-index after dismissal signal phase (200ms)
+        // Drop z-index early so card goes under (240ms = 40% of 600ms)
         setTimeout(() => {
           setExitingCardZIndex(0);
-        }, 200);
+        }, 240);
 
-        // Complete cycle after full animation (800ms)
+        // Complete cycle after full animation (600ms)
         setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
           setExitingCardZIndex(3); // Reset for next card
           setActiveCardState('idle');
-        }, 800);
+        }, 600);
       }
     };
 
@@ -518,9 +518,9 @@ export default function FlashcardStack() {
                 }
           }
           transition={{
-            duration: 0.35,
-            delay: isExiting ? 0.08 : 0, // Delay rise until anticipation completes (80ms)
-            ease: [0.34, 1.56, 0.64, 1], // Spring physics with slight overshoot
+            duration: 0.4,
+            delay: isExiting ? 0.15 : 0, // Slight delay for smooth handoff
+            ease: [0.4, 0, 0.2, 1], // iOS standard easing (smooth deceleration)
           }}
           style={{
             pointerEvents: 'none',
@@ -574,42 +574,16 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Apple Card Physics: Anticipation → Momentum swipe → Gentle settle
-                      // Each property has independent timing for natural physics
-                      x: [0, -8, 0, 45, 280],        // Anticipation pullback → momentum swipe
-                      y: [0, 0, 0, 12, 72],          // Slight arc trajectory
-                      rotate: [0, -0.5, 0, 2.5, 12], // Counter-rotate → natural tilt
-                      scale: [1, 1.01, 1, 0.96, 0.82], // Subtle lift → compress
-                      opacity: [1, 1, 1, 0.92, 0],   // Hold visibility → quick fade
+                      // Smooth left slide: slide left → go under → fade out
+                      x: [0, -60, -120],      // Gentle slide left
+                      y: [0, 8, 16],          // Subtle downward (not too much)
+                      rotate: [0, -2, -4],    // Slight rotation
+                      scale: [1, 0.96, 0.92], // Scale down as it goes under
+                      opacity: [1, 0.7, 0],   // Fade out smoothly
                       transition: {
-                        duration: 0.42,  // Apple Card standard: 420ms
-                        times: [0, 0.14, 0.19, 0.67, 1], // [0ms, 60ms, 80ms, 280ms, 420ms]
-                        // Layered easing curves per property for realistic physics
-                        x: {
-                          duration: 0.42,
-                          times: [0, 0.14, 0.19, 0.67, 1],
-                          ease: [0.34, 1.56, 0.64, 1] // Spring overshoot on exit
-                        },
-                        y: {
-                          duration: 0.42,
-                          times: [0, 0.14, 0.19, 0.67, 1],
-                          ease: [0.22, 0.61, 0.36, 1] // Gentle arc
-                        },
-                        rotate: {
-                          duration: 0.42,
-                          times: [0, 0.14, 0.19, 0.67, 1],
-                          ease: [0.17, 0.89, 0.32, 1.28] // Snappier rotation with overshoot
-                        },
-                        scale: {
-                          duration: 0.42,
-                          times: [0, 0.14, 0.19, 0.67, 1],
-                          ease: [0.4, 0, 0.2, 1] // iOS standard for scale
-                        },
-                        opacity: {
-                          duration: 0.42,
-                          times: [0, 0.14, 0.19, 0.67, 1],
-                          ease: [0.4, 0, 1, 1] // Hold → quick linear fade
-                        }
+                        duration: 0.6,         // Smooth 600ms
+                        times: [0, 0.4, 1],    // [0ms, 240ms, 600ms]
+                        ease: [0.4, 0, 0.2, 1] // iOS standard easing (smooth deceleration)
                       }
                     }
               }

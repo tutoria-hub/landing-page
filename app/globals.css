@@ -151,13 +151,15 @@
   animation: burst 200ms ease-out;
 }
 
-/* Active Phase: Green reactive pills */
+/* Active Phase: Silky smooth 60fps waveform (no CSS transition - RAF provides smoothness) */
 [data-phase="active"] .recording-bar {
   background: #30A46C;
   width: 6px;
   height: var(--bar-height);
-  transition: height 60ms cubic-bezier(0.34, 1.56, 0.64, 1); /* Spring physics for organic motion */
+  /* No transition: 60fps RAF updates provide butter-smooth motion */
 }
+
+/* No per-bar stagger needed - 60fps RAF updates provide organic motion */
 
 @keyframes burst {
   0% { transform: scale(1); }
