@@ -11,7 +11,6 @@ const TYPING_VARIATIONS = [
 ] as const;
 
 export default function Home() {
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
   const [typedText, setTypedText] = useState("actually works!");
   const [isTypingVisible, setIsTypingVisible] = useState(true);
   const [statMin, setStatMin] = useState(0);
@@ -78,41 +77,16 @@ export default function Home() {
       }
     }, stepDuration);
 
-    // Trigger scroll indicator animation on load
-    const animateIndicator = () => {
-      const indicator = document.querySelector('.scroll-indicator');
-      if (indicator) {
-        indicator.classList.add('animate');
-        setTimeout(() => indicator.classList.remove('animate'), 1000);
-      }
-    };
-
-    // Initial animation - delay to let user read content first
-    setTimeout(animateIndicator, 2000);
-
-    // Repeat every 15 seconds
-    const scrollInterval = setInterval(animateIndicator, 15000);
-
-    // Hide on scroll
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setShowScrollIndicator(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
     return () => {
       clearInterval(animateNumbers);
-      clearInterval(scrollInterval);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="relative min-h-[85vh] lg:min-h-[75vh] bg-[#F7F5ED] grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-24 pb-0 lg:pt-32 lg:pb-0 max-w-[1440px] mx-auto">
+      <section className="bg-[#F7F5ED]">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-32 pb-32 lg:pt-48 lg:pb-40 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
           {/* Headline - Clean, Flowing */}
@@ -182,35 +156,21 @@ export default function Home() {
             </p>
           </div>
         </div>
-
-        {/* Scroll Indicator - Absolutely Centered */}
-        {showScrollIndicator && (
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator" aria-label="Scroll to continue">
-            <svg
-              className="chevron w-6 h-6 mx-auto"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M6 9L12 15L18 9"
-                stroke="#595959"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-        )}
+        </div>
       </section>
 
       {/* Transition Quote - Absolutely centered */}
-      <div className="bg-[#F7F5ED] px-6 pt-0 pb-8 lg:pt-0 lg:pb-12 max-w-[1440px] mx-auto">
+      <div className="bg-[#F7F5ED]">
+        <div className="px-6 pt-16 pb-24 lg:pt-20 lg:pb-32 max-w-[1440px] mx-auto">
         <p className="font-serif italic font-medium text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
           The gift of making reading feel natural.
         </p>
       </div>
+      </div>
 
       {/* Video Demo Section - Placeholder State */}
-      <section className="bg-[#F7F5ED] px-6 lg:px-24 pt-6 pb-24 lg:pt-8 lg:pb-32 max-w-[1440px] mx-auto">
+      <section className="bg-[#F7F5ED]">
+        <div className="px-6 lg:px-24 pt-6 pb-24 lg:pt-8 lg:pb-32 max-w-[1440px] mx-auto">
         <div className="max-w-[1120px] mx-auto text-center">
           {/* Video Container - Placeholder */}
           <div className="relative w-full max-w-[896px] mx-auto aspect-video rounded-2xl lg:rounded-[16px] overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.12)] bg-white">
@@ -231,10 +191,144 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </div>
+      </section>
+
+      {/* Features Section - Two-Column Layout */}
+      <section className="bg-white">
+        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
+          {/* LEFT COLUMN: Feature List */}
+          <div className="order-2 lg:order-1">
+            <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
+              What We Offer:
+            </h2>
+
+            <ul className="space-y-6 lg:space-y-8">
+              <li className="flex gap-4">
+                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
+                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                  Built on proven Orton-Gillingham principles
+                </p>
+              </li>
+              <li className="flex gap-4">
+                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
+                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                  tutoria matches your learning pace seamlessly and its intelligence supports you in the right moments
+                </p>
+              </li>
+              <li className="flex gap-4">
+                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
+                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                  Builds confidence through consistent, judgment-free practice
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          {/* RIGHT COLUMN: Flashcard Demo */}
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[280px] lg:max-w-[320px]">
+              <div className="border-[3px] border-[#30A46C] bg-white rounded-2xl shadow-[0_4px_0_#DCDCDC] aspect-[4/5] flex flex-col items-center justify-center p-8 lg:p-10">
+                {/* Speaker Icon */}
+                <div className="mb-8">
+                  <svg className="w-10 h-10 lg:w-12 lg:h-12 text-[#595959]" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 5L6 9H2V15H6L11 19V5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M15.54 8.46C16.4774 9.39764 17.0039 10.6692 17.0039 11.995C17.0039 13.3208 16.4774 14.5924 15.54 15.53" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+
+                {/* Letter Display */}
+                <div className="mb-8">
+                  <span className="font-sans font-bold text-[96px] lg:text-[120px] leading-none text-[#1A1A1A]">
+                    r
+                  </span>
+                </div>
+
+                {/* Microphone Icon */}
+                <div>
+                  <svg className="w-10 h-10 lg:w-12 lg:h-12 text-[#595959]" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M19 10V12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M12 19V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 23H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Label */}
+              <p className="font-sans text-[14px] font-semibold text-center text-[#595959] mt-4 uppercase tracking-[0.05em]">
+                Flashcard Demo
+              </p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      {/* CTA Section - Centered Conversion Focus */}
+      <section className="bg-[#F7F5ED]">
+        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        <div className="max-w-[800px] mx-auto text-center">
+          {/* Section Header */}
+          <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
+            For Who?
+          </h2>
+
+          {/* Body Copy */}
+          <div className="space-y-6 mb-12">
+            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+              For any child learning to read. For any adult ready to help. Tutoria bridges the gap between wanting to help and knowing how.
+            </p>
+            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+              Structured phonics intervention was once locked behind specialists and expense. Now it&rsquo;s accessible to anyone ready to support a child&rsquo;s reading journey.
+            </p>
+          </div>
+
+          {/* Primary CTA Button */}
+          <div className="space-y-4 mb-8">
+            <a
+              href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist"
+              className="inline-block bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]"
+            >
+              Join the Exclusive Waitlist
+            </a>
+            <p className="font-sans text-[16px] text-[#595959]">
+              Get access very soon
+            </p>
+          </div>
+
+          {/* Secondary CTA Link */}
+          <a
+            href="mailto:demo@tutoria.com?subject=Demo%20Request&body=I%27d%20like%20to%20request%20a%20demo%20for%20my%20institution"
+            className="inline-block font-sans text-[16px] text-[#30A46C] hover:text-[#2A9461] underline underline-offset-4 transition-colors duration-150"
+          >
+            Request a demo for your institution
+          </a>
+        </div>
+        </div>
+      </section>
+
+      {/* Science Section - Research Credibility */}
+      <section className="bg-white">
+        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        <div className="max-w-[900px] mx-auto text-center">
+          {/* Body Copy - Research Focus */}
+          <div className="space-y-6">
+            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+              Young brains are remarkably adaptable. Research shows that structured phonics intervention <em className="italic font-bold text-[#30A46C]">literally rewires the brain</em>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
+            </p>
+            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+              tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
+            </p>
+          </div>
+        </div>
+        </div>
       </section>
 
       {/* Testimonials Section - Editorial Asymmetric Grid */}
-      <section className="bg-[#F7F5ED] px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+      <section className="bg-[#F7F5ED]">
+        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         {/* Section Header */}
         <h2 className="font-serif font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
           What Parents Are Saying
@@ -300,6 +394,53 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        </div>
+      </section>
+
+      {/* Founder Section - Personal Connection */}
+      <section className="bg-white">
+        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
+        <div className="max-w-[800px] mx-auto text-center">
+          {/* Section Header */}
+          <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-12 lg:mb-16">
+            The great minds behind Tutoria
+          </h2>
+
+          {/* Founder Grid - Placeholder */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 mb-8">
+            {/* Founder 1 - Placeholder */}
+            <div className="flex flex-col items-center">
+              <div className="w-[160px] h-[160px] rounded-full border-2 border-[#30A46C] bg-[#30A46C] flex items-center justify-center mb-4">
+                <span className="font-sans font-bold text-[48px] text-white">FH</span>
+              </div>
+              <h3 className="font-sans font-bold text-[20px] lg:text-[24px] text-[#1A1A1A] mb-1">
+                Founder Name
+              </h3>
+              <p className="font-sans text-[16px] text-[#595959]">
+                Co-founder &amp; CEO
+              </p>
+            </div>
+
+            {/* Founder 2 - Placeholder */}
+            <div className="flex flex-col items-center">
+              <div className="w-[160px] h-[160px] rounded-full border-2 border-[#30A46C] bg-[#30A46C] flex items-center justify-center mb-4">
+                <span className="font-sans font-bold text-[48px] text-white">TBD</span>
+              </div>
+              <h3 className="font-sans font-bold text-[20px] lg:text-[24px] text-[#1A1A1A] mb-1">
+                Founder Name
+              </h3>
+              <p className="font-sans text-[16px] text-[#595959]">
+                Co-founder &amp; CTO
+              </p>
+            </div>
+          </div>
+
+          {/* Founder Story One-Liner */}
+          <p className="font-sans italic text-[18px] lg:text-[20px] leading-[1.6] text-[#595959] max-w-[700px] mx-auto">
+            &ldquo;Your dyslexia story one-liner goes here&rdquo;
+          </p>
+        </div>
         </div>
       </section>
     </main>
