@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Header from "./components/Header";
 
 const TYPING_VARIATIONS = [
   "actually works!",
@@ -9,6 +10,31 @@ const TYPING_VARIATIONS = [
   "truly works!",
   "just works!",
 ] as const;
+
+// Wave Divider Component - Geometric sound wave transitions
+const WaveDivider = ({
+  fromColor = "#FFFFFF",
+  toColor = "#FFFFFF"
+}: {
+  fromColor?: string;
+  toColor?: string;
+}) => (
+  <div className="w-full relative" style={{ backgroundColor: toColor }} aria-hidden="true">
+    <svg
+      viewBox="0 0 1440 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-[24px]"
+      preserveAspectRatio="none"
+    >
+      {/* Wave path fills with source color, curves down to reveal destination */}
+      <path
+        d="M0,0 L0,12 Q180,0 360,12 T720,12 T1080,12 T1440,12 L1440,0 Z"
+        fill={fromColor}
+      />
+    </svg>
+  </div>
+);
 
 export default function Home() {
   const [typedText, setTypedText] = useState("actually works!");
@@ -83,15 +109,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* Hero Section - Editorial Two-Column Layout */}
-      <section className="bg-[#F7F5ED]">
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-24 pb-16 lg:pt-32 lg:pb-24 max-w-[1440px] mx-auto">
+    <>
+      <Header />
+      <main className="min-h-screen bg-white">
+        {/* Hero Section - Editorial Two-Column Layout */}
+        <section className="bg-[#F7F5ED]">
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-32 pb-16 lg:pt-40 lg:pb-24 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
-          {/* Headline - Clean, Flowing */}
-          <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em] text-[#1A1A1A]">
-            <span className="relative inline-block">
+          {/* Headline - Clean, Flowing with Color Contrast */}
+          <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em]">
+            <span className="relative inline-block text-[#595959]">
               <span className="relative z-[2]">Structured phonics</span>
               <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '20px', marginTop: '-8px'}}>
                 <path
@@ -168,13 +196,15 @@ export default function Home() {
       </div>
       </div>
 
+      <WaveDivider fromColor="#F7F5ED" toColor="#F5FAF7" />
+
       {/* Video Demo Section - Duolingo-Inspired Placeholder */}
-      <section className="bg-[#F7F5ED]">
+      <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 pt-16 pb-24 lg:pt-24 lg:pb-24 max-w-[1440px] mx-auto">
         {/* Video Container */}
         <div className="max-w-[896px] mx-auto">
           <div className="relative w-full aspect-video rounded-xl overflow-hidden border-[2px] border-[#DCDCDC] bg-white">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-[#F7F5ED] p-8 lg:p-12">
+            <div className="w-full h-full flex flex-col justify-center items-center bg-white p-8 lg:p-12">
               {/* Play Icon */}
               <div className="mb-6 cursor-pointer">
                 <svg className="w-20 h-20 lg:w-24 lg:h-24" viewBox="0 0 80 80" fill="none">
@@ -195,6 +225,8 @@ export default function Home() {
         </div>
         </div>
       </section>
+
+      <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
 
       {/* Features Section - Two-Column Layout */}
       <section className="bg-white">
@@ -268,6 +300,8 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#FFFFFF" toColor="#F7F5ED" />
+
       {/* CTA Section - Centered Conversion Focus */}
       <section className="bg-[#F7F5ED]">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
@@ -311,8 +345,10 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#F7F5ED" toColor="#F5FAF7" />
+
       {/* Science Section - Research Credibility */}
-      <section className="bg-white">
+      <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <div className="max-w-[900px] mx-auto text-center">
           {/* Body Copy - Research Focus */}
@@ -328,8 +364,10 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
+
       {/* Testimonials Section - Editorial Asymmetric Grid */}
-      <section className="bg-[#F7F5ED]">
+      <section className="bg-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         {/* Section Header */}
         <h2 className="font-serif font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
@@ -400,8 +438,10 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#FFFFFF" toColor="#F7F5ED" />
+
       {/* Founder Section - Personal Connection */}
-      <section className="bg-white">
+      <section className="bg-[#F7F5ED]">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <div className="max-w-[800px] mx-auto text-center">
           {/* Section Header */}
@@ -445,6 +485,7 @@ export default function Home() {
         </div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
