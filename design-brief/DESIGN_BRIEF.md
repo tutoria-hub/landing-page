@@ -13,6 +13,7 @@
 - ✅ Founder section (placeholder photos with initials)
 - ✅ Testimonials section (positioned after Founder)
 - ✅ **Wave dividers** (geometric sound wave transitions between all sections)
+- ✅ **Notebook backgrounds** (lined paper + grain texture on Features & CTA sections)
 
 **Ready for Validation**: Complete conversion funnel live at localhost:3000
 
@@ -70,6 +71,35 @@ Tutoria's landing page communicates scientific credibility (Harvard research, Or
 /* Three-Color Pattern with Wave Transitions:
    Hero (cream) ~wave~ Video (soft green) ~wave~ Features (white) ~wave~
    CTA (cream) ~wave~ Science (soft green) ~wave~ Testimonials (white) ~wave~ Founder (cream)
+*/
+
+/* Notebook Background Effects - Editorial Paper Texture */
+.notebook-white {
+  background-color: #FFFFFF;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),  /* Horizontal lines */
+    radial-gradient(circle at 2px 2px, rgba(0,0,0,0.008) 1px, transparent 1px); /* Grain */
+  background-size: 100% 24px, 4px 4px; /* Lines every 24px, fine grain pattern */
+}
+
+.notebook-beige {
+  background-color: #F7F5ED; /* Warm cream */
+  background-image:
+    linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+    radial-gradient(circle at 2px 2px, rgba(0,0,0,0.008) 1px, transparent 1px);
+  background-size: 100% 24px, 4px 4px;
+}
+
+/* Applied to:
+   - Features section ("What We Offer"): notebook-white
+   - CTA section ("For Who"): notebook-beige
+
+   Design Philosophy:
+   - Horizontal lines at 1.5% opacity = subtle notebook ruling (24px spacing)
+   - Grain texture at 0.8% opacity = paper feel (4px dots)
+   - Pure CSS = zero image assets, zero HTTP requests
+   - Editorial polish without distraction
+   - Inspired by tutoria-webapp's environmental layer
 */
 ```
 
@@ -315,6 +345,18 @@ xl: 1280px;  /* Large desktop */
 - **Performance**: Pure SVG, zero animations, instant render, fully responsive.
 **Trade-off**: Could be invisible on some screens if contrast is too low. Intentional - subconscious rhythm > overt decoration.
 **Validation**: 10/10 - Enhances visual flow without overwhelming. Matches "Trust through clarity, warmth through restraint."
+
+### Notebook Backgrounds (Lined Paper + Grain Texture)
+**Decision**: Apply subtle lined paper effect with grain texture to Features ("What We Offer") and CTA ("For Who") sections only
+**Rationale**:
+- **Editorial Polish**: Adds sophisticated paper texture without distracting from content
+- **Visual Hierarchy**: Differentiates key value proposition sections from hero/testimonials
+- **Webapp Cohesion**: Mirrors tutoria-webapp's environmental notebook background - creates brand consistency
+- **Restrained Implementation**: 1.5% opacity lines + 0.8% opacity grain = barely perceptible but adds warmth
+- **Pure CSS Performance**: Zero image assets, zero HTTP requests - entire effect via linear/radial gradients
+- **24px Line Spacing**: Matches wave divider height - reinforces geometric consistency throughout design
+**Trade-off**: Too subtle = invisible on some displays. Intentional - subconscious polish > overt texture.
+**Validation**: Fantastic - Adds editorial sophistication that complements EB Garamond's scholarly positioning. Warmth through restraint achieved.
 
 ---
 

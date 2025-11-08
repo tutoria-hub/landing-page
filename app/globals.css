@@ -178,3 +178,22 @@
 .animate-pulse-once {
   animation: pulse-once 600ms ease-in-out;
 }
+
+/* Notebook Background Effects - Lined Paper with Grain Texture */
+/* White variant - for "What We Offer" section */
+.notebook-white {
+  background-color: #FFFFFF;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),  /* Subtle horizontal lines */
+    radial-gradient(circle at 2px 2px, rgba(0,0,0,0.008) 1px, transparent 1px); /* Paper grain texture */
+  background-size: 100% 24px, 4px 4px; /* Lines every 24px, fine grain pattern */
+}
+
+/* Beige variant - for "For Who" section */
+.notebook-beige {
+  background-color: #F7F5ED; /* Warm cream */
+  background-image:
+    linear-gradient(rgba(0,0,0,0.015) 1px, transparent 1px),
+    radial-gradient(circle at 2px 2px, rgba(0,0,0,0.008) 1px, transparent 1px);
+  background-size: 100% 24px, 4px 4px;
+}

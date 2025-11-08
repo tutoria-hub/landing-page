@@ -235,7 +235,7 @@ export default function Home() {
       <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
 
       {/* Features Section - Two-Column Layout */}
-      <section className="bg-white">
+      <section className="notebook-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
           {/* LEFT COLUMN: Feature List */}
@@ -277,7 +277,7 @@ export default function Home() {
       <WaveDivider fromColor="#FFFFFF" toColor="#F7F5ED" />
 
       {/* CTA Section - Centered Conversion Focus */}
-      <section className="bg-[#F7F5ED]">
+      <section className="notebook-beige">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <div className="max-w-[800px] mx-auto text-center">
           {/* Section Header */}
