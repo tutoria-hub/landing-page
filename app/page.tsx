@@ -133,9 +133,11 @@ export default function Home() {
               </svg>
             </span>
             <br />
-            <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
-              {typedText || 'actually works!'}
-            </em>
+            <span className="inline-block min-w-[320px]">
+              <em className={`italic font-bold text-[#1A1A1A] transition-opacity duration-300 ${isTypingVisible ? 'opacity-100' : 'opacity-0'}`}>
+                {typedText || 'actually works!'}
+              </em>
+            </span>
           </h1>
 
           {/* CTA Section */}
