@@ -139,7 +139,7 @@ export default function Home() {
             </span>
             <br />
             <span className="inline-block min-w-[320px]">
-              <em className="italic font-bold text-[#1A1A1A]">truly works!</em>
+              <span className="font-bold text-[#1A1A1A]">truly works!</span>
             </span>
           </h1>
 
@@ -196,7 +196,7 @@ export default function Home() {
       {/* Transition Quote - Absolutely centered */}
       <div className="bg-[#F7F5ED]">
         <div className="px-6 pt-16 pb-24 lg:pt-20 lg:pb-32 max-w-[1440px] mx-auto">
-        <p className="font-serif italic font-medium text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
+        <p className="font-serif text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
           The gift of making reading feel natural.
         </p>
       </div>
@@ -328,7 +328,7 @@ export default function Home() {
           {/* Body Copy - Research Focus */}
           <div className="space-y-6">
             <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-              Young brains are remarkably adaptable. Research shows that structured phonics intervention <em className="italic font-bold text-[#30A46C]">literally rewires the brain</em>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
+              Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
             </p>
             <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
               tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
@@ -453,7 +453,7 @@ export default function Home() {
           </div>
 
           {/* Founder Story One-Liner */}
-          <p className="font-sans italic text-[18px] lg:text-[20px] leading-[1.6] text-[#595959] max-w-[700px] mx-auto">
+          <p className="font-serif italic text-[18px] lg:text-[20px] leading-[1.6] text-[#595959] max-w-[700px] mx-auto">
             &ldquo;Your dyslexia story one-liner goes here&rdquo;
           </p>
         </div>

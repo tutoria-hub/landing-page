@@ -182,6 +182,58 @@ text-xl: 20px     /* Section headers */
 text-2xl: 24px    /* Page headers */
 ```
 
+### Italic Usage: Strategic Restraint
+
+**The Wispr Flow Lesson**: Italic emphasis works when used sparingly for inline emphasis, not entire headlines or paragraphs.
+
+**Alignment with Brand**: "Structured phonics" = upright, systematic, clear. Italic = flowing, literary, editorial. These are conceptually misaligned.
+
+**Italic Usage Rules**:
+
+```tsx
+/* ✅ CORRECT: Actual quotations with quotation marks */
+<p className="font-serif italic">
+  "of at-risk readers reach grade level..."
+</p>
+
+/* ✅ CORRECT: Rare inline emphasis within body copy */
+<p>
+  Research shows that intervention <em className="italic">literally rewires</em> the brain.
+</p>
+
+/* ❌ WRONG: Italic + bold stacking */
+<em className="italic font-bold">truly works!</em>
+
+/* ❌ WRONG: Entire paragraphs in italic */
+<p className="font-serif italic">The gift of making reading feel natural.</p>
+
+/* ❌ WRONG: Headlines in italic */
+<h1 className="italic">Structured phonics truly works!</h1>
+```
+
+**One Contrast Method Rule** (from Wispr Flow):
+- Use color **OR** weight **OR** italic **OR** font-family change
+- Never stack multiple emphasis methods on the same element
+- Restraint signals confidence
+
+**Implementation**:
+- Headlines: Use `font-bold text-[#30A46C]` for emphasis (color + weight, no italic)
+- Quotes: Use `font-serif italic` only with quotation marks
+- Body emphasis: Use `font-semibold text-[#30A46C]` (bold + color, no italic)
+- Large statements: Keep upright (remove italic from transition quotes)
+
+**Font Loading**:
+- EB Garamond: Italic loaded correctly ✅
+- Lexend: No italic variants loaded ⚠️
+- Never use `font-sans italic` until Lexend italic is loaded
+- For quoted material with sans-serif, switch to `font-serif italic`
+
+**Why This Matters**:
+- Upright typography = structured, systematic (matches "structured phonics")
+- Italic typography = literary, flowing (works for Wispr Flow's voice dictation, not us)
+- Single emphasis method = confident, professional
+- Multiple stacked methods = trying too hard, visual noise
+
 ---
 
 ## Component Patterns
