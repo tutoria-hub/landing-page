@@ -15,6 +15,29 @@ import { cn } from '@/lib/utils';
 type PracticeState = 'idle' | 'recording' | 'checking' | 'correct' | 'incorrect';
 type CardContent = { letter: string; outcome: 'correct' | 'incorrect' };
 
+/**
+ * TIMING ARCHITECTURE (Apple Card Standard)
+ * - State transitions: 420ms [0.42,0,0.58,1]
+ * - Idle breathing: 3.6s sine-wave [0.37,0,0.63,1]
+ * - Button press: 100ms (iOS standard)
+ * - Exit/rise: 420ms with 210ms delay (50% overlap)
+ * - Waveform: 60fps requestAnimationFrame (no easing)
+ */
+const TIMING = {
+  CARD_EXIT: 420,           // Apple Card standard (ms)
+  STATE_TRANSITION: 420,    // All state changes (ms)
+  BUTTON_PRESS: 100,        // iOS standard press (ms)
+  BUTTON_HOVER: 420,        // Match state transitions (ms)
+  IDLE_BREATHING: 3600,     // Calm 3.6s cycle (ms)
+  CHECKING_PULSE: 1200,     // Thinking indicator (ms)
+  RISE_DELAY: 0.21,         // 50% of exit in seconds (210ms)
+} as const;
+
+const EASING = {
+  STANDARD: [0.42, 0, 0.58, 1] as const,      // iOS default (all transitions)
+  BREATHING: [0.37, 0, 0.63, 1] as const,     // Sine-wave (looping only)
+} as const;
+
 // Card progression: r (correct) → sh (incorrect) → cat (correct) → loop
 const CARD_SEQUENCE: CardContent[] = [
   { letter: 'r', outcome: 'correct' },
@@ -63,7 +86,7 @@ function AudioButton({ state }: AudioButtonProps) {
   useEffect(() => {
     if (state === 'recording' && prevState === 'idle') {
       setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 100);  // iOS standard 100ms press
+      setTimeout(() => setIsPulsing(false), TIMING.BUTTON_PRESS);
     }
     setPrevState(state);
   }, [state, prevState]);
@@ -271,8 +294,8 @@ function AudioButton({ state }: AudioButtonProps) {
           disabled={true}
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
-            "transition-all ease-[cubic-bezier(0.4,0,0.2,1)]",
-            isPulsing ? "duration-100" : "duration-200",
+            "transition-all ease-[cubic-bezier(0.42,0,0.58,1)]",
+            isPulsing ? "duration-100" : "duration-[420ms]",
             "border-4",
             // Smooth border color transition (Apple standard)
             isRecording ? "border-[#30A46C] transition-colors duration-150" : "border-[#D4D4D4]",
@@ -477,13 +500,13 @@ export default function FlashcardStack() {
         // Keep card on top during exit (no z-index drop - looks better for upward motion)
         // The next card rise animation handles the transition naturally
 
-        // Complete cycle after full animation (420ms - Apple Card standard)
+        // Complete cycle after full animation (Apple Card standard)
         setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
           setExitingCardZIndex(4); // Reset for next card
           setActiveCardState('idle');
-        }, 420);
+        }, TIMING.CARD_EXIT);
       }
     };
 
@@ -516,10 +539,10 @@ export default function FlashcardStack() {
           }
           transition={
             prefersReducedMotion
-              ? { duration: 0.2, ease: [0, 0, 0.2, 1] }
+              ? { duration: 0.3, ease: EASING.STANDARD }
               : {
-                  duration: 3.6,                  // Match front card tempo
-                  ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
+                  duration: TIMING.IDLE_BREATHING / 1000,
+                  ease: EASING.BREATHING,
                   repeat: Infinity,
                   repeatType: "loop",
                   delay: 2.4,                     // 240° phase offset (3.6s timing)
@@ -563,16 +586,16 @@ export default function FlashcardStack() {
           }
           transition={
             prefersReducedMotion
-              ? { duration: 0.4, ease: [0.42, 0, 0.58, 1] }
+              ? { duration: 0.3, ease: EASING.STANDARD }
               : isExiting
               ? {
-                  duration: 0.42,
-                  delay: 0.21, // 50% of 420ms exit (smooth handoff at midpoint)
-                  ease: [0.42, 0, 0.58, 1],
+                  duration: TIMING.CARD_EXIT / 1000,
+                  delay: TIMING.RISE_DELAY,
+                  ease: EASING.STANDARD,
                 }
               : {
-                  duration: 3.6,                  // Match front card tempo
-                  ease: [0.37, 0, 0.63, 1],       // Sine-wave ease
+                  duration: TIMING.IDLE_BREATHING / 1000,
+                  ease: EASING.BREATHING,
                   repeat: Infinity,
                   repeatType: "loop",
                   delay: 1.2,                     // 120° phase offset (3.6s timing)
@@ -613,11 +636,29 @@ export default function FlashcardStack() {
                       zIndex: 3,
                       transition: {
                         scale: {
-                          duration: 3.6,
+                          duration: TIMING.IDLE_BREATHING / 1000,
                           repeat: Infinity,
-                          ease: [0.37, 0, 0.63, 1]  // Match idle breathing (unified rhythm)
+                          ease: EASING.BREATHING
                         },
-                        default: { duration: 0.42, ease: [0.42, 0, 0.58, 1] }
+                        default: { duration: TIMING.STATE_TRANSITION / 1000, ease: EASING.STANDARD }
+                      }
+                    }
+                  : activeCardState === 'checking'
+                  ? {
+                      // Checking state: subtle thinking pulse
+                      scale: [1.0, 1.01, 1.0],        // Minimal pulse (system is thinking)
+                      y: 0,
+                      opacity: 1,
+                      x: 0,
+                      rotate: 0,
+                      zIndex: 3,
+                      transition: {
+                        scale: {
+                          duration: TIMING.CHECKING_PULSE / 1000,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        },
+                        default: { duration: TIMING.STATE_TRANSITION / 1000, ease: EASING.STANDARD }
                       }
                     }
                   : activeCardState === 'idle' && !prefersReducedMotion
@@ -630,8 +671,8 @@ export default function FlashcardStack() {
                       opacity: 1,
                       zIndex: 3,
                       transition: {
-                        duration: 3.6,                // 3.6s (calm, meditative)
-                        ease: [0.37, 0, 0.63, 1],     // Sine-wave (smooth)
+                        duration: TIMING.IDLE_BREATHING / 1000,
+                        ease: EASING.BREATHING,
                         repeat: Infinity,
                         repeatType: "loop",
                         delay: 0,
@@ -660,15 +701,15 @@ export default function FlashcardStack() {
                       rotate: 2,           // Minimal dimensional hint
                       opacity: 0,          // Fade out
                       transition: {
-                        duration: 0.42,    // Apple Card standard (420ms)
-                        ease: [0.42, 0, 0.58, 1], // iOS default (symmetric, graceful)
+                        duration: TIMING.CARD_EXIT / 1000,
+                        ease: EASING.STANDARD,
                         type: 'tween'      // Ensures consistent frame timing
                       }
                     }
               }
               transition={{
-                duration: 0.2,
-                ease: [0, 0, 0.2, 1]
+                duration: TIMING.STATE_TRANSITION / 1000,
+                ease: EASING.STANDARD
               }}
               style={{
                 boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only

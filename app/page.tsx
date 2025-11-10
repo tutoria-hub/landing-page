@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import Header from "./components/Header";
 import FlashcardStack from "./components/FlashcardStack";
 
@@ -237,7 +238,13 @@ export default function Home() {
       {/* Features Section - Two-Column Layout */}
       <section className="notebook-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.42, 0, 0.58, 1] }}
+          className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center"
+        >
           {/* LEFT COLUMN: Feature List */}
           <div className="order-2 lg:order-1">
             <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
@@ -270,7 +277,7 @@ export default function Home() {
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
             <FlashcardStack />
           </div>
-        </div>
+        </motion.div>
         </div>
       </section>
 
