@@ -617,15 +617,12 @@ export default function FlashcardStack() {
 
         {/* Card 1 (front, active) - Position 0 */}
         <AnimatePresence mode="wait">
-          {!isExiting && (
-            <motion.div
-              key={`card-1-${cards[0]?.letter}`}
-              className="absolute inset-0"
-              initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
+          <motion.div
+            key={`card-1-${cards[0]?.letter}`}
+            className="absolute inset-0"
+            initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
               animate={
-                isExiting
-                  ? false  // Cancel all animations - let exit prop take over cleanly
-                  : activeCardState === 'recording'
+                activeCardState === 'recording'
                   ? {
                       // Recording state: breathing animation (matches idle rhythm)
                       scale: [1.0, 1.02, 1.0],
@@ -726,8 +723,7 @@ export default function FlashcardStack() {
                 state={activeCardState}
                 isActive={true}
               />
-            </motion.div>
-          )}
+          </motion.div>
         </AnimatePresence>
       </div>
 
