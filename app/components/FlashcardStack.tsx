@@ -63,7 +63,7 @@ function AudioButton({ state }: AudioButtonProps) {
   useEffect(() => {
     if (state === 'recording' && prevState === 'idle') {
       setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 150);  // Synchronized with 150ms animation
+      setTimeout(() => setIsPulsing(false), 100);  // iOS standard 100ms press
     }
     setPrevState(state);
   }, [state, prevState]);
@@ -90,7 +90,7 @@ function AudioButton({ state }: AudioButtonProps) {
     }
   }, [isRecording, isLoading]);
 
-  // Auto-retry flow (adjusted for 400ms transitions)
+  // Auto-retry flow (iOS standard timing)
   useEffect(() => {
     if (isIncorrect && !showAutoRetryText) {
       setShowAutoRetryText(true);
@@ -103,7 +103,7 @@ function AudioButton({ state }: AudioButtonProps) {
       const resetTimer = setTimeout(() => {
         setShowAutoRetryText(false);
         setIsRetryTextFadingOut(false);
-      }, 1900); // 1500 + 400ms for complete fade
+      }, 1920); // 1500 + 420ms for complete fade
 
       return () => {
         clearTimeout(fadeOutTimer);
@@ -271,11 +271,11 @@ function AudioButton({ state }: AudioButtonProps) {
           disabled={true}
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
-            "transition-all ease-out",
-            isPulsing ? "duration-150" : "duration-400",
+            "transition-all ease-[cubic-bezier(0.4,0,0.2,1)]",
+            isPulsing ? "duration-100" : "duration-200",
             "border-4",
-            // Instant border feedback (Apple standard: <16ms response)
-            isRecording ? "border-[#30A46C] !transition-none" : "border-[#D4D4D4]",
+            // Smooth border color transition (Apple standard)
+            isRecording ? "border-[#30A46C] transition-colors duration-150" : "border-[#D4D4D4]",
             "hover:scale-[1.02] active:scale-[0.98]",
             // Simplified 2-layer click feedback (200ms, no overshoot)
             isPulsing && "animate-button-press animate-shadow-press"
@@ -285,7 +285,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Loading dots */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 !isLoading && "opacity-0 scale-95"
               )}
             >
@@ -295,7 +295,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Success checkmark */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 !showSuccess && "opacity-0 scale-95"
               )}
             >
@@ -305,7 +305,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Microphone icon */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
@@ -315,7 +315,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Preparing dots */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 preparationPhase !== 'preparing' && "opacity-0 scale-95"
               )}
             >
@@ -327,7 +327,7 @@ function AudioButton({ state }: AudioButtonProps) {
               className={cn(
                 "absolute inset-0 flex items-center justify-between gap-[2px]",
                 (preparationPhase !== 'burst' && preparationPhase !== 'active') && "opacity-0 scale-95",
-                "transition-all duration-400"
+                "transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]"
               )}
               data-phase={preparationPhase}
             >
@@ -345,12 +345,12 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Auto-retry "try again" text */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-400 ease-out",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
               <span className={cn(
-                "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-400 ease-out",
+                "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
                 (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-110"
               )}>
                 try again
@@ -401,7 +401,7 @@ function Card({ letter, state, isActive = false }: CardProps) {
         "border-2 bg-white rounded-xl",
         "flex flex-col items-center justify-center",
         "p-6 lg:p-8",
-        "transition-all duration-400",
+        "transition-[transform,opacity,border-color] duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
         borderColor
       )}
       style={{
@@ -436,7 +436,7 @@ export default function FlashcardStack() {
   const [cards, setCards] = useState<CardContent[]>([...CARD_SEQUENCE]);
   const [activeCardState, setActiveCardState] = useState<PracticeState>('idle');
   const [isExiting, setIsExiting] = useState(false);
-  const [exitingCardZIndex, setExitingCardZIndex] = useState(3); // Dynamic z-index for card shuffle
+  const [exitingCardZIndex, setExitingCardZIndex] = useState(4); // Exiting card stays above rising card (prevents flicker)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   // Detect reduced motion preference
@@ -455,10 +455,10 @@ export default function FlashcardStack() {
     const targetOutcome = currentCard.outcome === 'correct' ? 'correct' : 'incorrect';
 
     const stateMachine = [
-      { state: 'idle' as PracticeState, duration: 3000 },
-      { state: 'recording' as PracticeState, duration: 2500 },
-      { state: 'checking' as PracticeState, duration: 2000 },
-      { state: targetOutcome as PracticeState, duration: 3500 }, // Longer for correct state (user requested)
+      { state: 'idle' as PracticeState, duration: 2000 },      // Just enough to register letter
+      { state: 'recording' as PracticeState, duration: 2000 }, // Realistic speech capture
+      { state: 'checking' as PracticeState, duration: 1500 },  // AI processing feedback
+      { state: targetOutcome as PracticeState, duration: 2500 }, // Savor success, not linger
     ];
 
     let currentStep = 0;
@@ -477,11 +477,11 @@ export default function FlashcardStack() {
         // Keep card on top during exit (no z-index drop - looks better for upward motion)
         // The next card rise animation handles the transition naturally
 
-        // Complete cycle after full animation (420ms - Apple Card timing)
+        // Complete cycle after full animation (420ms - Apple Card standard)
         setTimeout(() => {
           setCards(prev => [...prev.slice(1), prev[0]]);
           setIsExiting(false);
-          setExitingCardZIndex(3); // Reset for next card
+          setExitingCardZIndex(4); // Reset for next card
           setActiveCardState('idle');
         }, 420);
       }
@@ -525,7 +525,12 @@ export default function FlashcardStack() {
                   delay: 2.4,                     // 240° phase offset (3.6s timing)
                 }
           }
-          style={{ pointerEvents: 'none' }}
+          style={{
+            pointerEvents: 'none',
+            willChange: 'transform, opacity',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)',
+          }}
         >
           <Card letter={cards[2]?.letter || 'cat'} state="idle" isActive={false} />
         </motion.div>
@@ -558,12 +563,12 @@ export default function FlashcardStack() {
           }
           transition={
             prefersReducedMotion
-              ? { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+              ? { duration: 0.4, ease: [0.42, 0, 0.58, 1] }
               : isExiting
               ? {
-                  duration: 0.4,
-                  delay: 0.15, // Slight delay for smooth handoff
-                  ease: [0.4, 0, 0.2, 1],
+                  duration: 0.42,
+                  delay: 0.21, // 50% of 420ms exit (smooth handoff at midpoint)
+                  ease: [0.42, 0, 0.58, 1],
                 }
               : {
                   duration: 3.6,                  // Match front card tempo
@@ -578,7 +583,10 @@ export default function FlashcardStack() {
             transformOrigin: 'bottom center',
             boxShadow: isExiting
               ? '0 4px 12px rgba(31, 31, 31, 0.08)'
-              : 'none'
+              : 'none',
+            willChange: 'transform, opacity',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)',
           }}
         >
           <Card letter={cards[1]?.letter || 'sh'} state="idle" isActive={false} />
@@ -592,9 +600,11 @@ export default function FlashcardStack() {
               className="absolute inset-0"
               initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
               animate={
-                activeCardState === 'recording'
+                isExiting
+                  ? false  // Cancel all animations - let exit prop take over cleanly
+                  : activeCardState === 'recording'
                   ? {
-                      // Recording state: breathing animation
+                      // Recording state: breathing animation (matches idle rhythm)
                       scale: [1.0, 1.02, 1.0],
                       y: 0,
                       opacity: 1,
@@ -603,11 +613,11 @@ export default function FlashcardStack() {
                       zIndex: 3,
                       transition: {
                         scale: {
-                          duration: 2,
+                          duration: 3.6,
                           repeat: Infinity,
-                          ease: "easeInOut"
+                          ease: [0.37, 0, 0.63, 1]  // Match idle breathing (unified rhythm)
                         },
-                        default: { duration: 0.4 }
+                        default: { duration: 0.42, ease: [0.42, 0, 0.58, 1] }
                       }
                     }
                   : activeCardState === 'idle' && !prefersReducedMotion
@@ -644,14 +654,14 @@ export default function FlashcardStack() {
                       transition: { duration: 0.3 }
                     }
                   : {
-                      // Apple Card exit: unified 420ms celebration (100% smooth, no keyframes)
-                      y: -40,              // Single end value (no pause points)
-                      scale: 0.94,         // Single end value
-                      rotate: 2,           // Single end value
-                      opacity: 0,          // Single end value
+                      // Apple Card exit: graceful upward celebration
+                      y: -40,              // Subtle upward motion (Apple standard)
+                      scale: 0.94,         // 6% compression (iOS card dismiss)
+                      rotate: 2,           // Minimal dimensional hint
+                      opacity: 0,          // Fade out
                       transition: {
-                        duration: 0.42,    // Apple Card standard (420ms, not 500ms)
-                        ease: [0.4, 0, 0.2, 1], // iOS standard for ALL properties (unified, no conflicts)
+                        duration: 0.42,    // Apple Card standard (420ms)
+                        ease: [0.42, 0, 0.58, 1], // iOS default (symmetric, graceful)
                         type: 'tween'      // Ensures consistent frame timing
                       }
                     }
