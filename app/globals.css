@@ -120,8 +120,32 @@
 @font-face {
   font-family: 'OpenDyslexic';
   src: url('/fonts/OpenDyslexic/OpenDyslexic-Regular.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic/OpenDyslexic-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic/OpenDyslexic-Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic/OpenDyslexic-BoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -233,6 +257,11 @@
 
 .animate-pulse-once {
   animation: pulse-once 600ms ease-in-out;
+}
+
+/* OpenDyslexic Font Utility */
+.font-dyslexic {
+  font-family: 'OpenDyslexic', serif;
 }
 
 /* Notebook Background Effects - Lined Paper with Organic Grain */

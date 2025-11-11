@@ -1,27 +1,28 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header className="fixed top-4 lg:top-6 left-4 lg:left-12 right-4 lg:right-12 z-50 bg-[#F7F5ED] border-2 border-[#DDD9CE] rounded-2xl">
       <div className="px-6 lg:px-12 py-4 lg:py-5 flex justify-between items-center">
         {/* Logo + Wordmark */}
-        <a
+        <Link
           href="/"
-          className="flex items-center gap-2 focus-visible:outline focus-visible:outline-3 focus-visible:outline-[#30A46C] focus-visible:outline-offset-4 rounded"
+          className="flex items-center gap-2.5 focus-visible:outline focus-visible:outline-3 focus-visible:outline-[#30A46C] focus-visible:outline-offset-4 rounded"
           aria-label="Tutoria homepage"
         >
           <Image
             src="/assets/tutoria-logo.svg"
             alt="Tutoria"
-            width={32}
-            height={32}
-            className="h-7 lg:h-8 w-auto"
+            width={38}
+            height={38}
+            className="h-[33.6px] lg:h-[38.4px] w-auto"
             priority
           />
-          <span className="font-serif text-[22px] lg:text-[26px] leading-none tracking-[-0.01em] text-[#1A1A1A] hover:text-[#30A46C] hover:font-semibold transition-colors duration-150 -translate-y-0.5 -translate-x-1" style={{fontWeight: 500}}>
+          <span className="font-serif text-[26.4px] lg:text-[31.2px] leading-none tracking-[-0.01em] text-[#1A1A1A] hover:text-[#30A46C] hover:font-semibold transition-colors duration-150 -translate-y-1 -translate-x-1" style={{fontWeight: 500}}>
             tutoria
           </span>
-        </a>
+        </Link>
 
         {/* CTA Button */}
         <a

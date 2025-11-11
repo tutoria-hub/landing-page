@@ -6,13 +6,6 @@ import { motion } from "framer-motion";
 import Header from "./components/Header";
 import FlashcardStack from "./components/FlashcardStack";
 
-const TYPING_VARIATIONS = [
-  "actually works!",
-  "really works!",
-  "truly works!",
-  "just works!",
-] as const;
-
 // Wave Divider Component - Geometric sound wave transitions
 const WaveDivider = ({
   fromColor = "#FFFFFF",
@@ -39,54 +32,13 @@ const WaveDivider = ({
 );
 
 export default function Home() {
-  const [typedText, setTypedText] = useState("actually works!");
-  const [isTypingVisible, setIsTypingVisible] = useState(true);
   const [statMin, setStatMin] = useState(50);
   const [statMax, setStatMax] = useState(50);
-
-  useEffect(() => {
-    let currentIndex = 0;
-
-    const typeText = () => {
-      const text = TYPING_VARIATIONS[currentIndex];
-      let charIndex = 0;
-
-      // Fade out current text
-      setIsTypingVisible(false);
-
-      setTimeout(() => {
-        // Start typing new text (don't clear - swap directly)
-        charIndex = 0;
-        setIsTypingVisible(true);
-
-        // Type out character by character
-        const typeInterval = setInterval(() => {
-          if (charIndex <= text.length) {
-            setTypedText(text.substring(0, charIndex));
-            charIndex++;
-          } else {
-            clearInterval(typeInterval);
-
-            // Wait 10 seconds before starting next variation
-            setTimeout(() => {
-              currentIndex = (currentIndex + 1) % TYPING_VARIATIONS.length;
-              typeText();
-            }, 10000);
-          }
-        }, 100);
-      }, 600); // Wait for fade out to complete
-    };
-
-    // Start typing animation
-    typeText();
-  }, []);
 
   useEffect(() => {
     // Animate stat numbers on load
     console.log('🎯 Stat animation starting...');
     const duration = 800; // 0.8 seconds - much faster
-    const targetMin = 50;
-    const targetMax = 90;
     const steps = 40;
     const stepDuration = duration / steps;
 
@@ -124,35 +76,35 @@ export default function Home() {
         <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-12 items-center px-6 lg:px-24 pt-44 pb-16 lg:pt-52 lg:pb-24 max-w-[1440px] mx-auto">
         {/* LEFT COLUMN: Headline + CTA */}
         <div className="max-w-[640px] space-y-12">
-          {/* Headline - Clean, Flowing with Color Contrast */}
-          <h1 className="font-serif text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-[-0.02em]">
-            <span className="relative inline-block text-[#595959]">
-              <span className="relative z-[2]">Structured phonics</span>
-              <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '20px', marginTop: '-8px'}}>
+          {/* Headline - Two-line layout with varying sizes */}
+          <h1 className="font-serif leading-[1.05] tracking-[-0.02em]">
+            {/* Line 1: natural reading - big (natural italic + green, reading regular) */}
+            <div className="relative inline-block text-[48px] md:text-[64px] lg:text-[80px] whitespace-nowrap">
+              <span className="relative z-[2]">
+                <span className="italic text-[#1A1A1A]">Learn to</span>{" "}
+                <span className="text-[#30A46C]">read</span>
+              </span>
+              <svg className="absolute left-0 top-full w-full pointer-events-none z-[1]" viewBox="0 0 400 20" preserveAspectRatio="none" style={{height: '20px', marginTop: '-12px'}}>
                 <path
                   d="M 5 12 Q 100 5, 200 12 T 395 12"
                   stroke="#30A46C"
-                  strokeWidth="6"
+                  strokeWidth="5"
                   fill="none"
                   strokeLinecap="round"
                 />
               </svg>
-            </span>
-            <br />
-            <span className="inline-block min-w-[320px]">
-              <span className="font-bold text-[#1A1A1A]">truly works!</span>
-            </span>
+            </div>
+
+            {/* Line 3: through structured phonics - medium to small */}
+            <div className="font-sans italic text-[22px] md:text-[26px] lg:text-[30px] text-[#595959] mt-4">
+              Structured Phonics guided by AI
+            </div>
           </h1>
 
-          {/* CTA Section */}
-          <div className="space-y-4 relative">
-            <p className="font-sans text-[18px] leading-[1.6] text-[#595959] max-w-[560px]">
-              Designed for struggling readers.
-            </p>
-            <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
-              Join the Waitlist
-            </button>
-          </div>
+          {/* CTA - Clean, decisive action */}
+          <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
+            Join the Waitlist
+          </button>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
@@ -186,7 +138,7 @@ export default function Home() {
             </div>
 
             {/* Stat Text - Italic with quotes, larger size */}
-            <p className="font-serif italic text-[26px] lg:text-[30px] leading-[1.5] text-[#1A1A1A] max-w-[420px]">
+            <p className="font-sans italic text-[26px] lg:text-[30px] leading-[1.5] text-[#1A1A1A] max-w-[420px]">
               &ldquo;of at-risk readers <span className="not-italic font-semibold text-[#30A46C]">reach grade level</span> with targeted instruction&rdquo;
             </p>
           </div>
@@ -197,9 +149,14 @@ export default function Home() {
       {/* Transition Quote - Absolutely centered */}
       <div className="bg-[#F7F5ED]">
         <div className="px-6 pt-16 pb-24 lg:pt-20 lg:pb-32 max-w-[1440px] mx-auto">
-        <p className="font-serif text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center max-w-[900px] mx-auto">
-          The gift of making reading feel natural.
-        </p>
+        <div className="space-y-12 max-w-[900px] mx-auto">
+          <p className="font-serif text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center">
+            Step by step to <span className="italic text-[#30A46C]">natural</span> reading.
+          </p>
+          <p className="font-serif font-medium italic text-[22px] lg:text-[26px] leading-[1.6] text-[#595959] text-center">
+            <span className="font-serif">&ldquo;</span>perfect for&nbsp;&nbsp;<span className="font-dyslexic not-italic text-[18px] lg:text-[22px]">dyslexia</span><span className="font-serif">&rdquo;</span>
+          </p>
+        </div>
       </div>
       </div>
 

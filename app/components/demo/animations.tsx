@@ -64,7 +64,7 @@ export const WaveformBars: React.FC<WaveformBarsProps> = ({
   isActive,
   intensityLevels = [0.7, 1.0, 1.0, 0.8]
 }) => {
-  const bars = intensityLevels.map((intensity, index) => {
+  const bars = intensityLevels.map((intensity) => {
     const minHeight = 4;
     const maxHeight = 24;
     const barHeight = isActive

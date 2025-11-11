@@ -110,7 +110,7 @@ function AudioButton({ state }: AudioButtonProps) {
   useEffect(() => {
     if (preparationPhase === 'active') {
       const interval = setInterval(() => {
-        setAnimationFrame(prev => prev + 1);
+        setAnimationFrame(Date.now());
       }, 50);
       return () => clearInterval(interval);
     }
@@ -118,7 +118,7 @@ function AudioButton({ state }: AudioButtonProps) {
 
   const bars = useMemo(() => {
     const speechIsActive = preparationPhase === 'active';
-    const time = Date.now();
+    const time = animationFrame;
 
     return [0, 1, 2, 3].map((barIndex) => {
       let barLevel;
