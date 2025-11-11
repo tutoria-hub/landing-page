@@ -14,28 +14,33 @@ import { cn } from '@/lib/utils';
 
 type PracticeState = 'idle' | 'recording' | 'checking' | 'correct' | 'incorrect';
 type CardContent = { letter: string; outcome: 'correct' | 'incorrect' };
+type CardInstance = CardContent & { id: string };
+type CardPosition = 'front' | 'middle' | 'back' | 'exiting';
 
 /**
- * TIMING ARCHITECTURE (Apple Card Standard)
- * - State transitions: 420ms [0.42,0,0.58,1]
- * - Idle breathing: 3.6s sine-wave [0.37,0,0.63,1]
- * - Button press: 100ms (iOS standard)
- * - Exit/rise: 420ms with 210ms delay (50% overlap)
- * - Waveform: 60fps requestAnimationFrame (no easing)
+ * TIMING ARCHITECTURE (Apple Motion Standards)
+ * - Instant: 150ms (micro-interactions)
+ * - Fast: 250ms (feedback, state changes)
+ * - Standard: 350ms (primary motions like card exit)
+ * - Gentle: 450ms (entrances, card rise)
+ * - NO idle animations (cards rest until user input)
  */
 const TIMING = {
-  CARD_EXIT: 420,           // Apple Card standard (ms)
-  STATE_TRANSITION: 420,    // All state changes (ms)
+  INSTANT: 150,             // Micro-interactions (button press)
+  FAST: 250,                // Feedback (state changes, border color)
+  STANDARD: 350,            // Primary motions (card exit)
+  GENTLE: 450,              // Entrances (card rise)
+  CARD_EXIT: 350,           // Fast and decisive exit
+  CARD_RISE: 450,           // Gentle rise with spring
+  STATE_TRANSITION: 250,    // Border color, state feedback
   BUTTON_PRESS: 100,        // iOS standard press (ms)
-  BUTTON_HOVER: 420,        // Match state transitions (ms)
-  IDLE_BREATHING: 3600,     // Calm 3.6s cycle (ms)
-  CHECKING_PULSE: 1200,     // Thinking indicator (ms)
-  RISE_DELAY: 0.21,         // 50% of exit in seconds (210ms)
+  PHONEME_TRANSITION: 30,   // Waveform update rate (ms)
 } as const;
 
 const EASING = {
-  STANDARD: [0.42, 0, 0.58, 1] as const,      // iOS default (all transitions)
-  BREATHING: [0.37, 0, 0.63, 1] as const,     // Sine-wave (looping only)
+  OUT: [0, 0, 0.58, 1] as const,              // Appearing, expanding (fast start, soft land)
+  IN: [0.42, 0, 1, 1] as const,               // Dismissing, collapsing (soft start, decisive exit)
+  STANDARD: [0.42, 0, 0.58, 1] as const,      // Fallback for non-critical animations
 } as const;
 
 // Card progression: r (correct) → sh (incorrect) → cat (correct) → loop
@@ -44,6 +49,14 @@ const CARD_SEQUENCE: CardContent[] = [
   { letter: 'sh', outcome: 'incorrect' },
   { letter: 'cat', outcome: 'correct' },
 ];
+
+// Physical card instances (stable IDs for tracking through positions)
+const INITIAL_CARDS: Record<CardPosition, CardInstance | null> = {
+  front: { ...CARD_SEQUENCE[0], id: 'card-a' },
+  middle: { ...CARD_SEQUENCE[1], id: 'card-b' },
+  back: { ...CARD_SEQUENCE[2], id: 'card-c' },
+  exiting: null,
+};
 
 /**
  * LoadingDots - Exact webapp component
@@ -113,7 +126,7 @@ function AudioButton({ state }: AudioButtonProps) {
     }
   }, [isRecording, isLoading]);
 
-  // Auto-retry flow (iOS standard timing)
+  // Auto-retry flow (faster timing for demo)
   useEffect(() => {
     if (isIncorrect && !showAutoRetryText) {
       setShowAutoRetryText(true);
@@ -126,7 +139,7 @@ function AudioButton({ state }: AudioButtonProps) {
       const resetTimer = setTimeout(() => {
         setShowAutoRetryText(false);
         setIsRetryTextFadingOut(false);
-      }, 1920); // 1500 + 420ms for complete fade
+      }, 1800); // 1500 + 300ms for complete fade
 
       return () => {
         clearTimeout(fadeOutTimer);
@@ -188,23 +201,20 @@ function AudioButton({ state }: AudioButtonProps) {
     },
   }), []);
 
-  // Continuous animation for active waveform (60fps with requestAnimationFrame)
+  // Optimized waveform animation (30ms phoneme transitions, not 60fps RAF)
   useEffect(() => {
     if (preparationPhase !== 'active') return;
 
-    let rafId: number;
-    const animate = () => {
+    const interval = setInterval(() => {
       setAnimationFrame(Date.now());
-      rafId = requestAnimationFrame(animate);
-    };
+    }, TIMING.PHONEME_TRANSITION); // 30ms = smooth phoneme changes without excessive re-renders
 
-    rafId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId);
+    return () => clearInterval(interval);
   }, [preparationPhase]);
 
   const bars = useMemo(() => {
     const speechIsActive = preparationPhase === 'active';
-    const currentTime = Date.now();
+    const currentTime = animationFrame;
     const minHeight = 4;
     const maxHeight = 24;
 
@@ -228,7 +238,6 @@ function AudioButton({ state }: AudioButtonProps) {
       let accumulatedTime = 0;
       let currentPhoneme = sequence[0];
       let nextPhoneme = sequence[1] || sequence[0];
-      let phonemeProgress = 0;
       let crossfadeAmount = 0;
 
       for (let i = 0; i < sequence.length; i++) {
@@ -238,7 +247,6 @@ function AudioButton({ state }: AudioButtonProps) {
         if (elapsedMs < accumulatedTime + duration) {
           currentPhoneme = phoneme;
           nextPhoneme = sequence[i + 1] || sequence[0]; // Loop back
-          phonemeProgress = (elapsedMs - accumulatedTime) / duration;
 
           // Calculate crossfade near end of current phoneme
           const timeUntilEnd = accumulatedTime + duration - elapsedMs;
@@ -294,10 +302,10 @@ function AudioButton({ state }: AudioButtonProps) {
           disabled={true}
           className={cn(
             "relative inline-flex items-center justify-center bg-white rounded-xl px-8 py-4",
-            "transition-all ease-[cubic-bezier(0.42,0,0.58,1)]",
-            isPulsing ? "duration-100" : "duration-[420ms]",
+            "transition-all ease-[cubic-bezier(0,0,0.58,1)]",
+            isPulsing ? "duration-100" : "duration-[250ms]",
             "border-4",
-            // Smooth border color transition (Apple standard)
+            // Fast border color transition (Apple standard: ease-out)
             isRecording ? "border-[#30A46C] transition-colors duration-150" : "border-[#D4D4D4]",
             "hover:scale-[1.02] active:scale-[0.98]",
             // Simplified 2-layer click feedback (200ms, no overshoot)
@@ -308,7 +316,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Loading dots */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 !isLoading && "opacity-0 scale-95"
               )}
             >
@@ -318,7 +326,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Success checkmark */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 !showSuccess && "opacity-0 scale-95"
               )}
             >
@@ -328,7 +336,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Microphone icon */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 (!isIdle || showAutoRetryText || showSuccess) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
@@ -338,7 +346,7 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Preparing dots */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 preparationPhase !== 'preparing' && "opacity-0 scale-95"
               )}
             >
@@ -350,7 +358,7 @@ function AudioButton({ state }: AudioButtonProps) {
               className={cn(
                 "absolute inset-0 flex items-center justify-between gap-[2px]",
                 (preparationPhase !== 'burst' && preparationPhase !== 'active') && "opacity-0 scale-95",
-                "transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]"
+                "transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]"
               )}
               data-phase={preparationPhase}
             >
@@ -368,12 +376,12 @@ function AudioButton({ state }: AudioButtonProps) {
             {/* Auto-retry "try again" text */}
             <div
               className={cn(
-                "absolute inset-0 flex items-center justify-center transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "absolute inset-0 flex items-center justify-center transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-100"
               )}
             >
               <span className={cn(
-                "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+                "text-[#3B82F6] text-sm font-semibold whitespace-nowrap transition-all duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
                 (!showAutoRetryText || isRetryTextFadingOut) ? "opacity-0 scale-95" : "opacity-100 scale-110"
               )}>
                 try again
@@ -424,7 +432,7 @@ function Card({ letter, state, isActive = false }: CardProps) {
         "border-2 bg-white rounded-xl",
         "flex flex-col items-center justify-center",
         "p-6 lg:p-8",
-        "transition-[transform,opacity,border-color] duration-[420ms] ease-[cubic-bezier(0.42,0,0.58,1)]",
+        "transition-[transform,opacity,border-color] duration-[250ms] ease-[cubic-bezier(0,0,0.58,1)]",
         borderColor
       )}
       style={{
@@ -456,10 +464,9 @@ function Card({ letter, state, isActive = false }: CardProps) {
  * Main Stack Component
  */
 export default function FlashcardStack() {
-  const [cards, setCards] = useState<CardContent[]>([...CARD_SEQUENCE]);
+  const [cardPositions, setCardPositions] = useState<Record<CardPosition, CardInstance | null>>(INITIAL_CARDS);
   const [activeCardState, setActiveCardState] = useState<PracticeState>('idle');
-  const [isExiting, setIsExiting] = useState(false);
-  const [exitingCardZIndex, setExitingCardZIndex] = useState(4); // Exiting card stays above rising card (prevents flicker)
+  const [sequenceIndex, setSequenceIndex] = useState(3); // Start at 3 since we're showing cards 0,1,2 initially
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   // Detect reduced motion preference
@@ -474,7 +481,9 @@ export default function FlashcardStack() {
 
   // Automatic state machine for demo
   useEffect(() => {
-    const currentCard = cards[0];
+    const currentCard = cardPositions.front;
+    if (!currentCard) return;
+
     const targetOutcome = currentCard.outcome === 'correct' ? 'correct' : 'incorrect';
 
     const stateMachine = [
@@ -494,18 +503,27 @@ export default function FlashcardStack() {
         currentStep++;
         timeoutId = setTimeout(advance, duration);
       } else {
-        // Trigger upward celebration exit animation
-        setIsExiting(true);
+        // Step 1: Trigger exit by removing front card (AnimatePresence will handle exit animation)
+        const exitingCard = cardPositions.front!;
+        const nextContent = CARD_SEQUENCE[sequenceIndex % CARD_SEQUENCE.length];
+        const nextSequenceIndex = sequenceIndex + 1;
 
-        // Keep card on top during exit (no z-index drop - looks better for upward motion)
-        // The next card rise animation handles the transition naturally
+        // Remove front card to trigger exit animation
+        setCardPositions(prev => ({
+          ...prev,
+          front: null,  // This triggers AnimatePresence exit for the front card
+        }));
 
-        // Complete cycle after full animation (Apple Card standard)
+        // Step 2: After exit completes, rotate all positions
         setTimeout(() => {
-          setCards(prev => [...prev.slice(1), prev[0]]);
-          setIsExiting(false);
-          setExitingCardZIndex(4); // Reset for next card
+          setCardPositions({
+            front: cardPositions.middle,    // Middle card rises to front
+            middle: cardPositions.back,     // Back card rises to middle
+            back: { ...nextContent, id: exitingCard.id }, // Exited card recycled to back
+            exiting: null,
+          });
           setActiveCardState('idle');
+          setSequenceIndex(nextSequenceIndex);
         }, TIMING.CARD_EXIT);
       }
     };
@@ -513,218 +531,162 @@ export default function FlashcardStack() {
     advance();
 
     return () => clearTimeout(timeoutId);
-  }, [cards]);
+  }, [cardPositions, sequenceIndex]);
 
   return (
     <div className="relative w-full max-w-[320px] lg:max-w-[380px]">
       {/* Card Stack Container - 4:5 aspect ratio */}
       <div className="relative w-full aspect-[4/5]">
 
-        {/* Card 3 (back) - Position 2 with gentle breathing */}
-        <motion.div
-          key={`card-3-${cards[2]?.letter}`}
-          className="absolute inset-0"
-          initial={false}
-          animate={
-            prefersReducedMotion
-              ? { opacity: 0.5, zIndex: 1 }
-              : {
-                  // Back card breathing (minimal depth)
-                  scale: [0.96, 0.965, 0.96],     // 0.5% breathing
-                  y: [24, 23.5, 24],              // 0.5px motion (very subtle)
-                  opacity: [1.0, 0.94, 1.0],      // 6% fade
-                  rotate: 0,
-                  zIndex: 1
-                }
-          }
-          transition={
-            prefersReducedMotion
-              ? { duration: 0.3, ease: EASING.STANDARD }
-              : {
-                  duration: TIMING.IDLE_BREATHING / 1000,
-                  ease: EASING.BREATHING,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  delay: 2.4,                     // 240° phase offset (3.6s timing)
-                }
-          }
-          style={{
-            pointerEvents: 'none',
-            willChange: 'transform, opacity',
-            backfaceVisibility: 'hidden',
-            transform: 'translateZ(0)',
-          }}
-        >
-          <Card letter={cards[2]?.letter || 'cat'} state="idle" isActive={false} />
-        </motion.div>
-
-        {/* Card 2 (middle) - Position 1 → Position 0 when exiting, with breathing */}
-        <motion.div
-          key={`card-2-${cards[1]?.letter}`}
-          className="absolute inset-0"
-          initial={false}
-          animate={
-            prefersReducedMotion
-              ? { opacity: 0.7, zIndex: 2 }
-              : isExiting
-              ? {
-                  // Rising to front during exit
-                  scale: 1.0,
-                  y: 0,
-                  rotate: 0,
-                  opacity: 1,
-                  zIndex: 3,
-                }
-              : {
-                  // Middle card breathing (minimal, keeps depth)
-                  scale: [0.95, 0.955, 0.95],     // 0.5% breathing (subtle)
-                  y: [16, 15, 16],                // 1px counter-motion (minimal parallax)
-                  opacity: [1.0, 0.96, 1.0],      // 4% fade
-                  rotate: 1,                       // Static rotate
-                  zIndex: 2,
-                }
-          }
-          transition={
-            prefersReducedMotion
-              ? { duration: 0.3, ease: EASING.STANDARD }
-              : isExiting
-              ? {
-                  duration: TIMING.CARD_EXIT / 1000,
-                  delay: TIMING.RISE_DELAY,
-                  ease: EASING.STANDARD,
-                }
-              : {
-                  duration: TIMING.IDLE_BREATHING / 1000,
-                  ease: EASING.BREATHING,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  delay: 1.2,                     // 120° phase offset (3.6s timing)
-                }
-          }
-          style={{
-            pointerEvents: 'none',
-            transformOrigin: 'bottom center',
-            boxShadow: isExiting
-              ? '0 4px 12px rgba(31, 31, 31, 0.08)'
-              : 'none',
-            willChange: 'transform, opacity',
-            backfaceVisibility: 'hidden',
-            transform: 'translateZ(0)',
-          }}
-        >
-          <Card letter={cards[1]?.letter || 'sh'} state="idle" isActive={false} />
-        </motion.div>
-
-        {/* Card 1 (front, active) - Position 0 */}
-        <AnimatePresence mode="wait">
+        {/* Back card (position 2) */}
+        {cardPositions.back && (
           <motion.div
-            key={`card-1-${cards[0]?.letter}`}
+            key={cardPositions.back.id}
             className="absolute inset-0"
-            initial={{ scale: 1, y: 0, opacity: 1, x: 0, rotate: 0 }}
-              animate={
-                activeCardState === 'recording'
-                  ? {
-                      // Recording state: breathing animation (matches idle rhythm)
-                      scale: [1.0, 1.02, 1.0],
-                      y: 0,
-                      opacity: 1,
-                      x: 0,
-                      rotate: 0,
-                      zIndex: 3,
-                      transition: {
-                        scale: {
-                          duration: TIMING.IDLE_BREATHING / 1000,
-                          repeat: Infinity,
-                          ease: EASING.BREATHING
-                        },
-                        default: { duration: TIMING.STATE_TRANSITION / 1000, ease: EASING.STANDARD }
-                      }
-                    }
-                  : activeCardState === 'checking'
-                  ? {
-                      // Checking state: subtle thinking pulse
-                      scale: [1.0, 1.01, 1.0],        // Minimal pulse (system is thinking)
-                      y: 0,
-                      opacity: 1,
-                      x: 0,
-                      rotate: 0,
-                      zIndex: 3,
-                      transition: {
-                        scale: {
-                          duration: TIMING.CHECKING_PULSE / 1000,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        },
-                        default: { duration: TIMING.STATE_TRANSITION / 1000, ease: EASING.STANDARD }
-                      }
-                    }
-                  : activeCardState === 'idle' && !prefersReducedMotion
-                  ? {
-                      // Idle state: Minimal breathing (very subtle, premium feel)
-                      scale: [1.0, 1.02, 1.0],        // 2% breathing (minimal but visible)
-                      y: [0, -3, 0],                  // 3px float (subtle)
-                      rotate: 0,                       // No rotation (too distracting)
-                      x: 0,                            // No drift (keep it simple)
-                      opacity: 1,
-                      zIndex: 3,
-                      transition: {
-                        duration: TIMING.IDLE_BREATHING / 1000,
-                        ease: EASING.BREATHING,
-                        repeat: Infinity,
-                        repeatType: "loop",
-                        delay: 0,
-                      }
-                    }
-                  : {
-                      // All other states: static position
-                      scale: 1,
-                      y: 0,
-                      opacity: 1,
-                      x: 0,
-                      rotate: 0,
-                      zIndex: 3
-                    }
-              }
+            initial={{
+              // New card enters from below/behind where the exited card ended
+              scale: 0.94,
+              y: 28,
+              opacity: 0.8,
+              rotate: 0,
+              x: 0,
+            }}
+            animate={
+              prefersReducedMotion
+                ? { opacity: 0.5, zIndex: 1 }
+                : {
+                    // Rise to back position with satisfying pop
+                    scale: 0.96,
+                    y: 24,
+                    opacity: 1.0,
+                    rotate: 0,
+                    x: 0,
+                    zIndex: 1
+                  }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 260,
+              damping: 20,
+              mass: 0.8,
+            }}
+            style={{
+              pointerEvents: 'none',
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+            }}
+          >
+            <Card letter={cardPositions.back.letter} state="idle" isActive={false} />
+          </motion.div>
+        )}
+
+        {/* Middle card (position 1) */}
+        {cardPositions.middle && (
+          <motion.div
+            key={cardPositions.middle.id}
+            className="absolute inset-0"
+            initial={{
+              // Start from back position
+              scale: 0.96,
+              y: 24,
+              opacity: 1.0,
+              rotate: 0,
+            }}
+            animate={
+              prefersReducedMotion
+                ? { opacity: 0.7, zIndex: 2 }
+                : {
+                    // Rise to middle position
+                    scale: 0.95,
+                    y: 16,
+                    opacity: 1.0,
+                    rotate: 1,
+                    zIndex: 2,
+                  }
+            }
+            transition={{
+              type: 'spring',
+              stiffness: 260,
+              damping: 20,
+              mass: 0.8,
+            }}
+            style={{
+              pointerEvents: 'none',
+              transformOrigin: 'bottom center',
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              transform: 'translateZ(0)',
+            }}
+          >
+            <Card letter={cardPositions.middle.letter} state="idle" isActive={false} />
+          </motion.div>
+        )}
+
+        {/* Front card (position 0) - active card with state machine */}
+        <AnimatePresence>
+          {cardPositions.front && (
+            <motion.div
+              key={cardPositions.front.id}
+              className="absolute inset-0"
+              initial={{
+                // Start from middle position for satisfying rise
+                scale: 0.95,
+                y: 16,
+                opacity: 1,
+                x: 0,
+                rotate: 1,
+              }}
+              animate={{
+                // ALL STATES: Card is static and grounded
+                // Motion is response to input, not ambient decoration
+                scale: 1.0,
+                y: 0,
+                opacity: 1,
+                x: 0,
+                rotate: 0,
+                zIndex: 4
+              }}
+              transition={{
+                duration: TIMING.STATE_TRANSITION / 1000,
+                ease: EASING.OUT
+              }}
               exit={
                 prefersReducedMotion
                   ? {
                       opacity: 0,
-                      transition: { duration: 0.3 }
+                      transition: { duration: 0.15 }
                     }
                   : {
-                      // Apple Card exit: graceful upward celebration
-                      y: -40,              // Subtle upward motion (Apple standard)
-                      scale: 0.94,         // 6% compression (iOS card dismiss)
-                      rotate: 2,           // Minimal dimensional hint
-                      opacity: 0,          // Fade out
+                      // Single decisive arc - flick card off table
+                      x: 400,              // Exit right (off screen)
+                      rotate: 12,          // Natural card-flick rotation
+                      scale: 0.95,         // Slight shrink (perspective)
+                      opacity: 0.6,        // Fade slightly (not to 0 - feels abrupt)
                       transition: {
                         duration: TIMING.CARD_EXIT / 1000,
-                        ease: EASING.STANDARD,
-                        type: 'tween'      // Ensures consistent frame timing
+                        ease: EASING.IN,   // Soft start, decisive exit
                       }
                     }
               }
-              transition={{
-                duration: TIMING.STATE_TRANSITION / 1000,
-                ease: EASING.STANDARD
-              }}
               style={{
-                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)', // Webapp shadow on active card only
+                boxShadow: '0 4px 12px rgba(31, 31, 31, 0.08)',
                 transformOrigin: 'bottom center',
-                zIndex: exitingCardZIndex, // Dynamic z-index for card shuffle
-                // GPU ACCELERATION (eliminates choppiness)
+                zIndex: 4,
                 willChange: 'transform, opacity',
                 backfaceVisibility: 'hidden',
                 transform: 'translateZ(0)',
               }}
             >
               <Card
-                letter={cards[0]?.letter || 'r'}
+                letter={cardPositions.front.letter}
                 state={activeCardState}
                 isActive={true}
               />
-          </motion.div>
+            </motion.div>
+          )}
         </AnimatePresence>
+
       </div>
 
       {/* Label */}
