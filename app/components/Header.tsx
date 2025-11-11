@@ -19,7 +19,7 @@ export default function Header() {
             className="h-[33.6px] lg:h-[38.4px] w-auto"
             priority
           />
-          <span className="font-serif text-[26.4px] lg:text-[31.2px] leading-none tracking-[-0.01em] text-[#1A1A1A] hover:text-[#30A46C] hover:font-semibold transition-colors duration-150 -translate-y-1 -translate-x-1" style={{fontWeight: 500}}>
+          <span className="font-serif text-[26.4px] lg:text-[31.2px] leading-none tracking-[-0.01em] text-[#1A1A1A] hover:text-[#30A46C] hover:font-semibold transition-colors duration-150 -translate-y-0.75 -translate-x-1" style={{fontWeight: 500}}>
             tutoria
           </span>
         </Link>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Header from "./components/Header";
 import FlashcardStack from "./components/FlashcardStack";
+import VideoPlayer from "./components/VideoPlayer";
 
 // Wave Divider Component - Geometric sound wave transitions
 const WaveDivider = ({
@@ -162,31 +163,14 @@ export default function Home() {
 
       <WaveDivider fromColor="#F7F5ED" toColor="#F5FAF7" />
 
-      {/* Video Demo Section - Duolingo-Inspired Placeholder */}
+      {/* Video Demo Section */}
       <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 pt-16 pb-24 lg:pt-24 lg:pb-24 max-w-[1440px] mx-auto">
-        {/* Video Container */}
-        <div className="max-w-[896px] mx-auto">
-          <div className="relative w-full aspect-video rounded-xl overflow-hidden border-[2px] border-[#DCDCDC] bg-white">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-white p-8 lg:p-12">
-              {/* Play Icon */}
-              <div className="mb-6 cursor-pointer">
-                <svg className="w-20 h-20 lg:w-24 lg:h-24" viewBox="0 0 80 80" fill="none">
-                  <circle cx="40" cy="40" r="40" fill="#30A46C"/>
-                  <path d="M32 26L54 40L32 54V26Z" fill="#FFFFFF"/>
-                </svg>
-              </div>
-
-              {/* Placeholder Text */}
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-2 text-center max-w-[480px]">
-                Demo video coming soon
-              </p>
-              <p className="font-sans text-[16px] text-[#595959] text-center">
-                Watch how structured phonics transforms reading
-              </p>
-            </div>
-          </div>
-        </div>
+          <VideoPlayer
+            videoId="YOUR_YOUTUBE_VIDEO_ID"
+            thumbnailSrc="/video-thumbnail.jpg"
+            title="Tutoria Demo - Structured Phonics in Action"
+          />
         </div>
       </section>
 
