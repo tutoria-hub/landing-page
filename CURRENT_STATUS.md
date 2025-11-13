@@ -26,15 +26,25 @@
 
 ---
 
-## ⚠️ Wrangler Issue
+## ⚠️ Wrangler Auth Required (Manual Step)
 
-**Problem:** `wrangler` CLI commands failing with `fetch failed` errors
+**Status:** OAuth login started - **Complete in browser now**
 
-**Network check:** ✓ Can ping api.cloudflare.com
-**Auth status:** Token may need refresh
-**Wrangler version:** 4.31.0 (latest: 4.48.0)
+**What's happening:**
+1. ✅ Production build completed (.open-next/ bundle ready)
+2. ⏳ Wrangler waiting for OAuth authentication in browser
+3. 🔗 Browser should have opened automatically to: `https://dash.cloudflare.com/oauth2/auth...`
 
-**Impact:** Can't create D1 database via automated commands
+**Action needed:**
+- If browser opened → Click "Authorize Wrangler" in Cloudflare dashboard
+- If browser didn't open → Run `wrangler login` in new terminal and authorize
+
+**After authorization:**
+```bash
+wrangler deploy  # Deploy to tutoria.ac
+```
+
+**Wrangler version:** 4.31.0 (update available: 4.48.0)
 
 ---
 
