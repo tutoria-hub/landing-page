@@ -4,9 +4,8 @@ const nextConfig = {
   reactStrictMode: false, // Temporarily disabled to test animation issue
 };
 
-// Optional: Enable Cloudflare dev integration for local bindings (R2, D1, KV, etc.)
-// Uncomment the lines below when you need to test Cloudflare bindings locally:
-// import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-// initOpenNextCloudflareForDev(nextConfig);
+// Enable Cloudflare dev integration for D1 database bindings
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();
 
 export default nextConfig;

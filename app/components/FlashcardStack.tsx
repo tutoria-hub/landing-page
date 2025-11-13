@@ -688,11 +688,6 @@ export default function FlashcardStack() {
         </AnimatePresence>
 
       </div>
-
-      {/* Label */}
-      <p className="font-sans text-[14px] font-semibold text-center text-[#595959] mt-4 uppercase tracking-[0.05em]">
-        Interactive Practice
-      </p>
     </div>
   );
 }

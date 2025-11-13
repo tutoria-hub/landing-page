@@ -5,6 +5,8 @@ import Image from "next/image";
 import Header from "./components/Header";
 import FlashcardStack from "./components/FlashcardStack";
 import VideoPlayer from "./components/VideoPlayer";
+import WaitlistForm from "./components/WaitlistForm";
+import DemoModal from "./components/DemoModal";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { Highlighter } from "@/components/ui/highlighter";
@@ -37,6 +39,12 @@ const WaveDivider = ({
 export default function Home() {
   const [statMin, setStatMin] = useState(50);
   const [statMax, setStatMax] = useState(50);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
+  const scrollToWaitlist = () => {
+    const section = document.getElementById("for-who");
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     // Animate stat numbers on load
@@ -104,8 +112,11 @@ export default function Home() {
             </div>
           </h1>
 
-          {/* CTA - Clean, decisive action with shine effect */}
-          <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white">
+          {/* CTA - Scroll to Waitlist */}
+          <ShinyButton
+            onClick={scrollToWaitlist}
+            className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white cursor-pointer"
+          >
             Join the Waitlist
           </ShinyButton>
         </div>
@@ -200,10 +211,10 @@ export default function Home() {
                     <Highlighter action="underline" color="#30A46C" strokeWidth={3} animationDuration={800} isView><span className="text-[#30A46C]">Complete Phonics Curriculum</span></Highlighter>
                   </h3>
                   <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A] mb-5">
-                    Built on Orton-Gillingham principles—the method reading specialists use, now accessible to any parent.
+                    Built on Orton-Gillingham principles. The method reading specialists use.
                   </p>
                   <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A]">
-                    Comprehensive phonics instruction. Build fundamental skills to decode words and read fluently.
+                    Teaches decoding skills and fluent reading. Now accessible to any parent.
                   </p>
                 </div>
 
@@ -215,10 +226,10 @@ export default function Home() {
                       <Highlighter action="underline" color="#4A90E2" strokeWidth={3} animationDuration={800} isView><span className="text-[#4A90E2]">Intelligent Support</span></Highlighter>
                     </h3>
                     <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A] mb-5">
-                      Listens and understands when your child is stuck vs. making a simple mistake.
+                      Listens and knows when your child is stuck or made a simple mistake.
                     </p>
                     <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
-                      Steps in at <span className="text-[#4A90E2] font-semibold">exactly the right moments.</span>
+                      Steps in when they need help.
                     </p>
                   </div>
 
@@ -247,7 +258,7 @@ export default function Home() {
       <WaveDivider fromColor="#FFFFFF" toColor="#F7F5ED" />
 
       {/* CTA Section - Centered Conversion Focus */}
-      <section className="notebook-beige">
+      <section id="for-who" className="notebook-beige">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <BlurFade delay={0.3} inView>
           <div className="max-w-[800px] mx-auto text-center">
@@ -266,25 +277,26 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Primary CTA Button */}
+          {/* Primary CTA - Waitlist Form */}
           <div className="mb-8">
-            <a href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist">
-              <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white">
-                Join the Exclusive Waitlist
-              </ShinyButton>
-            </a>
+            <WaitlistForm />
             <p className="font-sans text-[16px] text-[#595959] mt-8">
               Get access very soon
             </p>
           </div>
 
-          {/* Secondary CTA Link */}
-          <a
-            href="mailto:demo@tutoria.com?subject=Demo%20Request&body=I%27d%20like%20to%20request%20a%20demo%20for%20my%20institution"
-            className="inline-block font-sans text-[16px] text-[#30A46C] hover:text-[#2A9461] underline underline-offset-4 transition-colors duration-150"
-          >
-            Request a demo for your institution
-          </a>
+          {/* Secondary CTA - Demo Request Button */}
+          <div className="border-t border-[#DCDCDC] pt-8">
+            <p className="font-sans text-[14px] text-[#595959] mb-4">
+              For institutions:
+            </p>
+            <button
+              onClick={() => setIsDemoModalOpen(true)}
+              className="font-sans text-[16px] text-[#30A46C] hover:text-[#2A9461] underline underline-offset-4 transition-colors duration-150"
+            >
+              Request a demo for your institution
+            </button>
+          </div>
           </div>
         </BlurFade>
         </div>
@@ -311,6 +323,9 @@ export default function Home() {
         </div>
       </section>
       </main>
+
+      {/* Demo Modal */}
+      <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
     </>
   );
 }

@@ -1,7 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Header() {
+  const scrollToWaitlist = () => {
+    const section = document.getElementById("for-who");
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <header className="fixed top-4 lg:top-6 left-4 lg:left-12 right-4 lg:right-12 z-50 bg-[#F7F5ED] border-2 border-[#DDD9CE] rounded-2xl">
       <div className="px-6 lg:px-12 py-4 lg:py-5 flex justify-between items-center">
@@ -25,12 +32,12 @@ export default function Header() {
         </Link>
 
         {/* CTA Button */}
-        <a
-          href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist"
+        <button
+          onClick={scrollToWaitlist}
           className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[14px] lg:text-[15px] px-5 lg:px-6 py-2 lg:py-2.5 rounded-full transition-all duration-150 hover:scale-[1.02] focus-visible:outline focus-visible:outline-3 focus-visible:outline-[#30A46C] focus-visible:outline-offset-4 text-center"
         >
           Join Waitlist
-        </a>
+        </button>
       </div>
     </header>
   );
