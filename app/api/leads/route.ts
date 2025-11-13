@@ -5,6 +5,7 @@ interface LeadRequest {
   email: string;
   type: "waitlist" | "demo";
   institution?: string;
+  notes?: string;
 }
 
 export const runtime = "edge";
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
 
     // Parse and validate request
     const body: LeadRequest = await request.json();
-    const { email, type, institution } = body;
+    const { email, type, institution, notes } = body;
 
     // Validation
     if (!email || !email.includes("@")) {
@@ -58,13 +59,14 @@ export async function POST(request: NextRequest) {
     try {
       await db
         .prepare(
-          `INSERT INTO leads (email, type, institution, ip_address, created_at)
-           VALUES (?, ?, ?, ?, datetime('now'))`
+          `INSERT INTO leads (email, type, institution, notes, ip_address, created_at)
+           VALUES (?, ?, ?, ?, ?, datetime('now'))`
         )
         .bind(
           email.toLowerCase().trim(),
           type,
           institution || null,
+          notes || null,
           ip
         )
         .run();
