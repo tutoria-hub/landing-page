@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import Header from "./components/Header";
 import FlashcardStack from "./components/FlashcardStack";
 import VideoPlayer from "./components/VideoPlayer";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { ShinyButton } from "@/components/ui/shiny-button";
+import { Highlighter } from "@/components/ui/highlighter";
 
 // Wave Divider Component - Geometric sound wave transitions
 const WaveDivider = ({
@@ -102,10 +104,10 @@ export default function Home() {
             </div>
           </h1>
 
-          {/* CTA - Clean, decisive action */}
-          <button className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]">
+          {/* CTA - Clean, decisive action with shine effect */}
+          <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px]">
             Join the Waitlist
-          </button>
+          </ShinyButton>
         </div>
 
         {/* RIGHT COLUMN: Harvard Stat Card */}
@@ -150,14 +152,16 @@ export default function Home() {
       {/* Transition Quote - Absolutely centered */}
       <div className="bg-[#F7F5ED]">
         <div className="px-6 pt-16 pb-24 lg:pt-20 lg:pb-32 max-w-[1440px] mx-auto">
-        <div className="space-y-12 max-w-[900px] mx-auto">
-          <p className="font-serif text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center">
-            Step by step to <span className="italic text-[#30A46C]">natural</span> reading.
-          </p>
-          <p className="font-serif font-medium italic text-[22px] lg:text-[26px] leading-[1.6] text-[#595959] text-center">
-            <span className="font-serif">&ldquo;</span>perfect for&nbsp;&nbsp;<span className="font-dyslexic not-italic text-[18px] lg:text-[22px]">dyslexia</span><span className="font-serif">&rdquo;</span>
-          </p>
-        </div>
+        <BlurFade delay={0.1} inView>
+          <div className="space-y-12 max-w-[900px] mx-auto">
+            <p className="font-serif text-[32px] lg:text-[48px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A] text-center">
+              Step by step to <span className="italic text-[#30A46C]">natural</span> reading.
+            </p>
+            <p className="font-serif font-medium italic text-[22px] lg:text-[26px] leading-[1.6] text-[#595959] text-center">
+              <span className="font-serif">&ldquo;</span>perfect for&nbsp;&nbsp;<span className="font-dyslexic not-italic text-[18px] lg:text-[22px]">dyslexia</span><span className="font-serif">&rdquo;</span>
+            </p>
+          </div>
+        </BlurFade>
       </div>
       </div>
 
@@ -176,49 +180,71 @@ export default function Home() {
 
       <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
 
-      {/* Features Section - Two-Column Layout */}
+      {/* Features Section - Bento Grid Layout */}
       <section className="notebook-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: [0.42, 0, 0.58, 1] }}
-          className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center"
-        >
-          {/* LEFT COLUMN: Feature List */}
-          <div className="order-2 lg:order-1">
-            <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
-              What We Offer:
-            </h2>
+        <BlurFade delay={0.2} inView>
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-start">
+            {/* LEFT COLUMN: Bento Grid (3 Cards) */}
+            <div className="order-2 lg:order-1">
+              <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
+                What We Offer:
+              </h2>
 
-            <ul className="space-y-6 lg:space-y-8">
-              <li className="flex gap-4">
-                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
-                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                  Built on proven Orton-Gillingham principles
-                </p>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
-                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                  tutoria matches your learning pace seamlessly and its intelligence supports you in the right moments
-                </p>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-[#30A46C] text-[28px] leading-none mt-1 flex-shrink-0">•</span>
-                <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                  Builds confidence through consistent, judgment-free practice
-                </p>
-              </li>
-            </ul>
-          </div>
+              <div className="space-y-6">
+                {/* Large Card - Credibility Anchor */}
+                <div className="border-2 border-[#30A46C] bg-white p-8 rounded-xl shadow-sm">
+                  <h3 className="font-sans font-bold text-[28px] lg:text-[32px] leading-[1.2] mb-4">
+                    <Highlighter action="underline" color="#30A46C" strokeWidth={3} animationDuration={800} isView><span className="text-[#30A46C]">Complete Phonics Curriculum</span></Highlighter>
+                  </h3>
+                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-4">
+                    Built on Orton-Gillingham principles—the method reading specialists use, now accessible to any parent.
+                  </p>
+                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                    Systematic. Research-backed. <span className="text-[#30A46C] font-semibold">Proven to work.</span>
+                  </p>
+                </div>
 
-          {/* RIGHT COLUMN: Flashcard Demo */}
-          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-            <FlashcardStack />
+                {/* Small Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Small Card 1 - AI Intelligence */}
+                  <div className="border-2 border-[#4A90E2] bg-white p-6 rounded-xl shadow-sm">
+                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-3">
+                      <Highlighter action="underline" color="#4A90E2" strokeWidth={3} animationDuration={800} isView><span className="text-[#4A90E2]">AI That Knows When to Help</span></Highlighter>
+                    </h3>
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
+                      Listens and understands when your child is stuck vs. making a simple mistake.
+                    </p>
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A]">
+                      Steps in at <span className="text-[#4A90E2] font-semibold">exactly the right moments.</span>
+                    </p>
+                  </div>
+
+                  {/* Small Card 2 - Emotional Benefit */}
+                  <div className="border-2 border-[#E8A838] bg-white p-6 rounded-xl shadow-sm">
+                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-3">
+                      <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView><span className="text-[#E8A838]">Builds Confidence</span></Highlighter>
+                    </h3>
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
+                      Practice at home. No pressure. No embarrassment.
+                    </p>
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
+                      Kids can try, fail, and try again in a safe space.
+                    </p>
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#595959] italic">
+                      Progress at their own pace.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Flashcard Demo */}
+            <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+              <FlashcardStack />
+            </div>
           </div>
-        </motion.div>
+        </BlurFade>
         </div>
       </section>
 
@@ -227,9 +253,10 @@ export default function Home() {
       {/* CTA Section - Centered Conversion Focus */}
       <section className="notebook-beige">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <div className="max-w-[800px] mx-auto text-center">
+        <BlurFade delay={0.3} inView>
+          <div className="max-w-[800px] mx-auto text-center">
           {/* Section Header */}
-          <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
+          <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
             For Who?
           </h2>
 
@@ -245,11 +272,10 @@ export default function Home() {
 
           {/* Primary CTA Button */}
           <div className="space-y-4 mb-8">
-            <a
-              href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist"
-              className="inline-block bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full transition-all duration-150 shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px] active:translate-y-[6px] active:shadow-[0_0px_0_#2A9461]"
-            >
-              Join the Exclusive Waitlist
+            <a href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist">
+              <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px]">
+                Join the Exclusive Waitlist
+              </ShinyButton>
             </a>
             <p className="font-sans text-[16px] text-[#595959]">
               Get access very soon
@@ -263,7 +289,8 @@ export default function Home() {
           >
             Request a demo for your institution
           </a>
-        </div>
+          </div>
+        </BlurFade>
         </div>
       </section>
 
@@ -272,17 +299,19 @@ export default function Home() {
       {/* Science Section - Research Credibility */}
       <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <div className="max-w-[900px] mx-auto text-center">
-          {/* Body Copy - Research Focus */}
-          <div className="space-y-6">
-            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-              Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
-            </p>
-            <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-              tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
-            </p>
+        <BlurFade delay={0.4} inView>
+          <div className="max-w-[900px] mx-auto text-center">
+            {/* Body Copy - Research Focus */}
+            <div className="space-y-6">
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
+              </p>
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
+              </p>
+            </div>
           </div>
-        </div>
+        </BlurFade>
         </div>
       </section>
 
@@ -291,10 +320,11 @@ export default function Home() {
       {/* Testimonials Section - Editorial Asymmetric Grid */}
       <section className="bg-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        {/* Section Header */}
-        <h2 className="font-serif font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
-          What Parents Are Saying
-        </h2>
+        <BlurFade delay={0.5} inView>
+          {/* Section Header */}
+          <h2 className="font-sans font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
+            What Parents Are Saying
+          </h2>
 
         <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
           {/* FEATURED TESTIMONIAL - LEFT */}
@@ -357,6 +387,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </BlurFade>
         </div>
       </section>
 
@@ -367,7 +398,7 @@ export default function Home() {
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <div className="max-w-[800px] mx-auto text-center">
           {/* Section Header */}
-          <h2 className="font-serif font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-12 lg:mb-16">
+          <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-12 lg:mb-16">
             The great minds behind Tutoria
           </h2>
 
