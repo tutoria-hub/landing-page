@@ -95,6 +95,24 @@ wrangler d1 execute tutoria-leads --command "SELECT name FROM sqlite_master WHER
 
 ---
 
+### Step 5: Run Migration (if database already exists)
+
+If you've already created the database before, run this migration to add the notes column:
+
+```bash
+wrangler d1 execute tutoria-leads --file=schema/migrations/001_add_notes_column.sql
+```
+
+**Expected output:**
+```
+🌀 Executing on tutoria-leads (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx):
+✅ Executed 1 command in 0.050 seconds
+```
+
+**Note:** This step is only needed if you already have a database running. New installations will get the notes column automatically from the base schema.
+
+---
+
 ## Testing
 
 ### Local Development
@@ -113,10 +131,10 @@ curl -X POST http://localhost:3000/api/leads \
   -H "Content-Type: application/json" \
   -d '{"email":"test@example.com","type":"waitlist"}'
 
-# Test demo request
+# Test demo request (with optional notes)
 curl -X POST http://localhost:3000/api/leads \
   -H "Content-Type: application/json" \
-  -d '{"email":"demo@example.com","type":"demo","institution":"Test School"}'
+  -d '{"email":"demo@example.com","type":"demo","institution":"Test School","notes":"Prefer Tuesday or Thursday mornings"}'
 ```
 
 ### Verify Data
@@ -132,7 +150,7 @@ wrangler d1 execute tutoria-leads --command "SELECT * FROM leads"
 ### Export All Leads (CSV format)
 
 ```bash
-wrangler d1 execute tutoria-leads --command "SELECT email, type, institution, created_at FROM leads ORDER BY created_at DESC" --json | jq -r '.results[] | [.email, .type, .institution, .created_at] | @csv'
+wrangler d1 execute tutoria-leads --command "SELECT email, type, institution, notes, created_at FROM leads ORDER BY created_at DESC" --json | jq -r '.results[] | [.email, .type, .institution, .notes, .created_at] | @csv'
 ```
 
 ### Export Just Waitlist
@@ -144,7 +162,7 @@ wrangler d1 execute tutoria-leads --command "SELECT email, created_at FROM leads
 ### Export Just Demos
 
 ```bash
-wrangler d1 execute tutoria-leads --command "SELECT email, institution, created_at FROM leads WHERE type='demo' ORDER BY created_at DESC" --json | jq -r '.results[] | [.email, .institution, .created_at] | @csv'
+wrangler d1 execute tutoria-leads --command "SELECT email, institution, notes, created_at FROM leads WHERE type='demo' ORDER BY created_at DESC" --json | jq -r '.results[] | [.email, .institution, .notes, .created_at] | @csv'
 ```
 
 ### Export to File

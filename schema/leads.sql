@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS leads (
   email TEXT NOT NULL,
   type TEXT NOT NULL CHECK(type IN ('waitlist', 'demo')),
   institution TEXT, -- NULL for waitlist, filled for demo requests
+  notes TEXT, -- Optional notes (e.g., preferred dates/times for demos)
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   ip_address TEXT, -- For spam detection
 

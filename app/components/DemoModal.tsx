@@ -10,6 +10,7 @@ interface DemoModalProps {
 export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
   const [email, setEmail] = useState("");
   const [institution, setInstitution] = useState("");
+  const [notes, setNotes] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -42,7 +43,8 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         body: JSON.stringify({
           email,
           type: "demo",
-          institution
+          institution,
+          notes: notes.trim() || undefined
         })
       });
 
@@ -53,6 +55,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         setMessage(data.message || "Demo request received!");
         setEmail("");
         setInstitution("");
+        setNotes("");
 
         // Close modal after 2 seconds
         setTimeout(() => {
@@ -143,6 +146,21 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
                   required
                   disabled={status === "loading"}
                   className="w-full px-4 py-3 font-sans text-[16px] bg-white border-2 border-[#DCDCDC] rounded-lg focus:border-[#30A46C] focus:outline-none disabled:opacity-50"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="notes" className="block font-sans text-[14px] font-medium text-[#1A1A1A] mb-2">
+                  Notes <span className="text-[#8C8C8C] font-normal">(optional)</span>
+                </label>
+                <textarea
+                  id="notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Suggest a date and time that works well for you..."
+                  disabled={status === "loading"}
+                  rows={3}
+                  className="w-full px-4 py-3 font-sans text-[16px] bg-white border-2 border-[#DCDCDC] rounded-lg focus:border-[#30A46C] focus:outline-none disabled:opacity-50 resize-none"
                 />
               </div>
 
