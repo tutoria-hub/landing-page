@@ -358,6 +358,35 @@ xl: 1280px;  /* Large desktop */
 **Trade-off**: Too subtle = invisible on some displays. Intentional - subconscious polish > overt texture.
 **Validation**: Fantastic - Adds editorial sophistication that complements EB Garamond's scholarly positioning. Warmth through restraint achieved.
 
+### Anti-Patterns to Reject (Prevent Design Convergence)
+
+**Purpose**: Block drift toward generic SaaS aesthetics. Maintain intentional positioning.
+
+**Typography Convergence:**
+- ❌ Inter/Helvetica drift → ✅ EB Garamond (literary authority)
+- ❌ Rounded sans (Nunito/Poppins) → ✅ Lexend (geometric clarity)
+- **Why banned**: Generic LLM defaults undermine scholarly positioning
+
+**Color Convergence:**
+- ❌ Blue CTAs → ✅ Green #30A46C (growth/phonics metaphor)
+- ❌ Gradient backgrounds → ✅ Solid cream/white/soft-green
+- ❌ Purple accents → ✅ Green reserved for CTAs only
+- **Why banned**: SaaS clichés lack brand differentiation
+
+**Animation Convergence:**
+- ❌ Light rays, word rotate → ✅ Geometric waves only
+- ❌ Excessive blur-fade → ✅ 2-3 strategic highlights max
+- ❌ Scattered micro-interactions → ✅ Orchestrated moments (flashcard demo)
+- **Why banned**: Gimmicky effects violate "warmth through restraint"
+
+**Layout Convergence:**
+- ❌ Bento Grid overuse → ✅ Two-column editorial priority
+- ❌ Flat bullet lists → ✅ Card layouts (Duolingo test)
+- ❌ Centered hero → ✅ Asymmetric editorial grid (1.2:0.8)
+- **Why banned**: Predictable layouts lack context-specific character
+
+**Agent enforcement**: Read this section before UI changes to block convergence automatically.
+
 ---
 
 ## Quality Standards
