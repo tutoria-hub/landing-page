@@ -230,12 +230,13 @@ Next use of this pattern: instant validation (<1s)
 
 **Gets faster over time** as validated patterns accumulate.
 
-## Known Issues
+## Known Issues & Solutions
 
-- Next.js 16 not compatible with OpenNext 1.11.1 (use 15.5.6)
-- Turbopack has compatibility issues with Tailwind CSS v4 (use webpack for dev)
-- Must use `nodejs_compat` flag in wrangler.jsonc
-- Ensure NODE_ENV=development for local dev (now handled automatically in package.json)
+- Next.js 16 not compatible with OpenNext 1.11.1 → Use Next.js 15.5.6
+- Turbopack has compatibility issues with Tailwind CSS v4 → Use webpack for dev (default)
+- Must use `nodejs_compat` flag in wrangler.jsonc → Already configured
+- API routes must use Node.js runtime (not edge) → Remove `export const runtime = "edge"`
+- Build timeouts with miniflare → Conditional `initOpenNextCloudflareForDev()` (see next.config.mjs:9)
 
 ## Development Workflow
 
@@ -259,14 +260,16 @@ npm run preview    # Build + run in local Workers runtime
 npm run deploy     # Deploy to Cloudflare Workers
 ```
 
-Live at: https://landing-page.fupsonline.workers.dev/
+Live at:
+- **https://tutoria.ac** (custom domain)
+- https://landing-page.fupsonline.workers.dev (workers.dev URL)
 
-### Cloudflare Bindings (Optional)
+### Cloudflare Bindings
 
-If you need to test Cloudflare bindings (R2, D1, KV) locally:
-1. Uncomment `initOpenNextCloudflareForDev()` in `next.config.mjs`
-2. Uncomment `NEXTJS_ENV=development` in `.dev.vars`
-3. Run `npm run dev` - bindings will be available via miniflare
+Cloudflare bindings (D1, R2, KV) are now automatically available in local dev:
+- `initOpenNextCloudflareForDev()` runs only when NODE_ENV=development (see next.config.mjs:9)
+- Bindings available via miniflare in `npm run dev`
+- No manual configuration needed
 
 **IMPORTANT**: DO NOT RUN NEXT DEV or DEPLOY as an agent unless asked to.
 

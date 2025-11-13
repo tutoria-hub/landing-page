@@ -12,7 +12,8 @@ Next.js 15 + shadcn/ui landing page deployed to Cloudflare Workers via OpenNext.
 
 ## Live
 
-https://landing-page.fupsonline.workers.dev/
+- **https://tutoria.ac** (custom domain)
+- https://landing-page.fupsonline.workers.dev (workers.dev URL)
 
 ## Commands
 
