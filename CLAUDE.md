@@ -62,173 +62,30 @@ Enables automated screenshot capture and visual testing:
 
 **Configuration:** `.mcp.json` contains server setup. Permissions in `.claude/settings.json` limit to screenshot/navigate tools only. Requires Claude Code restart to activate.
 
-## UI Validation Workflow
+## Design System Enforcement
 
-**Self-learning 3-tier validation system** - gets faster with every use.
+### Anti-Convergence Protection
 
-### The System
+**Source:** `design-brief/DESIGN_BRIEF.md` → "Anti-Patterns to Reject" section
 
-```
-Tier 1: Instant Validation (<1s)
-  → Checks spacing, typography, colors vs design-brief
-  → Auto-fixes common issues (spacing off by 4px, etc.)
-  → 95% of checks pass here (after Week 4)
-  ↓ (if uncertain)
-Tier 2: Screenshot Validation (2-3s)
-  → Chrome DevTools MCP captures changed section only
-  → Visual pattern matching against approved designs
-  ↓ (if novel pattern)
-Tier 3: Expert Critique (10-15s)
-  → /design-agency comprehensive analysis (all breakpoints)
-  → Updates design-brief with validated patterns
-  → System learns for next time
-```
+Agent reads anti-patterns before UI changes to prevent drift toward generic SaaS aesthetics:
 
-### How to Use
+**4 Dimensions Protected:**
+1. **Typography**: Block Inter/Helvetica/rounded sans → Maintain EB Garamond + Lexend
+2. **Color**: Block blue CTAs/gradients/purple → Maintain green #30A46C only
+3. **Animation**: Block light rays/word rotate/excessive blur → Maintain geometric waves
+4. **Layout**: Block bento grid overuse/flat lists/centered hero → Maintain editorial asymmetry
 
-**Default (auto-detect):**
-```bash
-/ui
-```
-Automatically determines best validation strategy based on changes.
+**How it works:**
+- Agent reads design-brief before implementing changes
+- Blocks generic LLM defaults (Inter fonts, purple gradients)
+- Enforces intentional positioning (scholarly authority, warmth through restraint)
+- No separate validation files - just design-brief anti-patterns section
 
-**Quick mode (Tier 1 only):**
-```bash
-/ui quick
-```
-Instant validation against design-brief specs. No screenshots.
-
-**Full mode (force expert review):**
-```bash
-/ui full
-```
-Comprehensive analysis with all breakpoints + design-agency critique.
-
-### Auto-Invocation
-
-Skill auto-runs when:
-- You edit `app/page.tsx` or design files
-- You say: "check ui", "validate design", "does this look right?"
-- You run: `/ui` command
-
-### Performance Evolution
-
-**Week 1 (Learning):**
-- 50% Tier 1 (instant)
-- 30% Tier 2 (screenshot)
-- 20% Tier 3 (critique)
-- Avg: ~6 seconds per check
-
-**Week 4 (Mature):**
-- 95% Tier 1 (instant)
-- 4% Tier 2 (screenshot)
-- 1% Tier 3 (critique)
-- Avg: ~1.2 seconds per check
-
-**Week 12 (Expert):**
-- 99% Tier 1 (instant)
-- <1% Tier 2/3
-- Avg: <1 second (feels automatic)
-
-### Why It Works
-
-**Self-Reinforcing Loop:**
-1. Novel pattern detected → Tier 3 (design-agency critique)
-2. Pattern approved → Added to validated-patterns.md
-3. Next use of pattern → Tier 1 instant pass (<1s)
-4. System gets smarter with each critique
-
-**Context-Efficient:**
-- Only screenshots when uncertain (not every check)
-- Only single section (not full page)
-- Only desktop first (mobile/tablet if needed)
-- Minimal MCP tool usage
-
-**Fast Feedback:**
-- HMR: 200ms hot reload
-- Validation: <1s (Tier 1)
-- **Total: 1.2s from save to feedback**
-
-### Integration Points
-
-**Design Brief** (`design-brief/DESIGN_BRIEF.md`):
-- Source of truth for all validation rules
-- Auto-updated with metrics and validated patterns
-- Grows smarter over time
-
-**Chrome DevTools MCP**:
-- Smart screenshot capture (Tier 2 only)
-- Headless + isolated mode (low overhead)
-- Section-specific capture (not full page)
-
-**/design-agency Command**:
-- Expert critique for novel patterns (Tier 3)
-- LoveFrom + DesignJoy standards
-- Updates design-brief with learnings
-
-**HMR (200ms)**:
-- Fast hot reload
-- Combined with <1s validation
-- 1.2s total feedback loop
-
-### Files
-
-**Skill:** `.claude/skills/ui-validator/SKILL.md`
-**References:**
-- `tier1-checklist.md` - Instant validation rules
-- `tier2-patterns.md` - Screenshot matching patterns
-- `tier3-triggers.md` - When to invoke design-agency
-
-**Knowledge Base:**
-- `validated-patterns.md` - Approved patterns (grows over time)
-- `common-fixes.md` - Auto-fix database
-- `validation-history.json` - Performance tracking
-
-**Metrics:** `design-brief/DESIGN_BRIEF.md` (UI Validation Metrics section)
-
-### Example Output
-
-**Tier 1 Success (instant):**
-```
-✅ UI Validation Passed (<1s)
-Spacing ✓ | Typography ✓ | Colors ✓ | Pattern Match ✓
-```
-
-**Tier 2 Auto-Fix:**
-```
-⚠️ Auto-Fixed (2.3s)
-Line 143: Changed padding 92px → 96px (design-brief spec)
-Screenshot confirmed visual consistency ✓
-```
-
-**Tier 3 Learning:**
-```
-📋 Expert Critique Complete (12.4s)
-
-Design-Agency approved new pattern:
-✅ "features-grid-three-column" validated and saved
-
-Issues fixed:
-- Line 143: Spacing 88px → 96px
-- Line 187: Line-height 1.5 → 1.6
-
-Next use of this pattern: instant validation (<1s)
-```
-
-### Time Savings
-
-**Manual workflow:** 45s per check
-- Take 3 screenshots: 15s
-- Paste and organize: 10s
-- /design-agency analysis: 15s
-- Read and fix: 5s
-
-**With ui-validator (Week 4):**
-- Average: 1.2s per check
-- **Savings: 43.8s per validation**
-- **~97% faster**
-
-**Gets faster over time** as validated patterns accumulate.
+**Design Critique:**
+- Use `/design-agency` command for expert LoveFrom + DesignJoy standards
+- Use `/landing-page:ui-check [section]` for automated screenshots + critique
+- Chrome DevTools MCP captures responsive breakpoints automatically
 
 ## Known Issues & Solutions
 
