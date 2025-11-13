@@ -2,7 +2,30 @@
 
 /**
  * Flashcard Demo Card - Landing Page Version
- * Matches tutoria-webapp styling exactly with smooth animations
+ *
+ * Animation Philosophy:
+ * - Spring physics (stiffness: 120-140, damping: 20-22) for natural motion
+ * - Card exit: x: 320px, rotate: 15deg (swipe-right metaphor)
+ * - Duration: 700ms transition (matches tutoria-webapp)
+ * - Reduced motion: Fades only (no rotation/translation)
+ * - State machine: idle → recording → checking → outcome (10.5s loop)
+ *
+ * Audio Button States:
+ * - Idle: Microphone icon
+ * - Recording: 700ms preparation (dots → burst → waveform bars)
+ * - Checking: Loading dots
+ * - Correct: Green checkmark
+ * - Incorrect: "try again" text (2s display, then fade)
+ *
+ * Performance:
+ * - Framer Motion for card transitions (GPU-accelerated)
+ * - CSS animations for waveform bars (50ms interval updates)
+ * - IntersectionObserver ready (no animation until visible)
+ *
+ * Accessibility:
+ * - Respects prefers-reduced-motion (disables spring/rotation)
+ * - Button disabled (demo only, not interactive)
+ * - Semantic HTML structure maintained
  */
 
 import { useState, useEffect, useMemo } from 'react';

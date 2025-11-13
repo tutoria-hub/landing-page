@@ -11,6 +11,10 @@
     {
       "pattern": "tutoria.ac",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.tutoria.ac",
+      "custom_domain": true
     }
   ],
   "d1_databases": [
