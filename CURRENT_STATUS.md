@@ -202,12 +202,30 @@ npm run dev
 
 ---
 
-## 📚 Documentation
+## 🎥 Video Player Setup (2 Minutes)
 
-- **Setup Guide:** `WAITLIST_SETUP.md`
-- **Quick Test:** `docs/QUICK_TEST.md` (5 minutes)
-- **Full Testing:** `docs/TESTING_GUIDE.md` (comprehensive)
-- **Architecture:** `docs/README.md`
+**Component:** `app/components/VideoPlayer.tsx`
+**Usage:** `app/page.tsx:166-175`
+
+### Replace Placeholder
+
+In `app/page.tsx:170`, update:
+```tsx
+videoId="YOUR_YOUTUBE_VIDEO_ID"
+```
+
+With your actual ID. Example: If URL is `https://youtube.com/watch?v=dQw4w9WgXcQ`, use:
+```tsx
+videoId="dQw4w9WgXcQ"
+```
+
+### Add Custom Thumbnail
+
+**Path:** `public/video-thumbnail.jpg`
+**Size:** 1600x900px (16:9 at 2x for retina)
+**Format:** JPG or PNG
+
+**Until added:** Shows cream (#F7F5ED) background with play button.
 
 ---
 
