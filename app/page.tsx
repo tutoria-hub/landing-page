@@ -105,7 +105,7 @@ export default function Home() {
           </h1>
 
           {/* CTA - Clean, decisive action with shine effect */}
-          <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px]">
+          <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white">
             Join the Waitlist
           </ShinyButton>
         </div>
@@ -273,7 +273,7 @@ export default function Home() {
           {/* Primary CTA Button */}
           <div className="space-y-4 mb-8">
             <a href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist">
-              <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full shadow-[0_6px_0_#2A9461] hover:shadow-[0_2px_0_#2A9461] hover:translate-y-[4px]">
+              <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white">
                 Join the Exclusive Waitlist
               </ShinyButton>
             </a>
