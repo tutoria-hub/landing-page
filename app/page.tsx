@@ -182,7 +182,7 @@ export default function Home() {
       <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 pt-16 pb-24 lg:pt-24 lg:pb-24 max-w-[1440px] mx-auto">
           <VideoPlayer
-            videoId="YOUR_YOUTUBE_VIDEO_ID"
+            videoId="HD6OBpCypkI"
             thumbnailSrc="/video-thumbnail.jpg"
             title="Tutoria Demo - Structured Phonics in Action"
           />
