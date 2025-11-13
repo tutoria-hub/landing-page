@@ -33,7 +33,7 @@ export default function WaitlistForm() {
         setStatus("error");
         setMessage(data.error || "Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
       setMessage("Failed to submit. Please check your connection.");
     }

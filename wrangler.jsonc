@@ -7,6 +7,12 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "routes": [
+    {
+      "pattern": "tutoria.ac",
+      "custom_domain": true
+    }
+  ],
   "d1_databases": [
     {
       "binding": "TUTORIA_LEADS_DB",

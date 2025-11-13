@@ -4,8 +4,10 @@ const nextConfig = {
   reactStrictMode: false, // Temporarily disabled to test animation issue
 };
 
-// Enable Cloudflare dev integration for D1 database bindings
+// Enable Cloudflare dev integration for D1 database bindings (dev only)
 import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
-initOpenNextCloudflareForDev();
+if (process.env.NODE_ENV === "development") {
+  initOpenNextCloudflareForDev();
+}
 
 export default nextConfig;

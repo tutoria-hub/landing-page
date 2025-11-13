@@ -8,8 +8,6 @@ interface LeadRequest {
   notes?: string;
 }
 
-export const runtime = "edge";
-
 export async function POST(request: NextRequest) {
   try {
     // Get D1 database binding
@@ -80,9 +78,9 @@ export async function POST(request: NextRequest) {
         },
         { status: 201 }
       );
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
       // Handle duplicate email
-      if (dbError.message?.includes("UNIQUE constraint")) {
+      if (dbError instanceof Error && dbError.message?.includes("UNIQUE constraint")) {
         return NextResponse.json(
           { error: "This email is already registered" },
           { status: 409 }

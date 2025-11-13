@@ -67,7 +67,7 @@ export default function DemoModal({ isOpen, onClose }: DemoModalProps) {
         setStatus("error");
         setMessage(data.error || "Something went wrong. Please try again.");
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
       setMessage("Failed to submit. Please check your connection.");
     }
