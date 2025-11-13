@@ -184,55 +184,51 @@ export default function Home() {
       <section className="notebook-white">
         <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
         <BlurFade delay={0.2} inView>
+          {/* Section Heading - Outside grid for better alignment */}
+          <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
+            What We Offer:
+          </h2>
+
           <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-start">
             {/* LEFT COLUMN: Bento Grid (3 Cards) */}
             <div className="order-2 lg:order-1">
-              <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-8 lg:mb-12">
-                What We Offer:
-              </h2>
 
               <div className="space-y-6">
                 {/* Large Card - Credibility Anchor */}
-                <div className="border-2 border-[#30A46C] bg-white p-8 rounded-xl shadow-sm">
-                  <h3 className="font-sans font-bold text-[28px] lg:text-[32px] leading-[1.2] mb-4">
+                <div className="border-2 border-[#30A46C] bg-white p-12 rounded-xl shadow-sm">
+                  <h3 className="font-sans font-bold text-[28px] lg:text-[32px] leading-[1.2] mb-6">
                     <Highlighter action="underline" color="#30A46C" strokeWidth={3} animationDuration={800} isView><span className="text-[#30A46C]">Complete Phonics Curriculum</span></Highlighter>
                   </h3>
-                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A] mb-4">
+                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A] mb-5">
                     Built on Orton-Gillingham principles—the method reading specialists use, now accessible to any parent.
                   </p>
-                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                    Systematic. Research-backed. <span className="text-[#30A46C] font-semibold">Proven to work.</span>
+                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A]">
+                    Comprehensive phonics instruction. Build fundamental skills to decode words and read fluently.
                   </p>
                 </div>
 
                 {/* Small Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Small Card 1 - AI Intelligence */}
-                  <div className="border-2 border-[#4A90E2] bg-white p-6 rounded-xl shadow-sm">
-                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-3">
-                      <Highlighter action="underline" color="#4A90E2" strokeWidth={3} animationDuration={800} isView><span className="text-[#4A90E2]">AI That Knows When to Help</span></Highlighter>
+                  <div className="border-2 border-[#4A90E2] bg-white p-10 rounded-xl shadow-sm">
+                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-6">
+                      <Highlighter action="underline" color="#4A90E2" strokeWidth={3} animationDuration={800} isView><span className="text-[#4A90E2]">Intelligent Support</span></Highlighter>
                     </h3>
-                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A] mb-5">
                       Listens and understands when your child is stuck vs. making a simple mistake.
                     </p>
-                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A]">
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
                       Steps in at <span className="text-[#4A90E2] font-semibold">exactly the right moments.</span>
                     </p>
                   </div>
 
                   {/* Small Card 2 - Emotional Benefit */}
-                  <div className="border-2 border-[#E8A838] bg-white p-6 rounded-xl shadow-sm">
-                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-3">
+                  <div className="border-2 border-[#E8A838] bg-white p-10 rounded-xl shadow-sm">
+                    <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-6">
                       <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView><span className="text-[#E8A838]">Builds Confidence</span></Highlighter>
                     </h3>
-                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
-                      Practice at home. No pressure. No embarrassment.
-                    </p>
-                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#1A1A1A] mb-3">
-                      Kids can try, fail, and try again in a safe space.
-                    </p>
-                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#595959] italic">
-                      Progress at their own pace.
+                    <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
+                      Practice at home. Safe space to make mistakes and learn at their own pace.
                     </p>
                   </div>
                 </div>
@@ -271,13 +267,13 @@ export default function Home() {
           </div>
 
           {/* Primary CTA Button */}
-          <div className="space-y-4 mb-8">
+          <div className="mb-8">
             <a href="mailto:waitlist@tutoria.com?subject=Join%20Waitlist&body=I%27d%20like%20to%20join%20the%20Tutoria%20waitlist">
               <ShinyButton className="bg-[#30A46C] hover:bg-[#2A9461] text-white font-sans font-semibold text-[18px] px-12 py-4 rounded-full border-0 hover:scale-105 transition-all duration-200 [&>span]:normal-case [&>span]:tracking-normal [&>span]:text-[18px] [&>span]:text-white">
                 Join the Exclusive Waitlist
               </ShinyButton>
             </a>
-            <p className="font-sans text-[16px] text-[#595959]">
+            <p className="font-sans text-[16px] text-[#595959] mt-8">
               Get access very soon
             </p>
           </div>
@@ -312,130 +308,6 @@ export default function Home() {
             </div>
           </div>
         </BlurFade>
-        </div>
-      </section>
-
-      <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
-
-      {/* Testimonials Section - Editorial Asymmetric Grid */}
-      <section className="bg-white">
-        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <BlurFade delay={0.5} inView>
-          {/* Section Header */}
-          <h2 className="font-sans font-bold text-[40px] md:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] text-center mb-16">
-            What Parents Are Saying
-          </h2>
-
-        <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
-          {/* FEATURED TESTIMONIAL - LEFT */}
-          <div className="border-2 border-[#30A46C] bg-white p-12 rounded-lg">
-            <blockquote className="font-serif text-[28px] leading-[1.4] text-[#1A1A1A] mb-12">
-              &ldquo;My son kept saying he couldn&rsquo;t read. After two months, he&rsquo;s <span className="text-[#30A46C]">asking to practice reading</span> on his own. It&rsquo;s like a switch flipped.&rdquo;
-            </blockquote>
-
-            <div>
-              <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
-                Sarah Martinez
-              </p>
-              <p className="font-sans text-[16px] text-[#595959] mb-3">
-                Parent, 3rd grade student
-              </p>
-              <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
-                Improved 2 grade levels in 4 months
-              </p>
-            </div>
-          </div>
-
-          {/* SUPPORTING TESTIMONIALS - RIGHT STACK */}
-          <div className="flex flex-col gap-6 lg:gap-8">
-            {/* SUPPORTING TESTIMONIAL 1 */}
-            <div className="border-2 border-[#DCDCDC] bg-white p-8 rounded-lg">
-              <blockquote className="font-serif text-[20px] leading-[1.4] text-[#1A1A1A] mb-8">
-                &ldquo;We tried three tutors. This system finally cracked the code for our daughter.&rdquo;
-              </blockquote>
-
-              <div>
-                <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
-                  James Chen
-                </p>
-                <p className="font-sans text-[16px] text-[#595959] mb-3">
-                  Parent, 2nd grade student
-                </p>
-                <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
-                  Reading fluency increased 3x in 6 weeks
-                </p>
-              </div>
-            </div>
-
-            {/* SUPPORTING TESTIMONIAL 2 */}
-            <div className="border-2 border-[#DCDCDC] bg-white p-8 rounded-lg">
-              <blockquote className="font-serif text-[20px] leading-[1.4] text-[#1A1A1A] mb-8">
-                &ldquo;The teacher noticed the difference immediately. He&rsquo;s more confident now.&rdquo;
-              </blockquote>
-
-              <div>
-                <p className="font-sans font-semibold text-[18px] text-[#1A1A1A]">
-                  Lisa Anderson
-                </p>
-                <p className="font-sans text-[16px] text-[#595959] mb-3">
-                  School Reading Specialist
-                </p>
-                <p className="font-sans font-semibold text-[14px] uppercase tracking-[0.05em] text-[#30A46C]">
-                  From below grade level to proficient
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        </BlurFade>
-        </div>
-      </section>
-
-      <WaveDivider fromColor="#FFFFFF" toColor="#F7F5ED" />
-
-      {/* Founder Section - Personal Connection */}
-      <section className="bg-[#F7F5ED]">
-        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <div className="max-w-[800px] mx-auto text-center">
-          {/* Section Header */}
-          <h2 className="font-sans font-bold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.2] tracking-[-0.01em] text-[#1A1A1A] mb-12 lg:mb-16">
-            The great minds behind Tutoria
-          </h2>
-
-          {/* Founder Grid - Placeholder */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 mb-8">
-            {/* Founder 1 - Placeholder */}
-            <div className="flex flex-col items-center">
-              <div className="w-[160px] h-[160px] rounded-full border-2 border-[#30A46C] bg-[#30A46C] flex items-center justify-center mb-4">
-                <span className="font-sans font-bold text-[48px] text-white">FH</span>
-              </div>
-              <h3 className="font-sans font-bold text-[20px] lg:text-[24px] text-[#1A1A1A] mb-1">
-                Founder Name
-              </h3>
-              <p className="font-sans text-[16px] text-[#595959]">
-                Co-founder &amp; CEO
-              </p>
-            </div>
-
-            {/* Founder 2 - Placeholder */}
-            <div className="flex flex-col items-center">
-              <div className="w-[160px] h-[160px] rounded-full border-2 border-[#30A46C] bg-[#30A46C] flex items-center justify-center mb-4">
-                <span className="font-sans font-bold text-[48px] text-white">TBD</span>
-              </div>
-              <h3 className="font-sans font-bold text-[20px] lg:text-[24px] text-[#1A1A1A] mb-1">
-                Founder Name
-              </h3>
-              <p className="font-sans text-[16px] text-[#595959]">
-                Co-founder &amp; CTO
-              </p>
-            </div>
-          </div>
-
-          {/* Founder Story One-Liner */}
-          <p className="font-serif italic text-[18px] lg:text-[20px] leading-[1.6] text-[#595959] max-w-[700px] mx-auto">
-            &ldquo;Your dyslexia story one-liner goes here&rdquo;
-          </p>
-        </div>
         </div>
       </section>
       </main>
