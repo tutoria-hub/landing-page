@@ -8,6 +8,38 @@
 - Tailwind CSS v4
 - OpenNext Cloudflare adapter 1.11.1
 
+## Icon System
+
+**Hugeicons** - Free open-source React icons (40,000+ icons across multiple styles).
+
+Installed alongside existing icon libraries (lucide-react, @tabler/icons-react) for gradual adoption.
+
+**Packages:**
+- `@hugeicons/react` - React component wrapper
+- `@hugeicons/core-free-icons` - Curated free icon collection
+
+**Usage:**
+```tsx
+import { Icon } from "@/components/ui/icon"
+import { Notification03Icon, Home01Icon } from "@hugeicons/core-free-icons"
+
+<Icon icon={Notification03Icon} size={24} className="text-green-600" />
+<Icon icon={Home01Icon} />  // defaults to size 24
+```
+
+**Benefits:**
+- Tree-shakable (bundler eliminates unused icons)
+- Consistent stroke-based design system
+- 40,000+ icons available (free tier is curated subset)
+- Multiple style variants: Stroke, Solid, Twotone, Duotone, Bulk
+
+**Integration strategy:**
+- Use Hugeicons for new components
+- Keep lucide-react and @tabler/icons-react for existing code
+- Gradual migration as components are updated
+
+**Documentation:** https://docs.hugeicons.com/integrations/react
+
 ## Deploy Target
 
 Cloudflare Workers (not Edge runtime - uses Node.js runtime via `cloudflare-node` wrapper)

@@ -228,6 +228,73 @@ Expected breakdown:
 
 **Total: ~1000ms = 1 second** ✓
 
+## Icon Validation Rules
+
+### Icon System
+
+**Hugeicons** - Free open-source React icons (preferred for new work).
+
+**Approved Libraries:**
+- `@hugeicons/react` + `@hugeicons/core-free-icons` (preferred)
+- `lucide-react` (legacy, keep for existing code)
+- `@tabler/icons-react` (legacy, keep for existing code)
+
+### Icon Component Usage Check
+
+**Standard Pattern:**
+```tsx
+import { Icon } from "@/components/ui/icon"
+import { Notification03Icon } from "@hugeicons/core-free-icons"
+
+<Icon icon={Notification03Icon} size={24} className="text-green-600" />
+```
+
+**Validation Rules:**
+```
+New icon added?
+  → Check: Using Icon wrapper component? ✓
+  → Check: Importing from Hugeicons? ✓ (preferred)
+  → Check: Size specified? Default 24 OK ✓
+  → Check: className follows Tailwind patterns? ✓
+
+Using inline SVG instead?
+  → Flag: "Use Icon component for consistency"
+  → Suggest: Extract to Icon wrapper
+  → Exception: Custom illustrations (not icons)
+
+Using lucide/tabler for new work?
+  → Flag: "Prefer Hugeicons for new icons"
+  → Reason: Unified icon system, better variety
+  → Exception: Matching existing icon style in same component
+```
+
+**Icon Size Validation:**
+```
+Common sizes: 16px (small), 20px (standard), 24px (default), 32px (large)
+
+Size matches context?
+  → Body text: 20px (matches 18-20px text)
+  → Headings: 24-32px (matches visual weight)
+  → Buttons: 20-24px (balanced with text)
+
+Odd size detected? (e.g., 22px, 26px)
+  → Flag: "Use standard sizes (16/20/24/32)"
+  → Auto-fix to nearest standard size if within 2px
+```
+
+**Icon Color Validation:**
+```
+Icon color matches design system?
+  → text-green-600: Only for CTAs/actions ✓
+  → text-gray-900: Primary text color ✓
+  → text-gray-600: Secondary text color ✓
+  → currentColor: Inherits parent (flexible) ✓
+
+Custom color not in palette?
+  → Flag: "Icon color not in design system"
+  → Proceed to Tier 2 for visual check
+```
+
 ## Common Auto-Fixes
 
 Track these in `knowledge/common-fixes.md`:
@@ -238,5 +305,7 @@ Track these in `knowledge/common-fixes.md`:
 3. Font-weight 400 → 600 (button text)
 4. Color #30a46c → #30A46C (uppercase hex)
 5. Gap 60px → 64px (grid spacing)
+6. Icon size 22px → 24px (standard sizes)
+7. Inline SVG → Icon component (consistency)
 
 Each auto-fix increments counter to track most common issues.
