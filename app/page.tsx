@@ -180,12 +180,31 @@ export default function Home() {
 
       {/* Video Demo Section */}
       <section className="bg-[#F5FAF7]">
-        <div className="px-6 lg:px-24 pt-16 pb-24 lg:pt-24 lg:pb-24 max-w-[1440px] mx-auto">
+        <div className="px-6 lg:px-24 pt-16 pb-16 lg:pt-24 lg:pb-20 max-w-[1440px] mx-auto">
           <VideoPlayer
             videoId="HD6OBpCypkI"
             thumbnailSrc="/video-thumbnail.jpg"
             title="Tutoria Demo - Structured Phonics in Action"
           />
+        </div>
+      </section>
+
+      {/* Science Section - Research Credibility */}
+      <section className="bg-[#F5FAF7]">
+        <div className="px-6 lg:px-24 py-16 lg:py-20 max-w-[1440px] mx-auto">
+        <BlurFade delay={0.4} inView>
+          <div className="max-w-[900px] mx-auto text-center">
+            {/* Body Copy - Research Focus */}
+            <div className="space-y-6">
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
+              </p>
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
+              </p>
+            </div>
+          </div>
+        </BlurFade>
         </div>
       </section>
 
@@ -302,28 +321,6 @@ export default function Home() {
         </div>
       </section>
 
-      <WaveDivider fromColor="#F7F5ED" toColor="#F5FAF7" />
-
-      {/* Science Section - Research Credibility */}
-      <section className="bg-[#F5FAF7]">
-        <div className="px-6 lg:px-24 py-24 lg:py-32 max-w-[1440px] mx-auto">
-        <BlurFade delay={0.4} inView>
-          <div className="max-w-[900px] mx-auto text-center">
-            {/* Body Copy - Research Focus */}
-            <div className="space-y-6">
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
-              </p>
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
-              </p>
-            </div>
-          </div>
-        </BlurFade>
-        </div>
-      </section>
-
-      <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
 
       {/* Contact Section */}
       <section className="bg-white">
