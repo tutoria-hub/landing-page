@@ -321,9 +321,10 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider fromColor="#F7F5ED" toColor="#F5FAF7" />
 
       {/* Contact Section */}
-      <section className="bg-white">
+      <section className="bg-[#F5FAF7]">
         <div className="px-6 lg:px-24 py-16 lg:py-20 max-w-[1440px] mx-auto">
           <BlurFade delay={0.5} inView>
             <div className="max-w-[600px] mx-auto text-center space-y-6">
