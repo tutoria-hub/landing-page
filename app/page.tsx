@@ -322,6 +322,32 @@ export default function Home() {
         </BlurFade>
         </div>
       </section>
+
+      <WaveDivider fromColor="#F5FAF7" toColor="#FFFFFF" />
+
+      {/* Contact Section */}
+      <section className="bg-white">
+        <div className="px-6 lg:px-24 py-16 lg:py-20 max-w-[1440px] mx-auto">
+          <BlurFade delay={0.5} inView>
+            <div className="max-w-[600px] mx-auto text-center space-y-6">
+              <h2 className="font-serif text-[32px] lg:text-[40px] leading-[1.3] tracking-[-0.01em] text-[#1A1A1A]">
+                Questions? Reach out.
+              </h2>
+
+              <a
+                href="mailto:frederik@tutoria.ac"
+                className="inline-block font-sans text-[20px] lg:text-[22px] text-[#30A46C] hover:text-[#2A9461] underline underline-offset-4 decoration-2 transition-colors duration-200"
+              >
+                frederik@tutoria.ac
+              </a>
+
+              <p className="font-sans text-[16px] lg:text-[18px] leading-[1.6] text-[#595959]">
+                We&rsquo;re here to help.
+              </p>
+            </div>
+          </BlurFade>
+        </div>
+      </section>
       </main>
 
       {/* Demo Modal */}
