@@ -1,9 +1,8 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import type { IconType } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {
-  icon: IconType;
+  icon: any; // Hugeicons icon object
   size?: number | string;
 }
 
