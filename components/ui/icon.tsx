@@ -17,14 +17,13 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
  * <Icon icon={Notification03Icon} className="text-green-600" size={24} />
  * ```
  */
-export function Icon({ icon, size = 24, className, ...props }: IconProps) {
+export function Icon({ icon, size = 24, className }: IconProps) {
   return (
     <HugeiconsIcon
       icon={icon}
       className={cn("inline-block", className)}
       width={size}
       height={size}
-      {...props}
     />
   );
 }
