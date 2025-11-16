@@ -2,7 +2,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@/lib/utils";
 
 export interface IconProps extends React.SVGProps<SVGSVGElement> {
-  icon: any; // Hugeicons icon object
+  icon: { iconName: string; iconType: string; [key: string]: unknown };
   size?: number | string;
 }
 
