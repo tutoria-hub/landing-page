@@ -219,7 +219,7 @@ export default function Home() {
             What We Offer:
           </h2>
 
-          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-start">
+          <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-16 items-center">
             {/* LEFT COLUMN: Bento Grid (3 Cards) */}
             <div className="order-2 lg:order-1">
 
