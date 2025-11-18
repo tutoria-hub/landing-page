@@ -197,10 +197,13 @@ export default function Home() {
             {/* Body Copy - Research Focus */}
             <div className="space-y-6">
               <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                Young brains are remarkably adaptable. Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>&mdash;changes are seen within weeks, and 50-90% can reach grade-level when support arrives during the years of high brain plasticity.
+                Young brains are <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} delay={0} isView>remarkably adaptable</Highlighter>.
               </p>
               <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
+                Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>. Changes are seen within weeks, 50-90% can reach grade-level when support arrives during <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} delay={200} isView>the years of high brain plasticity</Highlighter>.
+              </p>
+              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
+                Tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
               </p>
             </div>
           </div>
