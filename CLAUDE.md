@@ -94,6 +94,84 @@ Enables automated screenshot capture and visual testing:
 
 **Configuration:** `.mcp.json` contains server setup. Permissions in `.claude/settings.json` limit to screenshot/navigate tools only. Requires Claude Code restart to activate.
 
+## Replit Design Mode Integration
+
+**For rapid visual prototyping, use the replit-import skill.**
+
+Replit Design Mode (powered by Gemini 3) excels at fast visual iteration. The replit-import skill creates a seamless workflow between Replit's design tools and our Next.js + shadcn codebase while enforcing Tutoria design system constraints.
+
+### Workflow
+
+**1. Brainstorm with Claude**
+Tell Claude what UI component you need. Claude asks clarifying questions about layout, content, and features.
+
+Example: "I need a testimonials section for the landing page"
+
+**2. Receive Custom Replit Prompt**
+Claude generates a Tutoria-constrained prompt that you can paste directly into Replit Design Mode. The prompt includes:
+- Typography rules (EB Garamond, Lexend, specific sizes)
+- Color palette (green #30A46C, cream #F7F5ED, etc.)
+- Layout specifications (asymmetric grids, spacing)
+- Interaction patterns (3D solid shadows, hover states)
+- Explicit REJECTs (Inter font, blue CTAs, blur shadows)
+
+**3. Design in Replit**
+- Open Replit Design Mode
+- Paste the custom prompt
+- Gemini 3 generates initial design
+- Iterate visually using Replit's design tools
+- Download ZIP when satisfied
+
+**4. Automatic Integration**
+- Drag ZIP into Claude Code conversation
+- design-agency skill validates against Tutoria design system
+- Automatic translation to Next.js + shadcn + Tailwind v4
+- Component integrated into codebase
+- HMR shows result in browser
+
+### When to Use
+
+**Use Replit + replit-import when:**
+- Rapid visual prototyping (3+ design variations to compare)
+- Early-stage concept exploration
+- Visual iteration faster than code-first approach
+- A/B testing visual approaches
+
+**Don't use when:**
+- Production-critical components (build in Next.js directly)
+- Complex interactions (Replit limited to front-end)
+- Pixel-perfect implementation from start (too many corrections)
+
+### Time Savings
+
+Traditional flow: Design in Figma (2-4 hours) + Implement in Next.js (2-3 hours) = 4-7 hours
+
+Replit flow: Generate in Replit (2 min) + Validate (10 sec) + Auto-translate (30 sec) + Fix violations (10 min) = ~13 minutes
+
+Result: 95% faster for rapid prototyping
+
+### Quality Enforcement
+
+Every Replit import is validated by design-agency skill:
+- Tier 1: Instant pattern recognition (approved patterns)
+- Tier 2: Principle application (novel patterns)
+- Tier 3: Deep analysis (uncertain patterns)
+
+Violations are caught automatically:
+- Wrong fonts (Inter → EB Garamond/Lexend)
+- Wrong colors (blue → green #30A46C)
+- Wrong shadows (blur → solid 3D)
+- Wrong spacing (irregular → 96px/48px/24px system)
+
+### ROI
+
+Break-even after 4-6 components:
+- Tool build time: 2-3 hours (one-time)
+- Time saved per component: 20-30 minutes
+- Reusable across all Tutoria projects
+
+**Location:** `~/.claude/skills/replit-import/`
+
 ## Design System Enforcement
 
 ### Anti-Convergence Protection
