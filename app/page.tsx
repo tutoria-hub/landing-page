@@ -202,13 +202,13 @@ export default function Home() {
             {/* Supporting Body Copy */}
             <div className="space-y-5">
               <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
-                Young brains are <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>remarkably adaptable</Highlighter>. Changes are seen within weeks, 50-90% can reach grade-level when support arrives during <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>the years of high brain plasticity</Highlighter>.
+                Young brains are <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>remarkably adaptable</Highlighter>. Changes are seen within weeks, 50-90% can reach grade-level when support arrives during <span className="font-semibold">the years of high brain plasticity</span>.
               </p>
               <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
                 Tutoria makes expert phonics accessible. Adapts to each learner&rsquo;s pace. Simple for any parent to help.
               </p>
               <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
-                Our curriculum includes <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>nonsense word testing</Highlighter> - the technique specialists use to ensure true decoding, not memorization.
+                Our curriculum includes <span className="font-semibold">nonsense word testing</span> - the technique specialists use to ensure true decoding, not memorization.
               </p>
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function Home() {
                   {/* Small Card 1 - AI Intelligence */}
                   <div className="border-2 border-[#4A90E2] bg-white p-10 rounded-xl shadow-sm">
                     <h3 className="font-sans font-bold text-[20px] lg:text-[22px] leading-[1.2] mb-6">
-                      <Highlighter action="underline" color="#4A90E2" strokeWidth={3} animationDuration={800} isView><span className="text-[#4A90E2]">Intelligent Support</span></Highlighter>
+                      <Highlighter action="highlight" color="rgba(74, 144, 226, 0.2)" animationDuration={800} isView><span className="text-[#4A90E2]">Intelligent Support</span></Highlighter>
                     </h3>
                     <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A] mb-5">
                       Listens and knows when your child is stuck or made a simple mistake.
