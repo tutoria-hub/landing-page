@@ -194,16 +194,21 @@ export default function Home() {
         <div className="px-6 lg:px-24 py-16 lg:py-20 max-w-[1440px] mx-auto">
         <BlurFade delay={0.4} inView>
           <div className="max-w-[900px] mx-auto text-center">
-            {/* Body Copy - Research Focus */}
-            <div className="space-y-6">
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                Young brains are <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>remarkably adaptable</Highlighter>.
+            {/* Pull Quote - Hero Claim */}
+            <p className="font-serif text-[28px] lg:text-[36px] leading-[1.3] tracking-[-0.01em] text-[#30A46C] mb-10 lg:mb-12">
+              &ldquo;Structured phonics intervention<br className="hidden sm:inline" /> literally rewires the brain.&rdquo;
+            </p>
+
+            {/* Supporting Body Copy */}
+            <div className="space-y-5">
+              <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
+                Young brains are <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>remarkably adaptable</Highlighter>. Changes are seen within weeks, 50-90% can reach grade-level when support arrives during <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>the years of high brain plasticity</Highlighter>.
               </p>
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                Research shows that structured phonics intervention <strong className="font-semibold text-[#30A46C]">literally rewires the brain</strong>. Changes are seen within weeks, 50-90% can reach grade-level when support arrives during <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>the years of high brain plasticity</Highlighter>.
+              <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
+                Tutoria makes expert phonics accessible. Adapts to each learner&rsquo;s pace. Simple for any parent to help.
               </p>
-              <p className="font-sans text-[18px] lg:text-[20px] leading-[1.6] text-[#1A1A1A]">
-                Tutoria makes expert phonics intervention universally accessible, adapts to each learner&rsquo;s unique pace and needs, and makes it simple for any parent to help, regardless of their own reading background.
+              <p className="font-sans text-[16px] lg:text-[18px] leading-[1.7] text-[#1A1A1A]">
+                Our curriculum includes <Highlighter action="underline" color="#E8A838" strokeWidth={3} animationDuration={800} isView>nonsense word testing</Highlighter> - the technique specialists use to ensure true decoding, not memorization.
               </p>
             </div>
           </div>
@@ -232,6 +237,17 @@ export default function Home() {
                   <h3 className="font-sans font-bold text-[28px] lg:text-[32px] leading-[1.2] mb-6">
                     <Highlighter action="underline" color="#30A46C" strokeWidth={3} animationDuration={800} isView><span className="text-[#30A46C]">Complete Phonics Curriculum</span></Highlighter>
                   </h3>
+                  <div className="flex flex-wrap gap-3 mb-5">
+                    <span className="inline-flex items-center bg-[#30A46C]/10 text-[#30A46C] font-semibold text-[16px] lg:text-[18px] px-4 py-2 rounded-full">
+                      15 stages
+                    </span>
+                    <span className="inline-flex items-center bg-[#30A46C]/10 text-[#30A46C] font-semibold text-[16px] lg:text-[18px] px-4 py-2 rounded-full">
+                      1,000+ exercises
+                    </span>
+                  </div>
+                  <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A] mb-5">
+                    We start with letter sounds and build to fluent reading.
+                  </p>
                   <p className="font-sans text-[18px] lg:text-[20px] leading-[1.7] text-[#1A1A1A] mb-5">
                     Built on Orton-Gillingham principles. The method reading specialists use.
                   </p>
